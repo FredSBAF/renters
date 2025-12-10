@@ -122,6 +122,3 @@
 - **Montants en euros** : Tous les montants doivent être convertis en euros.
 
 ---
-
-## **7. Livrable**
-Ce Markdown peut être intégré directement dans votre projet GitHub pour servir de référence exhaustive lors du développement de votre IA de validation de documents.
