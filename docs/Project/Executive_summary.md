@@ -65,7 +65,7 @@ Et aux agences de :
 - Conjoints
 
 **Besoins** :
-- Créer un dossier complet en une fois
+- Créer un dossier complet en une ou plusieurs fois
 - Partager sélectivement avec différentes agences
 - Savoir qui consulte leur dossier
 - Gérer la durée de vie des documents sensibles
@@ -75,7 +75,7 @@ Et aux agences de :
 - Vérification email obligatoire
 - 2FA optionnel (recommandé)
 
-### 2.2 Agences Immobilières (Payant - 400€ HT/mois)
+### 2.2 Agences Immobilières (Payant - 500€ HT/mois)
 
 **Besoins** :
 - Recevoir des dossiers pré-qualifiés
@@ -85,7 +85,7 @@ Et aux agences de :
 - Respecter le RGPD
 
 **Accès** :
-- Inscription B2B avec validation (SIRET, Carte pro)
+- Inscription B2B avec validation (SIRET, Carte pro, contact téléphonique)
 - Compte gérant + invitation des agents
 - Essai gratuit 30 jours (accès complet)
 - Gestion d'équipe (tous les agents accèdent aux dossiers de l'agence)
@@ -106,6 +106,7 @@ Et aux agences de :
 
 **Besoins** :
 - Modérer les dossiers suspects
+- Confirmer l'analyse des dossiers
 - Gérer les utilisateurs et abonnements
 - Piloter la plateforme (métriques, amélioration IA)
 - Support client
@@ -131,15 +132,47 @@ Et aux agences de :
 - [x] **Un seul dossier** par compte
 
 #### Documents Acceptés (selon service-public.fr)
-**Obligatoires pour tous** :
-- Pièce d'identité (CNI, passeport)
-- Justificatif de domicile
+**Justificatif d'identité**
+Le propriétaire (ou l'agence immobilière) peut exiger **1 pièce d'identité** en cours de validité parmi les documents suivants :
 
-**Selon situation** :
-- Contrat de travail / bulletins de salaire (3 derniers mois)
-- Avis d'imposition
-- Justificatifs de revenus alternatifs (retraite, bourse, ARE...)
-- Documents garant (si applicable)
+- [x] Carte d'identité française ou étrangère (avec photo)
+- [x] Passeport français ou étranger (avec photo)
+- [x] Permis de conduire français ou étranger (avec photo)
+- [x] Carte de séjour temporaire ou carte de résident ou carte de ressortissant d'un État membre de l'UE ou de l'EEE.
+
+**Justificatif de domicile**
+Le propriétaire (ou l'agence immobilière) peut exiger **1 seul justificatif** parmi les documents suivants :
+
+- [x] Soit 3 dernières quittances de loyer ou, si nécessaire, une attestation du précédent propriétaire (ou de son mandataire) indiquant que le locataire est à jour de ses loyers et charges
+- [x] Soit attestation sur l'honneur de l'hébergeant indiquant que le locataire réside à son domicile
+- [x] Soit attestation d'élection de domicile
+- [x] Soit dernier avis de taxe foncière ou, si nécessaire, titre de propriété de la résidence principale.
+
+**justificatif de situation professionnelle**
+Le propriétaire (ou l'agence immobilière) peut exiger **1 ou plusieurs justificatifs** parmi les documents suivants :
+
+- [x] Contrat de travail ou de stage, ou, si nécessaire, attestation de l'employeur précisant l'emploi et la rémunération proposée, la date d'entrée en fonctions envisagée et, si nécessaire, la durée de la période d'essai
+- [x] Extrait K ou K bis du registre du commerce et des sociétés de moins de 3 mois (entreprise commerciale)
+- [x] Fiche d'immatriculation au Registre national des entreprises de moins de 3 mois (artisan)
+- [x] Copie du certificat d'identification de l'Insee comportant les numéros d'identification (travailleur indépendant)
+- [x] Copie de la carte professionnelle (profession libérale)
+- [x] Tout document récent attestant de l'activité professionnelle (autre professionnel)
+- [x] Carte d'étudiant ou certificat de scolarité pour l'année en cours.
+
+**Justificatif de ressources**
+Le propriétaire (ou l'agence immobilière) peut exiger **1 ou plusieurs documents* parmi les documents suivants :
+
+- [x] Dernier ou avant-dernier avis d'imposition ou de non-imposition et, lorsque tout ou partie des revenus perçus n'a pas été imposé en France, le dernier ou avant-dernier avis d'imposition à l'impôt ou aux impôts qui tiennent lieu d'impôt sur le revenu, ou un document en tenant lieu faits par l'administration fiscale de l'Etat ou territoire concerné
+- [x] 3 dernières fiches de paie
+- [x] 2 derniers bilans ou, si nécessaire, attestation de ressources pour l'exercice en cours délivrés par un comptable (professionnel non-salarié)
+- [x] Justificatif de versement des indemnités, retraites, pensions, prestations sociales et familiales et allocations perçues lors des 3 derniers mois ou justificatif de l'ouverture des droits, établis par l'organisme payeur
+- [x] Titre de propriété d'un bien immobilier ou dernier avis de taxe foncière
+- [x] Justificatif de revenus fonciers, de rentes viagères ou de revenus de valeurs et capitaux mobiliers
+- [x] Attestation de simulation des aides au logement établie par la Caf ou par la MSA ou simulation des aides au logement établie par le locataire
+- [x] Justificatif de versement des indemnités de stage
+- [x] Avis d'attribution de bourse (étudiant boursier).
+
+Le contenu des pièces du dossier pour le garant sont les mêmes
 
 #### Analyse Anti-Fraude
 - [x] **Upload global** → Analyse après soumission complète
