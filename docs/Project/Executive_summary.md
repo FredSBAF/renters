@@ -198,7 +198,7 @@ Le contenu des pièces du dossier pour le garant sont les mêmes
 - [x] **Durée de validité** des documents (paramétrée par type) :
   - Fiche de paie : 3 mois
   - CNI : validité légale
-  - Autres : selon règle métier
+  - Autres : selon règle métier (à déterminer)
 - [x] **Alertes email** avant expiration (7 jours avant)
 - [x] **Suppression automatique quotidienne** des docs expirés
 - [x] Durée max conservation dossier : **6 mois**
@@ -221,7 +221,7 @@ Le contenu des pièces du dossier pour le garant sont les mêmes
   - Carte professionnelle immobilière (optionnel ou validation admin)
   - Contact principal (gérant/responsable)
 - [x] **Essai gratuit 30 jours** (accès complet, CB dès inscription)
-- [x] **Tarification** : 400€ HT/mois (480€ TTC) - accès illimité
+- [x] **Tarification** : 500€ HT/mois (600€ TTC) - accès illimité
 - [x] **Paiement Stripe** (CB uniquement pour MVP)
 - [x] **Facturation automatique** mensuelle avec TVA (20%)
 - [x] Téléchargement factures depuis espace client
@@ -598,7 +598,7 @@ Le contenu des pièces du dossier pour le garant sont les mêmes
 - Pas de limite nombre de dossiers
 - Pas de limite partages
 
-**Agences Immobilières** : 400€ HT/mois (480€ TTC)
+**Agences Immobilières** : 500€ HT/mois (600€ TTC)
 - Accès illimité dossiers
 - Toutes fonctionnalités (scoring complet, téléchargement docs, recherche opt-in V1.1+)
 - Essai gratuit 30 jours (CB requise)
@@ -628,8 +628,8 @@ Le contenu des pièces du dossier pour le garant sont les mêmes
 **Hypothèses conservatrices** :
 - 5 000 locataires inscrits
 - 50 agences payantes (taux conversion 10% des 500 agences contactées)
-- MRR : 50 × 400€ = **20 000€ HT/mois**
-- ARR : **240 000€ HT** (après 6 mois en rythme de croisière)
+- MRR : 50 × 500€ = **25 000€ HT/mois**
+- ARR : **300 000€ HT** (après 6 mois en rythme de croisière)
 
 **Coûts estimés** :
 - Infrastructure : ~500€/mois
