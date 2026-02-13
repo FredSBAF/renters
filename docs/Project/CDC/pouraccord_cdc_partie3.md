@@ -1,10 +1,10 @@
-# POURACCORD - Cahier des Charges Détaillé
+# POURACCORD - Cahier des Charges DÃ©taillÃ©
 ## PARTIE 3/4
 
-## TABLE DES MATIÈRES DE CETTE PARTIE
+## TABLE DES MATIÃˆRES DE CETTE PARTIE
 
-- 5. API REST - ENDPOINTS (détaillés)
-- 6. MODULE ANTI-FRAUDE IA (spécifications complètes)
+- 5. API REST - ENDPOINTS (dÃ©taillÃ©s)
+- 6. MODULE ANTI-FRAUDE IA (spÃ©cifications complÃ¨tes)
 
 ---
 
@@ -15,22 +15,22 @@
 **Base URL** : `https://api.pouraccord.com/v1`
 
 **Format** :
-- Requêtes : JSON (`Content-Type: application/json`)
-- Réponses : JSON
+- RequÃªtes : JSON (`Content-Type: application/json`)
+- RÃ©ponses : JSON
 - Authentification : Bearer token JWT (`Authorization: Bearer {token}`)
 
 **Codes HTTP** :
-- 200 OK : succès
-- 201 Created : ressource créée
-- 204 No Content : succès sans body
+- 200 OK : succÃ¨s
+- 201 Created : ressource crÃ©Ã©e
+- 204 No Content : succÃ¨s sans body
 - 400 Bad Request : erreur validation
-- 401 Unauthorized : non authentifié
-- 403 Forbidden : authentifié mais pas autorisé
+- 401 Unauthorized : non authentifiÃ©
+- 403 Forbidden : authentifiÃ© mais pas autorisÃ©
 - 404 Not Found : ressource inexistante
-- 409 Conflict : conflit (ex: email déjà utilisé)
+- 409 Conflict : conflit (ex: email dÃ©jÃ  utilisÃ©)
 - 500 Internal Server Error : erreur serveur
 
-**Structure réponse** :
+**Structure rÃ©ponse** :
 ```json
 {
   "success": true,
@@ -69,7 +69,7 @@
       "status": "pending_verification"
     }
   },
-  "message": "Email de confirmation envoyé"
+  "message": "Email de confirmation envoyÃ©"
 }
 ```
 
@@ -89,7 +89,7 @@
 ```json
 {
   "success": true,
-  "message": "Email validé avec succès"
+  "message": "Email validÃ© avec succÃ¨s"
 }
 ```
 
@@ -103,7 +103,7 @@
 {
   "email": "jean.martin@email.com",
   "password": "SecureP@ss123",
-  "totp_code": "123456" // optionnel, requis si 2FA activé
+  "totp_code": "123456" // optionnel, requis si 2FA activÃ©
 }
 ```
 
@@ -152,7 +152,7 @@
 ---
 
 #### POST /auth/logout
-**Description** : Déconnexion (invalide refresh token)
+**Description** : DÃ©connexion (invalide refresh token)
 
 **Headers** : `Authorization: Bearer {access_token}`
 
@@ -163,7 +163,7 @@
 ### 5.3 Gestion Profil
 
 #### GET /users/me
-**Description** : Récupérer profil utilisateur connecté
+**Description** : RÃ©cupÃ©rer profil utilisateur connectÃ©
 
 **Response 200** :
 ```json
@@ -186,7 +186,7 @@
 ---
 
 #### PATCH /users/me
-**Description** : Mettre à jour profil
+**Description** : Mettre Ã  jour profil
 
 **Body** :
 ```json
@@ -198,7 +198,7 @@
 }
 ```
 
-**Response 200** : user object mis à jour
+**Response 200** : user object mis Ã  jour
 
 ---
 
@@ -211,7 +211,7 @@
   "success": true,
   "data": {
     "qr_code_url": "data:image/png;base64,iVBORw0KG...",
-    "secret": "JBSWY3DPEHPK3PXP" // à sauvegarder par user (backup codes)
+    "secret": "JBSWY3DPEHPK3PXP" // Ã  sauvegarder par user (backup codes)
   },
   "message": "Scannez le QR code avec votre app d'authentification"
 }
@@ -233,7 +233,7 @@
 ```json
 {
   "success": true,
-  "message": "2FA activé avec succès"
+  "message": "2FA activÃ© avec succÃ¨s"
 }
 ```
 
@@ -242,7 +242,7 @@
 ### 5.4 Gestion Dossiers
 
 #### GET /folders/me
-**Description** : Récupérer dossier du locataire connecté
+**Description** : RÃ©cupÃ©rer dossier du locataire connectÃ©
 
 **Response 200** :
 ```json
@@ -274,7 +274,7 @@
 ---
 
 #### PATCH /folders/me
-**Description** : Mettre à jour statut dossier (locataire)
+**Description** : Mettre Ã  jour statut dossier (locataire)
 
 **Body** :
 ```json
@@ -283,7 +283,7 @@
 }
 ```
 
-**Response 200** : folder object mis à jour
+**Response 200** : folder object mis Ã  jour
 
 ---
 
@@ -293,7 +293,7 @@
 **Description** : Liste documents du dossier
 
 **Query params** :
-- `folder_id` (optionnel, défaut = dossier du user connecté)
+- `folder_id` (optionnel, dÃ©faut = dossier du user connectÃ©)
 
 **Response 200** :
 ```json
@@ -350,34 +350,34 @@
     "status": "pending_analysis",
     "created_at": "2026-02-10T15:00:00Z"
   },
-  "message": "Document uploadé, analyse en cours..."
+  "message": "Document uploadÃ©, analyse en cours..."
 }
 ```
 
 **Process backend** :
 1. Validation fichier (format, taille)
 2. Upload S3 (`/users/{user_id}/documents/{uuid}.{ext}`)
-3. Création entrée BDD (statut `pending_analysis`)
+3. CrÃ©ation entrÃ©e BDD (statut `pending_analysis`)
 4. Trigger async job analyse IA (queue)
-5. Réponse immédiate au client (ne pas attendre analyse)
+5. RÃ©ponse immÃ©diate au client (ne pas attendre analyse)
 
 ---
 
 #### GET /documents/:id/download
-**Description** : Télécharger document (locataire ou agence)
+**Description** : TÃ©lÃ©charger document (locataire ou agence)
 
 **Headers** : `Authorization: Bearer {token}`
 
 **Response 200** :
 - **Si locataire** : fichier original (redirect S3 presigned URL)
-- **Si agence** : fichier watermarké (stream généré à la volée)
+- **Si agence** : fichier watermarkÃ© (stream gÃ©nÃ©rÃ© Ã  la volÃ©e)
 
 **Process agence** :
-1. Vérifier droits (agence a consulté le dossier)
-2. Récupérer fichier S3 original
+1. VÃ©rifier droits (agence a consultÃ© le dossier)
+2. RÃ©cupÃ©rer fichier S3 original
 3. Appliquer watermark (backend ou microservice Python)
-4. Log téléchargement (`audit_logs`, `sharing_views.documents_downloaded`)
-5. Stream fichier watermarké
+4. Log tÃ©lÃ©chargement (`audit_logs`, `sharing_views.documents_downloaded`)
+5. Stream fichier watermarkÃ©
 
 ---
 
@@ -396,7 +396,7 @@
 ### 5.6 Partage
 
 #### POST /sharing/links
-**Description** : Créer lien partage
+**Description** : CrÃ©er lien partage
 
 **Body** :
 ```json
@@ -427,7 +427,7 @@
 ---
 
 #### GET /sharing/links
-**Description** : Liste liens partagés (locataire)
+**Description** : Liste liens partagÃ©s (locataire)
 
 **Response 200** :
 ```json
@@ -451,17 +451,17 @@
 ---
 
 #### DELETE /sharing/links/:id
-**Description** : Révoquer lien
+**Description** : RÃ©voquer lien
 
 **Response 204** : No Content
 
 ---
 
 #### GET /sharing/view/:link_id
-**Description** : Consulter dossier partagé (public endpoint, agence ou non)
+**Description** : Consulter dossier partagÃ© (public endpoint, agence ou non)
 
 **Query params** :
-- `email` (optionnel, si non-connecté pour capture lead)
+- `email` (optionnel, si non-connectÃ© pour capture lead)
 
 **Response 200** :
 ```json
@@ -469,12 +469,12 @@
   "success": true,
   "data": {
     "folder": {
-      // Fiche limitée si non-payant, complète si payant
+      // Fiche limitÃ©e si non-payant, complÃ¨te si payant
       "tenant": {
         "first_name": "Jean",
         "age": 28,
-        "situation": "Salarié CDI",
-        "income": "~3500€/mois" // ou montant exact si payant
+        "situation": "SalariÃ© CDI",
+        "income": "~3500â‚¬/mois" // ou montant exact si payant
       },
       "context": {...},
       "score": {
@@ -489,13 +489,13 @@
 ```
 
 **Process** :
-1. Vérifier lien valide (non expiré, non révoqué)
+1. VÃ©rifier lien valide (non expirÃ©, non rÃ©voquÃ©)
 2. Identifier user :
-   - JWT présent + role = agency_* → vérifier abonnement
-   - JWT présent + role = tenant → interdit (locataires ne peuvent pas consulter dossiers autres)
-   - Pas de JWT → accès limité
+   - JWT prÃ©sent + role = agency_* â†’ vÃ©rifier abonnement
+   - JWT prÃ©sent + role = tenant â†’ interdit (locataires ne peuvent pas consulter dossiers autres)
+   - Pas de JWT â†’ accÃ¨s limitÃ©
 3. Log consultation (`sharing_views`)
-4. Retourner données selon niveau accès
+4. Retourner donnÃ©es selon niveau accÃ¨s
 
 ---
 
@@ -509,7 +509,7 @@
 {
   "name": "Agence Dupont Immobilier",
   "siret": "12345678900010",
-  "address": "10 rue de la République",
+  "address": "10 rue de la RÃ©publique",
   "city": "Paris",
   "postal_code": "75001",
   "owner_email": "contact@dupont-immo.fr",
@@ -535,20 +535,20 @@
       "role": "agency_owner"
     }
   },
-  "message": "Email de confirmation envoyé"
+  "message": "Email de confirmation envoyÃ©"
 }
 ```
 
 **Process** :
 1. Validation SIRET (API INSEE)
-2. Création `agencies` + `users` (owner)
+2. CrÃ©ation `agencies` + `users` (owner)
 3. Email confirmation
 4. Statut trial (30j)
 
 ---
 
 #### POST /agencies/subscribe
-**Description** : Créer abonnement Stripe (après essai ou immédiat)
+**Description** : CrÃ©er abonnement Stripe (aprÃ¨s essai ou immÃ©diat)
 
 **Response 200** :
 ```json
@@ -561,10 +561,10 @@
 ```
 
 **Process** :
-1. Créer Stripe Customer (si pas déjà existant)
-2. Créer Stripe Checkout Session :
+1. CrÃ©er Stripe Customer (si pas dÃ©jÃ  existant)
+2. CrÃ©er Stripe Checkout Session :
    - Produit : "Abonnement POURACCORD Agence"
-   - Prix : 400€ HT/mois
+   - Prix : 800â‚¬ HT/mois
    - Mode : subscription
    - `success_url` : `/billing/success`
    - `cancel_url` : `/billing/cancel`
@@ -578,14 +578,14 @@
 
 **Events** :
 - `checkout.session.completed` :
-  - Mettre à jour `agencies.status = 'active'`
+  - Mettre Ã  jour `agencies.status = 'active'`
   - Stocker `subscription_id`, `customer_id`
 - `invoice.payment_succeeded` :
   - Log paiement
-  - Mettre à jour `next_billing_date`
+  - Mettre Ã  jour `next_billing_date`
 - `invoice.payment_failed` :
   - Email alerte agence
-  - Après 3 échecs : `status = 'suspended'`
+  - AprÃ¨s 3 Ã©checs : `status = 'suspended'`
 - `customer.subscription.deleted` :
   - `status = 'cancelled'`
 
@@ -632,18 +632,18 @@
 ---
 
 #### PATCH /agencies/folders/:folder_id
-**Description** : Mettre à jour statut dossier côté agence
+**Description** : Mettre Ã  jour statut dossier cÃ´tÃ© agence
 
 **Body** :
 ```json
 {
   "status": "shortlisted",
   "is_favorite": true,
-  "internal_notes": "Candidat intéressant, budget correct"
+  "internal_notes": "Candidat intÃ©ressant, budget correct"
 }
 ```
 
-**Response 200** : agency_folder object mis à jour
+**Response 200** : agency_folder object mis Ã  jour
 
 ---
 
@@ -672,7 +672,7 @@
 ---
 
 #### GET /admin/moderation/queue
-**Description** : File de modération (dossiers suspects)
+**Description** : File de modÃ©ration (dossiers suspects)
 
 **Response 200** :
 ```json
@@ -684,8 +684,8 @@
       "tenant": {...},
       "ai_score_global": 45,
       "ai_warnings": [
-        "Incohérence revenus",
-        "Métadonnées PDF suspectes"
+        "IncohÃ©rence revenus",
+        "MÃ©tadonnÃ©es PDF suspectes"
       ],
       "created_at": "2026-02-10T08:00:00Z"
     }
@@ -702,7 +702,7 @@
 ```json
 {
   "action": "approve", // ou "reject", "request_more_info"
-  "reason": "Vérification manuelle OK",
+  "reason": "VÃ©rification manuelle OK",
   "adjusted_score": 85 // optionnel
 }
 ```
@@ -711,14 +711,14 @@
 ```json
 {
   "success": true,
-  "message": "Dossier validé"
+  "message": "Dossier validÃ©"
 }
 ```
 
 ---
 
 #### GET /admin/dashboard/metrics
-**Description** : Métriques business/opérationnelles
+**Description** : MÃ©triques business/opÃ©rationnelles
 
 **Response 200** :
 ```json
@@ -731,8 +731,8 @@
       "folders_complete": 2910,
       "agencies_paying": 52,
       "agencies_trial": 14,
-      "mrr": 20800,
-      "arr": 249600
+      "mrr": 40000,
+      "arr": 480000
     },
     "operational": {
       "moderation_queue": 12,
@@ -758,9 +758,9 @@
 **Stack** :
 - FastAPI (Python 3.11+)
 - Tesseract 5.x (OCR)
-- scikit-learn / XGBoost (modèle ML)
+- scikit-learn / XGBoost (modÃ¨le ML)
 - Conteneur Docker
-- Déploiement : serveur séparé, communication HTTP
+- DÃ©ploiement : serveur sÃ©parÃ©, communication HTTP
 
 **Endpoint principal** : `POST /analyze`
 
@@ -830,7 +830,7 @@
       "warnings": [
         {
           "type": "employer_validation",
-          "message": "Employeur vérifié via API INSEE"
+          "message": "Employeur vÃ©rifiÃ© via API INSEE"
         }
       ]
     }
@@ -841,17 +841,17 @@
 
 ---
 
-### 6.2 Niveaux d'Analyse Détaillés
+### 6.2 Niveaux d'Analyse DÃ©taillÃ©s
 
-#### Niveau 1 : Exhaustivité
+#### Niveau 1 : ExhaustivitÃ©
 
-**Objectif** : Vérifier présence documents obligatoires selon profil.
+**Objectif** : VÃ©rifier prÃ©sence documents obligatoires selon profil.
 
 **Process** :
-1. Récupérer profil locataire (`tenant_profile`)
-2. Récupérer liste docs requis (table `document_types`)
-3. Comparer avec docs uploadés
-4. Score : (nb_docs_présents / nb_docs_requis) * 100
+1. RÃ©cupÃ©rer profil locataire (`tenant_profile`)
+2. RÃ©cupÃ©rer liste docs requis (table `document_types`)
+3. Comparer avec docs uploadÃ©s
+4. Score : (nb_docs_prÃ©sents / nb_docs_requis) * 100
 
 **Output** :
 ```json
@@ -860,7 +860,7 @@
   "missing_documents": [
     {
       "type": "bank_statement",
-      "label": "Relevé bancaire (RIB)"
+      "label": "RelevÃ© bancaire (RIB)"
     }
   ]
 }
@@ -868,22 +868,22 @@
 
 ---
 
-#### Niveau 2 : Conformité
+#### Niveau 2 : ConformitÃ©
 
-**Objectif** : Vérifier qualité technique documents.
+**Objectif** : VÃ©rifier qualitÃ© technique documents.
 
 **Checks** :
 - Format fichier valide (PDF, JPG, PNG)
 - Fichier lisible (pas corrompu)
 - OCR possible (texte extractible)
-- Résolution suffisante (images > 300 DPI)
+- RÃ©solution suffisante (images > 300 DPI)
 - Orientation correcte
 
 **Process** :
-1. Télécharger fichier depuis S3
-2. Vérifier métadonnées fichier
+1. TÃ©lÃ©charger fichier depuis S3
+2. VÃ©rifier mÃ©tadonnÃ©es fichier
 3. Tenter extraction texte (Tesseract)
-4. Si échec OCR : fallback AWS Textract
+4. Si Ã©chec OCR : fallback AWS Textract
 
 **Output par document** :
 ```json
@@ -897,20 +897,20 @@
 
 ---
 
-#### Niveau 3 : Validité Données Structurées
+#### Niveau 3 : ValiditÃ© DonnÃ©es StructurÃ©es
 
-**Objectif** : Vérifier cohérence données formelles.
+**Objectif** : VÃ©rifier cohÃ©rence donnÃ©es formelles.
 
-##### 3.1 Numéro de Sécurité Sociale (NIR)
+##### 3.1 NumÃ©ro de SÃ©curitÃ© Sociale (NIR)
 
 **Format** : `1 YY MM DD CCC NNN KK`
 - `1` : sexe (1=homme, 2=femme)
-- `YY` : année naissance (2 chiffres)
+- `YY` : annÃ©e naissance (2 chiffres)
 - `MM` : mois naissance (01-12)
-- `DD` : département naissance (01-99 ou 2A/2B)
+- `DD` : dÃ©partement naissance (01-99 ou 2A/2B)
 - `CCC` : commune INSEE
-- `NNN` : numéro d'ordre
-- `KK` : clé (checksum)
+- `NNN` : numÃ©ro d'ordre
+- `KK` : clÃ© (checksum)
 
 **Validation** :
 ```python
@@ -927,15 +927,15 @@ def validate_nir(nir: str) -> dict:
     if mois < 1 or mois > 12:
         return {"valid": False, "reason": "Mois invalide"}
     
-    # Calcul clé Luhn
+    # Calcul clÃ© Luhn
     base = int(nir[:13])
     cle_calculee = 97 - (base % 97)
     cle_fournie = int(nir[13:15])
     
     if cle_calculee != cle_fournie:
-        return {"valid": False, "reason": "Clé de contrôle invalide"}
+        return {"valid": False, "reason": "ClÃ© de contrÃ´le invalide"}
     
-    # Cohérence avec date naissance CNI
+    # CohÃ©rence avec date naissance CNI
     # (comparaison avec `extracted_data.date_of_birth`)
     
     return {"valid": True, "extracted_birth_year": 1900 + annee}
@@ -976,9 +976,9 @@ def validate_siret(siret: str) -> dict:
 
 ##### 3.3 Bande MRZ (CNI / Passeport)
 
-**Format** : 2-3 lignes de 30-44 caractères (norme ICAO)
+**Format** : 2-3 lignes de 30-44 caractÃ¨res (norme ICAO)
 
-**Exemple CNI française** :
+**Exemple CNI franÃ§aise** :
 ```
 IDFRAMARTIN<<<<<<<<<<<<<<<<<<<<<<<<<<
 9701234AB1234<<<<<<<<<<<<<<<<<<<<<<<<
@@ -993,7 +993,7 @@ def validate_mrz(mrz_text: str) -> dict:
     try:
         mrz_data = mrz.parse(mrz_text)
         
-        # Vérification checksums internes
+        # VÃ©rification checksums internes
         if not mrz_data.check_digits_ok:
             return {"valid": False, "reason": "Checksums invalides"}
         
@@ -1033,7 +1033,7 @@ def validate_address(address: str) -> dict:
     score = feature["properties"]["score"]
     
     if score < 0.5:
-        return {"valid": False, "reason": "Adresse imprécise (score faible)"}
+        return {"valid": False, "reason": "Adresse imprÃ©cise (score faible)"}
     
     return {
         "valid": True,
@@ -1046,36 +1046,36 @@ def validate_address(address: str) -> dict:
 
 ---
 
-#### Niveau 4 : Authenticité
+#### Niveau 4 : AuthenticitÃ©
 
-**Objectif** : Vérifier existence réelle des entités (employeur, adresse...).
+**Objectif** : VÃ©rifier existence rÃ©elle des entitÃ©s (employeur, adresse...).
 
 **Checks** :
-- Employeur existe (SIRET validé via INSEE)
+- Employeur existe (SIRET validÃ© via INSEE)
 - Adresse existe (API Adresse)
-- Cohérence géographique (adresse employeur vs domicile)
+- CohÃ©rence gÃ©ographique (adresse employeur vs domicile)
 
 **Process** :
 1. Extraire SIRET depuis fiche paie (OCR)
 2. Appeler API INSEE
-3. Si entreprise existe ET active → score +20
-4. Si inexistante → alerte majeure
+3. Si entreprise existe ET active â†’ score +20
+4. Si inexistante â†’ alerte majeure
 
 ---
 
-#### Niveau 5 : Cohérence Intra-Documentaire
+#### Niveau 5 : CohÃ©rence Intra-Documentaire
 
-**Objectif** : Vérifier cohérence interne d'un document.
+**Objectif** : VÃ©rifier cohÃ©rence interne d'un document.
 
 **Exemples** :
 
 ##### Fiche de Paie
 - Nom employeur identique partout
-- Période cohérente (mois/année)
+- PÃ©riode cohÃ©rente (mois/annÃ©e)
 - Calculs corrects :
-  - `Net à payer = Brut - Cotisations sociales`
-  - `Net imposable = Net avant impôt`
-- Dates cohérentes (émission après période travaillée)
+  - `Net Ã  payer = Brut - Cotisations sociales`
+  - `Net imposable = Net avant impÃ´t`
+- Dates cohÃ©rentes (Ã©mission aprÃ¨s pÃ©riode travaillÃ©e)
 
 **Process** :
 ```python
@@ -1089,10 +1089,10 @@ def check_payslip_coherence(extracted_data: dict) -> dict:
     
     if brut and cotisations and net:
         expected_net = brut - cotisations
-        if abs(expected_net - net) > 10:  # tolérance 10€
+        if abs(expected_net - net) > 10:  # tolÃ©rance 10â‚¬
             warnings.append({
                 "type": "calculation_error",
-                "message": f"Incohérence calcul net: attendu {expected_net}, trouvé {net}"
+                "message": f"IncohÃ©rence calcul net: attendu {expected_net}, trouvÃ© {net}"
             })
     
     # Dates
@@ -1107,7 +1107,7 @@ def check_payslip_coherence(extracted_data: dict) -> dict:
         if issue_dt < period_dt:
             warnings.append({
                 "type": "date_inconsistency",
-                "message": "Date émission antérieure à période travaillée"
+                "message": "Date Ã©mission antÃ©rieure Ã  pÃ©riode travaillÃ©e"
             })
     
     score = 100 - (len(warnings) * 10)
@@ -1116,35 +1116,35 @@ def check_payslip_coherence(extracted_data: dict) -> dict:
 
 ---
 
-#### Niveau 6 : Cohérence Inter-Documentaire
+#### Niveau 6 : CohÃ©rence Inter-Documentaire
 
 **Objectif** : Croiser informations entre documents.
 
-**Checks clés** :
+**Checks clÃ©s** :
 
-##### Identité
-- Nom/prénom identiques : CNI, fiches paie, contrat travail, avis imposition
-- Date naissance cohérente : CNI vs NIR (2 premiers chiffres NIR)
+##### IdentitÃ©
+- Nom/prÃ©nom identiques : CNI, fiches paie, contrat travail, avis imposition
+- Date naissance cohÃ©rente : CNI vs NIR (2 premiers chiffres NIR)
 
 ##### Adresse
-- Adresse domicile cohérente : justificatif domicile vs fiche paie vs CNI
+- Adresse domicile cohÃ©rente : justificatif domicile vs fiche paie vs CNI
 
 ##### Revenus
-- Montants cohérents :
-  - Moyenne 3 fiches paie ≈ revenu déclaré impôts (tolérance ±10%)
-  - Contrat travail (salaire brut annoncé) ≈ fiches paie
+- Montants cohÃ©rents :
+  - Moyenne 3 fiches paie â‰ˆ revenu dÃ©clarÃ© impÃ´ts (tolÃ©rance Â±10%)
+  - Contrat travail (salaire brut annoncÃ©) â‰ˆ fiches paie
 
 **Process** :
 ```python
 def check_cross_document_coherence(documents: list) -> dict:
     warnings = []
     
-    # Extraction données par type
+    # Extraction donnÃ©es par type
     identity_doc = next((d for d in documents if d["type"] == "identity_card"), None)
     payslips = [d for d in documents if d["type"] == "payslip"]
     tax_notice = next((d for d in documents if d["type"] == "tax_notice"), None)
     
-    # Cohérence nom
+    # CohÃ©rence nom
     names = set()
     for doc in documents:
         if "name" in doc["extracted_data"]:
@@ -1153,10 +1153,10 @@ def check_cross_document_coherence(documents: list) -> dict:
     if len(names) > 1:
         warnings.append({
             "type": "identity_mismatch",
-            "message": f"Noms différents détectés: {', '.join(names)}"
+            "message": f"Noms diffÃ©rents dÃ©tectÃ©s: {', '.join(names)}"
         })
     
-    # Cohérence revenus
+    # CohÃ©rence revenus
     if payslips and tax_notice:
         avg_payslip = sum(p["extracted_data"]["net_salary"] for p in payslips) / len(payslips)
         tax_income = tax_notice["extracted_data"].get("annual_income", 0) / 12
@@ -1166,7 +1166,7 @@ def check_cross_document_coherence(documents: list) -> dict:
         if diff_pct > 15:
             warnings.append({
                 "type": "income_inconsistency",
-                "message": f"Écart revenus {diff_pct:.1f}% (paie: {avg_payslip}€, impôts: {tax_income}€)"
+                "message": f"Ã‰cart revenus {diff_pct:.1f}% (paie: {avg_payslip}â‚¬, impÃ´ts: {tax_income}â‚¬)"
             })
     
     score = 100 - (len(warnings) * 15)
@@ -1175,15 +1175,15 @@ def check_cross_document_coherence(documents: list) -> dict:
 
 ---
 
-#### Niveau 7 : Intégrité & Falsification
+#### Niveau 7 : IntÃ©gritÃ© & Falsification
 
-**Objectif** : Détecter altérations, manipulations, faux documents.
+**Objectif** : DÃ©tecter altÃ©rations, manipulations, faux documents.
 
-##### 7.1 Métadonnées PDF
+##### 7.1 MÃ©tadonnÃ©es PDF
 
 **Analyse** :
-- Date création vs date modification
-- Logiciel créateur (ex: "Microsoft Word" vs "PDFtk" suspect)
+- Date crÃ©ation vs date modification
+- Logiciel crÃ©ateur (ex: "Microsoft Word" vs "PDFtk" suspect)
 - Historique modifications (nombre de versions)
 
 **Process** :
@@ -1206,18 +1206,18 @@ def analyze_pdf_metadata(file_path: str) -> dict:
             created = datetime.strptime(creation_date, "D:%Y%m%d%H%M%S")
             modified = datetime.strptime(mod_date, "D:%Y%m%d%H%M%S")
             
-            # Modification récente suspecte
+            # Modification rÃ©cente suspecte
             if (datetime.now() - modified).days < 7:
                 warnings.append({
                     "type": "recent_modification",
-                    "message": f"PDF modifié il y a {(datetime.now() - modified).days} jours"
+                    "message": f"PDF modifiÃ© il y a {(datetime.now() - modified).days} jours"
                 })
             
-            # Création très récente pour doc ancien
+            # CrÃ©ation trÃ¨s rÃ©cente pour doc ancien
             if (datetime.now() - created).days < 30:
                 warnings.append({
                     "type": "recent_creation",
-                    "message": "PDF créé récemment (< 30j)"
+                    "message": "PDF crÃ©Ã© rÃ©cemment (< 30j)"
                 })
         
         # Producteur
@@ -1233,14 +1233,14 @@ def analyze_pdf_metadata(file_path: str) -> dict:
     return {"warnings": warnings}
 ```
 
-##### 7.2 Détection Altérations Visuelles
+##### 7.2 DÃ©tection AltÃ©rations Visuelles
 
 **Techniques** :
-- **ELA (Error Level Analysis)** : détecte zones récompressées (signe de manipulation)
-- **Clone Detection** : détecte copier-coller de zones (ex: montants dupliqués)
-- **Font Analysis** : détecte polices différentes (signe d'édition)
+- **ELA (Error Level Analysis)** : dÃ©tecte zones rÃ©compressÃ©es (signe de manipulation)
+- **Clone Detection** : dÃ©tecte copier-coller de zones (ex: montants dupliquÃ©s)
+- **Font Analysis** : dÃ©tecte polices diffÃ©rentes (signe d'Ã©dition)
 
-**Process** (simplifié) :
+**Process** (simplifiÃ©) :
 ```python
 from PIL import Image
 import numpy as np
@@ -1249,10 +1249,10 @@ def detect_visual_tampering(image_path: str) -> dict:
     img = Image.open(image_path)
     img_array = np.array(img)
     
-    # Analyse simplifiée: détection zones uniformes anormales
-    # (implémentation réelle utiliserait CNN ou algo avancé)
+    # Analyse simplifiÃ©e: dÃ©tection zones uniformes anormales
+    # (implÃ©mentation rÃ©elle utiliserait CNN ou algo avancÃ©)
     
-    # Placeholder: détection changements brutaux
+    # Placeholder: dÃ©tection changements brutaux
     gray = np.mean(img_array, axis=2)
     diff_h = np.abs(np.diff(gray, axis=0))
     diff_v = np.abs(np.diff(gray, axis=1))
@@ -1263,7 +1263,7 @@ def detect_visual_tampering(image_path: str) -> dict:
         return {
             "tampering_detected": True,
             "confidence": 0.7,
-            "reason": "Zones à contraste élevé détectées (possibles éditions)"
+            "reason": "Zones Ã  contraste Ã©levÃ© dÃ©tectÃ©es (possibles Ã©ditions)"
         }
     
     return {"tampering_detected": False}
@@ -1271,11 +1271,11 @@ def detect_visual_tampering(image_path: str) -> dict:
 
 ---
 
-#### Niveau 8 : Adéquation Financière
+#### Niveau 8 : AdÃ©quation FinanciÃ¨re
 
-**Objectif** : Vérifier capacité financière locataire.
+**Objectif** : VÃ©rifier capacitÃ© financiÃ¨re locataire.
 
-**Règle standard** : Revenus nets ≥ 3× loyer
+**RÃ¨gle standard** : Revenus nets â‰¥ 3Ã— loyer
 
 **Process** :
 ```python
@@ -1289,15 +1289,15 @@ def check_financial_adequacy(folder_data: dict, context: dict) -> dict:
     
     avg_income = sum(p["net_salary"] for p in payslips) / len(payslips)
     
-    # Ajout revenus garant si présent
+    # Ajout revenus garant si prÃ©sent
     if guarantor and guarantor.get("income"):
         avg_income += guarantor["income"]
     
-    # Budget demandé
+    # Budget demandÃ©
     budget = context.get("budget", 0)
     
     if budget == 0:
-        return {"score": None, "reason": "Budget non spécifié"}
+        return {"score": None, "reason": "Budget non spÃ©cifiÃ©"}
     
     # Ratio revenus/loyer
     ratio = avg_income / budget
@@ -1321,7 +1321,7 @@ def check_financial_adequacy(folder_data: dict, context: dict) -> dict:
         "income": avg_income,
         "budget": budget,
         "ratio": round(ratio, 2),
-        "message": f"Revenus: {avg_income}€, Loyer: {budget}€, Ratio: {ratio:.1f}x"
+        "message": f"Revenus: {avg_income}â‚¬, Loyer: {budget}â‚¬, Ratio: {ratio:.1f}x"
     }
 ```
 
@@ -1332,43 +1332,43 @@ def check_financial_adequacy(folder_data: dict, context: dict) -> dict:
 **Calcul** :
 ```
 Score Global = (
-    Exhaustivité * 0.10 +
-    Conformité * 0.10 +
-    Validité * 0.15 +
-    Authenticité * 0.15 +
-    Cohérence Intra * 0.15 +
-    Cohérence Inter * 0.20 +
-    Intégrité * 0.10 +
-    Adéquation * 0.05
+    ExhaustivitÃ© * 0.10 +
+    ConformitÃ© * 0.10 +
+    ValiditÃ© * 0.15 +
+    AuthenticitÃ© * 0.15 +
+    CohÃ©rence Intra * 0.15 +
+    CohÃ©rence Inter * 0.20 +
+    IntÃ©gritÃ© * 0.10 +
+    AdÃ©quation * 0.05
 )
 ```
 
-**Seuils décision** :
-- Score ≥ 80 : 🟢 **Excellent** (validation auto)
-- Score 60-79 : 🟡 **Acceptable** (validation auto, points vigilance)
-- Score 40-59 : 🟠 **À vérifier** (modération humaine)
-- Score < 40 : 🔴 **Suspect** (modération prioritaire)
+**Seuils dÃ©cision** :
+- Score â‰¥ 80 : ðŸŸ¢ **Excellent** (validation auto)
+- Score 60-79 : ðŸŸ¡ **Acceptable** (validation auto, points vigilance)
+- Score 40-59 : ðŸŸ  **Ã€ vÃ©rifier** (modÃ©ration humaine)
+- Score < 40 : ðŸ”´ **Suspect** (modÃ©ration prioritaire)
 
 ---
 
-### 6.4 Modèle ML Supervisé
+### 6.4 ModÃ¨le ML SupervisÃ©
 
-**Objectif** : Améliorer détection fraude via apprentissage.
+**Objectif** : AmÃ©liorer dÃ©tection fraude via apprentissage.
 
 **Features** :
 - Scores niveaux 1-8
-- Métadonnées PDF (age fichier, producteur...)
+- MÃ©tadonnÃ©es PDF (age fichier, producteur...)
 - Historique user (nb dossiers soumis, taux rejet...)
 - Contexte (montant loyer, localisation...)
 
 **Algorithme** : Random Forest ou XGBoost
 
 **Dataset initial** :
-- 1000 dossiers labellisés (fraude / légitime)
-- Anonymisation données personnelles
-- Augmentation données (variations synthétiques)
+- 1000 dossiers labellisÃ©s (fraude / lÃ©gitime)
+- Anonymisation donnÃ©es personnelles
+- Augmentation donnÃ©es (variations synthÃ©tiques)
 
-**Entraînement** :
+**EntraÃ®nement** :
 ```python
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.model_selection import train_test_split
@@ -1376,16 +1376,16 @@ import joblib
 
 # Chargement dataset
 X = df[['exhaustivity_score', 'conformity_score', ..., 'pdf_age_days']]
-y = df['is_fraud']  # 0 = légitime, 1 = fraude
+y = df['is_fraud']  # 0 = lÃ©gitime, 1 = fraude
 
 # Split
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2)
 
-# Entraînement
+# EntraÃ®nement
 model = RandomForestClassifier(n_estimators=100, max_depth=10)
 model.fit(X_train, y_train)
 
-# Évaluation
+# Ã‰valuation
 score = model.score(X_test, y_test)
 print(f"Accuracy: {score}")
 
@@ -1393,7 +1393,7 @@ print(f"Accuracy: {score}")
 joblib.dump(model, 'fraud_detector_v1.pkl')
 ```
 
-**Prédiction** :
+**PrÃ©diction** :
 ```python
 def predict_fraud(features: dict) -> dict:
     model = joblib.load('fraud_detector_v1.pkl')
@@ -1414,47 +1414,47 @@ def predict_fraud(features: dict) -> dict:
 
 ---
 
-### 6.5 Interface Entraînement IA
+### 6.5 Interface EntraÃ®nement IA
 
 **Page Admin** : `/admin/ml/training`
 
-**Fonctionnalités** :
+**FonctionnalitÃ©s** :
 - **Feedback Loop** :
-  - Admin valide/rejette dossier → label ajouté au dataset
-  - Re-entraînement périodique (hebdomadaire)
-- **Métriques** :
-  - Précision, Rappel, F1-score
-  - Évolution temporelle (graphes)
+  - Admin valide/rejette dossier â†’ label ajoutÃ© au dataset
+  - Re-entraÃ®nement pÃ©riodique (hebdomadaire)
+- **MÃ©triques** :
+  - PrÃ©cision, Rappel, F1-score
+  - Ã‰volution temporelle (graphes)
   - Matrice de confusion
 - **Feature Importance** :
   - Quels features influencent le plus ?
-  - Ajustement pondérations si besoin
+  - Ajustement pondÃ©rations si besoin
 
 **Wireframe** :
 ```
-┌─────────────────────────────────────────────────────┐
-│  ENTRAÎNEMENT IA                                    │
-├─────────────────────────────────────────────────────┤
-│  DATASET                                            │
-│  Total dossiers labellisés : 2,340                  │
-│  Légitimes : 2,200 (94%)                            │
-│  Fraudes : 140 (6%)                                 │
-│                                                      │
-│  [⬆️ Uploader nouveaux labels] [🔄 Ré-entraîner]   │
-├─────────────────────────────────────────────────────┤
-│  PERFORMANCES MODÈLE (v1.3)                         │
-│  Précision : 96.2%                                  │
-│  Rappel : 89.3%                                     │
-│  F1-Score : 92.6%                                   │
-│                                                      │
-│  📊 [Graphe évolution]                              │
-├─────────────────────────────────────────────────────┤
-│  FEATURES IMPORTANTES                               │
-│  1. Cohérence inter-doc : 28%                       │
-│  2. Intégrité PDF : 22%                             │
-│  3. Validité NIR : 18%                              │
-│  ...                                                │
-└─────────────────────────────────────────────────────┘
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚  ENTRAÃŽNEMENT IA                                    â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚  DATASET                                            â”‚
+â”‚  Total dossiers labellisÃ©s : 2,340                  â”‚
+â”‚  LÃ©gitimes : 2,200 (94%)                            â”‚
+â”‚  Fraudes : 140 (6%)                                 â”‚
+â”‚                                                      â”‚
+â”‚  [â¬†ï¸ Uploader nouveaux labels] [ðŸ”„ RÃ©-entraÃ®ner]   â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚  PERFORMANCES MODÃˆLE (v1.3)                         â”‚
+â”‚  PrÃ©cision : 96.2%                                  â”‚
+â”‚  Rappel : 89.3%                                     â”‚
+â”‚  F1-Score : 92.6%                                   â”‚
+â”‚                                                      â”‚
+â”‚  ðŸ“Š [Graphe Ã©volution]                              â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚  FEATURES IMPORTANTES                               â”‚
+â”‚  1. CohÃ©rence inter-doc : 28%                       â”‚
+â”‚  2. IntÃ©gritÃ© PDF : 22%                             â”‚
+â”‚  3. ValiditÃ© NIR : 18%                              â”‚
+â”‚  ...                                                â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
 ```
 
 ---
@@ -1464,9 +1464,9 @@ def predict_fraud(features: dict) -> dict:
 ---
 
 **SUITE DANS PARTIE 4** :
-- 7. Sécurité et RGPD
-- 8. Interfaces Utilisateurs (Wireframes détaillés)
+- 7. SÃ©curitÃ© et RGPD
+- 8. Interfaces Utilisateurs (Wireframes dÃ©taillÃ©s)
 - 9. Notifications
 - 10. Plan de Tests
-- 11. Déploiement et Infrastructure
+- 11. DÃ©ploiement et Infrastructure
 - 12. Annexes

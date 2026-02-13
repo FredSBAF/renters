@@ -1,12 +1,12 @@
-# POURACCORD - Cahier des Charges Détaillé
+# POURACCORD - Cahier des Charges DÃ©taillÃ©
 ## PARTIE 2/4
 
-## TABLE DES MATIÈRES DE CETTE PARTIE
+## TABLE DES MATIÃˆRES DE CETTE PARTIE
 
 - 3.2 Module Agence
-- 3.3 Module Anti-Fraude IA (aperçu)
+- 3.3 Module Anti-Fraude IA (aperÃ§u)
 - 3.4 Module Administration
-- 4. Modèle de Données (Schémas MySQL)
+- 4. ModÃ¨le de DonnÃ©es (SchÃ©mas MySQL)
 
 ---
 
@@ -16,29 +16,30 @@
 
 **US-AGE-001 : Inscription B2B**
 
-**Description** : Une agence crée son compte entreprise.
+**Description** : Une agence crÃ©e son compte entreprise.
 
 **Flux** :
-1. Accès `/agency/register`
+1. AccÃ¨s `/agency/register`
 2. Saisie :
    - Nom agence
    - SIRET
-   - Adresse siège social
-   - Email responsable (deviendra compte gérant)
+   - Adresse siÃ¨ge social
+   - Email responsable (deviendra compte gÃ©rant)
+   - Téléphone de contact (obligatoire)
    - Mot de passe
    - Carte professionnelle (optionnel pour MVP, validation manuelle admin)
-3. Système :
-   - Vérifie SIRET via API INSEE
-   - Extrait nom légal entreprise, adresse (validation cohérence)
-   - Crée compte agence (statut : `trial`, `trial_ends_at` = NOW() + 30 jours)
-   - Crée user gérant (rôle : `agency_owner`)
+3. SystÃ¨me :
+   - VÃ©rifie SIRET via API INSEE
+   - Extrait nom lÃ©gal entreprise, adresse (validation cohÃ©rence)
+   - CrÃ©e compte agence (statut : `trial`, `trial_ends_at` = NOW() + 30 jours)
+   - CrÃ©e user gÃ©rant (rÃ´le : `agency_owner`)
    - Envoie email confirmation + lien validation
-4. Validation email → accès compte (pas de paiement immédiat)
+4. Validation email â†’ accÃ¨s compte (pas de paiement immÃ©diat)
 
-**Règles métier** :
+**RÃ¨gles mÃ©tier** :
 - SIRET unique en BDD
-- Essai gratuit 30j démarre dès validation email
-- Carte pro : upload PDF (validation admin si activé, sinon accepté automatiquement)
+- Essai gratuit 30j dÃ©marre dÃ¨s validation email
+- Carte pro : upload PDF (validation admin si activÃ©, sinon acceptÃ© automatiquement)
 
 **API INSEE** :
 ```
@@ -62,143 +63,143 @@ Response:
 **Description** : Les comptes agences doivent activer 2FA.
 
 **Flux** :
-1. Première connexion après validation email → redirection forcée `/setup-2fa`
-2. Génération QR code TOTP
+1. PremiÃ¨re connexion aprÃ¨s validation email â†’ redirection forcÃ©e `/setup-2fa`
+2. GÃ©nÃ©ration QR code TOTP
 3. Scan + saisie code validation
-4. 2FA activé → accès plateforme
+4. 2FA activÃ© â†’ accÃ¨s plateforme
 
-**Règle** : Impossible accéder plateforme sans 2FA actif (middleware backend vérifie)
+**RÃ¨gle** : Impossible accÃ©der plateforme sans 2FA actif (middleware backend vÃ©rifie)
 
 ---
 
 **US-AGE-003 : Gestion Abonnement Stripe**
 
-**Description** : Transition essai gratuit → abonnement payant.
+**Description** : Transition essai gratuit â†’ abonnement payant.
 
 **Flux essai gratuit** :
-1. À J-7 de fin essai : email rappel + lien `/billing`
-2. Gérant clique → redirection Stripe Checkout :
+1. Ã€ J-7 de fin essai : email rappel + lien `/billing`
+2. GÃ©rant clique â†’ redirection Stripe Checkout :
    - Produit : "Abonnement POURACCORD Agence"
-   - Prix : 400€ HT/mois (480€ TTC)
-   - Facturation : mensuelle récurrente
+   - Prix : 800â‚¬ HT/mois (960â‚¬ TTC)
+   - Facturation : mensuelle rÃ©currente
    - Paiement : CB uniquement (MVP)
 3. Paiement OK :
-   - Webhook Stripe → backend met à jour statut : `active`
-   - `subscription_id` Stripe stocké en BDD
+   - Webhook Stripe â†’ backend met Ã  jour statut : `active`
+   - `subscription_id` Stripe stockÃ© en BDD
    - `next_billing_date` = NOW() + 1 mois
-4. Email confirmation avec facture (auto-générée Stripe)
+4. Email confirmation avec facture (auto-gÃ©nÃ©rÃ©e Stripe)
 
 **Flux renouvellement** :
 - Stripe facture automatiquement chaque mois
-- Webhook `invoice.payment_succeeded` → logs BDD
-- Webhook `invoice.payment_failed` → email agence + 3 tentatives (config Stripe)
-- Après 3 échecs : statut `suspended` (accès lecture seule)
+- Webhook `invoice.payment_succeeded` â†’ logs BDD
+- Webhook `invoice.payment_failed` â†’ email agence + 3 tentatives (config Stripe)
+- AprÃ¨s 3 Ã©checs : statut `suspended` (accÃ¨s lecture seule)
 
 **Page `/billing`** :
 ```
-┌─────────────────────────────────────────────────────┐
-│  FACTURATION                                        │
-├─────────────────────────────────────────────────────┤
-│  Abonnement : ACTIF ✅                              │
-│  Prochain prélèvement : 480€ TTC le 10/03/2026     │
-│                                                      │
-│  [Modifier carte bancaire]                          │
-│  [Télécharger factures]                             │
-│  [Résilier abonnement]                              │
-├─────────────────────────────────────────────────────┤
-│  HISTORIQUE FACTURES                                │
-│  📄 Facture #001 - Jan 2026 - 480€ TTC             │
-│  📄 Facture #002 - Fév 2026 - 480€ TTC             │
-└─────────────────────────────────────────────────────┘
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚  FACTURATION                                        â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚  Abonnement : ACTIF âœ…                              â”‚
+â”‚  Prochain prÃ©lÃ¨vement : 960â‚¬ TTC le 10/03/2026     â”‚
+â”‚                                                      â”‚
+â”‚  [Modifier carte bancaire]                          â”‚
+â”‚  [TÃ©lÃ©charger factures]                             â”‚
+â”‚  [RÃ©silier abonnement]                              â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚  HISTORIQUE FACTURES                                â”‚
+â”‚  ðŸ“„ Facture #001 - Jan 2026 - 960â‚¬ TTC             â”‚
+â”‚  ðŸ“„ Facture #002 - FÃ©v 2026 - 960â‚¬ TTC             â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
 ```
 
-**Résiliation** :
-- Bouton "Résilier" → confirmation modale
-- Si confirmé : annulation abonnement Stripe (fin période en cours)
-- Statut agence : `cancelled` à date fin période
-- Accès lecture seule jusqu'à expiration
+**RÃ©siliation** :
+- Bouton "RÃ©silier" â†’ confirmation modale
+- Si confirmÃ© : annulation abonnement Stripe (fin pÃ©riode en cours)
+- Statut agence : `cancelled` Ã  date fin pÃ©riode
+- AccÃ¨s lecture seule jusqu'Ã  expiration
 
 ---
 
-### 3.2.2 Gestion Équipe
+### 3.2.2 Gestion Ã‰quipe
 
 **US-AGE-010 : Invitation Agents**
 
-**Description** : Le gérant invite des agents immobiliers à rejoindre le compte agence.
+**Description** : Le gÃ©rant invite des agents immobiliers Ã  rejoindre le compte agence.
 
 **Flux** :
 1. Depuis `/team`, clic "Inviter un agent"
 2. Saisie email agent
-3. Système :
-   - Génère lien invitation `/agent/join?token=XXX&agency_id=YYY`
+3. SystÃ¨me :
+   - GÃ©nÃ¨re lien invitation `/agent/join?token=XXX&agency_id=YYY`
    - Envoie email agent
 4. Agent clique lien :
-   - Si compte existe : association agence (un user peut appartenir à 1 seule agence)
+   - Si compte existe : association agence (un user peut appartenir Ã  1 seule agence)
    - Sinon : inscription + association
-5. Agent accède aux dossiers de l'agence (partage implicite)
+5. Agent accÃ¨de aux dossiers de l'agence (partage implicite)
 
-**Règles métier** :
+**RÃ¨gles mÃ©tier** :
 - Tous les agents voient tous les dossiers de l'agence
-- Pas de granularité permissions (MVP simple)
-- Seul gérant peut inviter/supprimer agents
+- Pas de granularitÃ© permissions (MVP simple)
+- Seul gÃ©rant peut inviter/supprimer agents
 
 **Page `/team`** :
 ```
-┌─────────────────────────────────────────────────────┐
-│  ÉQUIPE (5 membres)                                 │
-├─────────────────────────────────────────────────────┤
-│  👤 Marie Dupont (Gérant) - marie@agence.fr         │
-│  👤 Jean Martin (Agent) - jean@agence.fr            │
-│     [Retirer]                                        │
-│  👤 Sophie Durand (Agent) - sophie@agence.fr        │
-│     [Retirer]                                        │
-│                                                      │
-│  [➕ Inviter un agent]                              │
-└─────────────────────────────────────────────────────┘
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚  Ã‰QUIPE (5 membres)                                 â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚  ðŸ‘¤ Marie Dupont (GÃ©rant) - marie@agence.fr         â”‚
+â”‚  ðŸ‘¤ Jean Martin (Agent) - jean@agence.fr            â”‚
+â”‚     [Retirer]                                        â”‚
+â”‚  ðŸ‘¤ Sophie Durand (Agent) - sophie@agence.fr        â”‚
+â”‚     [Retirer]                                        â”‚
+â”‚                                                      â”‚
+â”‚  [âž• Inviter un agent]                              â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
 ```
 
 ---
 
-### 3.2.3 Accès aux Dossiers
+### 3.2.3 AccÃ¨s aux Dossiers
 
 **US-AGE-020 : Consultation Dossier (Agence Non-Cliente)**
 
-**Description** : Une agence non-payante clique sur un lien partagé par un locataire.
+**Description** : Une agence non-payante clique sur un lien partagÃ© par un locataire.
 
 **Flux** :
 1. Clic lien `https://pouraccord.com/view/{UUID}`
-2. Système vérifie :
-   - Lien valide (non expiré, non révoqué)
-   - Agence connectée ? (JWT présent)
-3. Si agence non-connectée OU non-payante :
-   - Affiche **fiche limitée** :
+2. SystÃ¨me vÃ©rifie :
+   - Lien valide (non expirÃ©, non rÃ©voquÃ©)
+   - Agence connectÃ©e ? (JWT prÃ©sent)
+3. Si agence non-connectÃ©e OU non-payante :
+   - Affiche **fiche limitÃ©e** :
      ```
-     ┌────────────────────────────────────────────┐
-     │  PRÉVISUALISATION DOSSIER                  │
-     ├────────────────────────────────────────────┤
-     │  👤 Prénom : Jean                          │
-     │  📅 Âge : 28 ans                           │
-     │  💼 Situation : Salarié CDI                │
-     │  💰 Revenus : ~3500€/mois (détails ⚠️)    │
-     │  🏠 Recherche : T2 Paris 15e - 1200€      │
-     │                                             │
-     │  📊 Score : ████░░░░░░ (détails ⚠️)       │
-     │                                             │
-     │  ⚠️ Points de vigilance : 2 (détails ⚠️)  │
-     ├────────────────────────────────────────────┤
-     │  🔒 ACCÈS COMPLET RÉSERVÉ AUX ABONNÉS     │
-     │                                             │
-     │  Pour accéder au dossier complet :         │
-     │  [  DÉMARRER L'ESSAI GRATUIT 30J  ]       │
-     │                                             │
-     │  Déjà client ? [Se connecter]              │
-     └────────────────────────────────────────────┘
+     â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+     â”‚  PRÃ‰VISUALISATION DOSSIER                  â”‚
+     â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+     â”‚  ðŸ‘¤ PrÃ©nom : Jean                          â”‚
+     â”‚  ðŸ“… Ã‚ge : 28 ans                           â”‚
+     â”‚  ðŸ’¼ Situation : SalariÃ© CDI                â”‚
+     â”‚  ðŸ’° Revenus : ~3500â‚¬/mois (dÃ©tails âš ï¸)    â”‚
+     â”‚  ðŸ  Recherche : T2 Paris 15e - 1200â‚¬      â”‚
+     â”‚                                             â”‚
+     â”‚  ðŸ“Š Score : â–ˆâ–ˆâ–ˆâ–ˆâ–‘â–‘â–‘â–‘â–‘â–‘ (dÃ©tails âš ï¸)       â”‚
+     â”‚                                             â”‚
+     â”‚  âš ï¸ Points de vigilance : 2 (dÃ©tails âš ï¸)  â”‚
+     â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+     â”‚  ðŸ”’ ACCÃˆS COMPLET RÃ‰SERVÃ‰ AUX ABONNÃ‰S     â”‚
+     â”‚                                             â”‚
+     â”‚  Pour accÃ©der au dossier complet :         â”‚
+     â”‚  [  DÃ‰MARRER L'ESSAI GRATUIT 30J  ]       â”‚
+     â”‚                                             â”‚
+     â”‚  DÃ©jÃ  client ? [Se connecter]              â”‚
+     â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
      ```
-   - Formulaire capture email (si non-connecté) pour lead
+   - Formulaire capture email (si non-connectÃ©) pour lead
 4. Log consultation (table `sharing_views`)
 
-**Règles métier** :
-- Fiche limitée : données partielles, scoring flouté
+**RÃ¨gles mÃ©tier** :
+- Fiche limitÃ©e : donnÃ©es partielles, scoring floutÃ©
 - Bouton CTA : essai gratuit (redirection `/agency/register`)
 - Capture email = lead pour sales
 
@@ -206,132 +207,132 @@ Response:
 
 **US-AGE-021 : Consultation Dossier (Agence Payante)**
 
-**Description** : Une agence abonnée accède au dossier complet.
+**Description** : Une agence abonnÃ©e accÃ¨de au dossier complet.
 
 **Flux** :
-1. Clic lien ou accès depuis `/dossiers`
-2. Système vérifie :
-   - Agence abonnée (statut `active` ou `trial`)
-   - 2FA validé cette session
-3. Affiche **fiche complète** :
+1. Clic lien ou accÃ¨s depuis `/dossiers`
+2. SystÃ¨me vÃ©rifie :
+   - Agence abonnÃ©e (statut `active` ou `trial`)
+   - 2FA validÃ© cette session
+3. Affiche **fiche complÃ¨te** :
    ```
-   ┌────────────────────────────────────────────────────┐
-   │  DOSSIER : Jean MARTIN                            │
-   ├────────────────────────────────────────────────────┤
-   │  📋 INFORMATIONS PERSONNELLES                     │
-   │  Nom complet : Jean MARTIN                         │
-   │  Date naissance : 15/03/1997 (28 ans)             │
-   │  Téléphone : 06 12 34 56 78                        │
-   │  Email : jean.martin@email.com                     │
-   │  Adresse actuelle : 12 rue de la Paix, Paris 10e  │
-   ├────────────────────────────────────────────────────┤
-   │  💼 SITUATION PROFESSIONNELLE                     │
-   │  Statut : Salarié CDI                              │
-   │  Employeur : ACME Corp (SIRET validé ✅)          │
-   │  Poste : Développeur Senior                        │
-   │  Ancienneté : 3 ans 2 mois                         │
-   │  Revenus nets : 3542€/mois (moyenne 3 derniers)   │
-   ├────────────────────────────────────────────────────┤
-   │  🏠 DEMANDE                                        │
-   │  Type : T2                                         │
-   │  Localisation : Paris 15e                          │
-   │  Budget max : 1200€/mois                           │
-   │  Disponibilité : 01/03/2026                        │
-   │  Ref annonce : SeLoger-123456                      │
-   ├────────────────────────────────────────────────────┤
-   │  📊 ANALYSE ANTI-FRAUDE                           │
-   │  Score global : 92/100 🟢 EXCELLENT               │
-   │                                                     │
-   │  Détails :                                         │
-   │  • Identité : 95/100 ✅                           │
-   │  • Revenus : 90/100 ✅                            │
-   │  • Stabilité : 88/100 ✅                          │
-   │  • Cohérence : 94/100 ✅                          │
-   │                                                     │
-   │  ⚠️ Points de vigilance (2) :                     │
-   │  • Justificatif domicile date de 2 mois et 28j    │
-   │    (proche limite 3 mois)                          │
-   │  • Changement employeur il y a 4 mois             │
-   │    (vérifier période d'essai passée)              │
-   ├────────────────────────────────────────────────────┤
-   │  📄 DOCUMENTS (12)                                │
-   │  ✅ CNI Recto-Verso (expire 2030) - [📥 Téléch.] │
-   │  ✅ Fiche paie Oct 2025 - [📥 Téléch.]           │
-   │  ✅ Fiche paie Nov 2025 - [📥 Téléch.]           │
-   │  ✅ Fiche paie Déc 2025 - [📥 Téléch.]           │
-   │  ✅ Contrat de travail - [📥 Téléch.]            │
-   │  ✅ Justificatif domicile - [📥 Téléch.]         │
-   │  ✅ Avis imposition 2024 - [📥 Téléch.]          │
-   │  ...                                               │
-   ├────────────────────────────────────────────────────┤
-   │  ACTIONS                                           │
-   │  [⭐ Favori] [✅ Présélectionner] [❌ Refuser]    │
-   │  [📧 Contacter] [📥 Télécharger tout (ZIP)]      │
-   └────────────────────────────────────────────────────┘
+   â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+   â”‚  DOSSIER : Jean MARTIN                            â”‚
+   â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+   â”‚  ðŸ“‹ INFORMATIONS PERSONNELLES                     â”‚
+   â”‚  Nom complet : Jean MARTIN                         â”‚
+   â”‚  Date naissance : 15/03/1997 (28 ans)             â”‚
+   â”‚  TÃ©lÃ©phone : 06 12 34 56 78                        â”‚
+   â”‚  Email : jean.martin@email.com                     â”‚
+   â”‚  Adresse actuelle : 12 rue de la Paix, Paris 10e  â”‚
+   â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+   â”‚  ðŸ’¼ SITUATION PROFESSIONNELLE                     â”‚
+   â”‚  Statut : SalariÃ© CDI                              â”‚
+   â”‚  Employeur : ACME Corp (SIRET validÃ© âœ…)          â”‚
+   â”‚  Poste : DÃ©veloppeur Senior                        â”‚
+   â”‚  AnciennetÃ© : 3 ans 2 mois                         â”‚
+   â”‚  Revenus nets : 3542â‚¬/mois (moyenne 3 derniers)   â”‚
+   â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+   â”‚  ðŸ  DEMANDE                                        â”‚
+   â”‚  Type : T2                                         â”‚
+   â”‚  Localisation : Paris 15e                          â”‚
+   â”‚  Budget max : 1200â‚¬/mois                           â”‚
+   â”‚  DisponibilitÃ© : 01/03/2026                        â”‚
+   â”‚  Ref annonce : SeLoger-123456                      â”‚
+   â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+   â”‚  ðŸ“Š ANALYSE ANTI-FRAUDE                           â”‚
+   â”‚  Score global : 92/100 ðŸŸ¢ EXCELLENT               â”‚
+   â”‚                                                     â”‚
+   â”‚  DÃ©tails :                                         â”‚
+   â”‚  â€¢ IdentitÃ© : 95/100 âœ…                           â”‚
+   â”‚  â€¢ Revenus : 90/100 âœ…                            â”‚
+   â”‚  â€¢ StabilitÃ© : 88/100 âœ…                          â”‚
+   â”‚  â€¢ CohÃ©rence : 94/100 âœ…                          â”‚
+   â”‚                                                     â”‚
+   â”‚  âš ï¸ Points de vigilance (2) :                     â”‚
+   â”‚  â€¢ Justificatif domicile date de 2 mois et 28j    â”‚
+   â”‚    (proche limite 3 mois)                          â”‚
+   â”‚  â€¢ Changement employeur il y a 4 mois             â”‚
+   â”‚    (vÃ©rifier pÃ©riode d'essai passÃ©e)              â”‚
+   â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+   â”‚  ðŸ“„ DOCUMENTS (12)                                â”‚
+   â”‚  âœ… CNI Recto-Verso (expire 2030) - [ðŸ“¥ TÃ©lÃ©ch.] â”‚
+   â”‚  âœ… Fiche paie Oct 2025 - [ðŸ“¥ TÃ©lÃ©ch.]           â”‚
+   â”‚  âœ… Fiche paie Nov 2025 - [ðŸ“¥ TÃ©lÃ©ch.]           â”‚
+   â”‚  âœ… Fiche paie DÃ©c 2025 - [ðŸ“¥ TÃ©lÃ©ch.]           â”‚
+   â”‚  âœ… Contrat de travail - [ðŸ“¥ TÃ©lÃ©ch.]            â”‚
+   â”‚  âœ… Justificatif domicile - [ðŸ“¥ TÃ©lÃ©ch.]         â”‚
+   â”‚  âœ… Avis imposition 2024 - [ðŸ“¥ TÃ©lÃ©ch.]          â”‚
+   â”‚  ...                                               â”‚
+   â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+   â”‚  ACTIONS                                           â”‚
+   â”‚  [â­ Favori] [âœ… PrÃ©sÃ©lectionner] [âŒ Refuser]    â”‚
+   â”‚  [ðŸ“§ Contacter] [ðŸ“¥ TÃ©lÃ©charger tout (ZIP)]      â”‚
+   â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
    ```
-4. Log consultation + chaque téléchargement
+4. Log consultation + chaque tÃ©lÃ©chargement
 
-**Règles métier** :
-- Toutes données factuelles affichées
-- Score détaillé par domaine
+**RÃ¨gles mÃ©tier** :
+- Toutes donnÃ©es factuelles affichÃ©es
+- Score dÃ©taillÃ© par domaine
 - Points vigilance explicites (actionables)
-- Téléchargement individuel ou ZIP global
+- TÃ©lÃ©chargement individuel ou ZIP global
 
 ---
 
-**US-AGE-022 : Téléchargement Documents avec Watermark**
+**US-AGE-022 : TÃ©lÃ©chargement Documents avec Watermark**
 
-**Description** : Les documents téléchargés par l'agence sont watermarkés.
+**Description** : Les documents tÃ©lÃ©chargÃ©s par l'agence sont watermarkÃ©s.
 
 **Flux** :
-1. Agence clique "Télécharger" sur un document PDF
+1. Agence clique "TÃ©lÃ©charger" sur un document PDF
 2. Backend :
-   - Récupère fichier original S3
+   - RÃ©cupÃ¨re fichier original S3
    - Applique watermark visible :
      ```
-     ┌─────────────────────────────────────────┐
-     │  Document consulté par :                │
-     │  AGENCE DUPONT IMMOBILIER               │
-     │  Le 10/02/2026 à 14:32                  │
-     │  Référence : WM-ABC123XYZ               │
-     └─────────────────────────────────────────┘
+     â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+     â”‚  Document consultÃ© par :                â”‚
+     â”‚  AGENCE DUPONT IMMOBILIER               â”‚
+     â”‚  Le 10/02/2026 Ã  14:32                  â”‚
+     â”‚  RÃ©fÃ©rence : WM-ABC123XYZ               â”‚
+     â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
      ```
-   - Applique stéganographie invisible :
-     - Métadonnées : `agency_id`, `user_id`, `timestamp`, `doc_id`
+   - Applique stÃ©ganographie invisible :
+     - MÃ©tadonnÃ©es : `agency_id`, `user_id`, `timestamp`, `doc_id`
      - Technique : modification LSB pixels (images) ou espaces (PDF texte)
-   - Retourne fichier watermarké (nom : `original_name_watermarked.pdf`)
-3. Log téléchargement en BDD
+   - Retourne fichier watermarkÃ© (nom : `original_name_watermarked.pdf`)
+3. Log tÃ©lÃ©chargement en BDD
 
 **Librairies** :
 - Watermark visible : `pdfkit` (Node.js) ou `pypdf` (Python)
-- Stéganographie : `stegano` (Python) ou custom LSB
+- StÃ©ganographie : `stegano` (Python) ou custom LSB
 
 **But** :
-- Dissuasion partage non autorisé
-- Traçabilité en cas de fuite
+- Dissuasion partage non autorisÃ©
+- TraÃ§abilitÃ© en cas de fuite
 
 ---
 
 **US-AGE-023 : Upload Dossier par Agence**
 
-**Description** : L'agence peut uploader un dossier reçu par canal traditionnel pour analyse.
+**Description** : L'agence peut uploader un dossier reÃ§u par canal traditionnel pour analyse.
 
 **Flux** :
 1. Depuis `/dossiers/upload`, saisie infos locataire :
-   - Nom, prénom
+   - Nom, prÃ©nom
    - Email (optionnel)
-   - Téléphone (optionnel)
-2. Upload documents (même processus que locataire)
-3. Système :
-   - Crée dossier temporaire (pas de compte locataire associé)
+   - TÃ©lÃ©phone (optionnel)
+2. Upload documents (mÃªme processus que locataire)
+3. SystÃ¨me :
+   - CrÃ©e dossier temporaire (pas de compte locataire associÃ©)
    - Lance analyse IA
-   - Affiche fiche synthèse
-4. Agence peut supprimer dossier après consultation
+   - Affiche fiche synthÃ¨se
+4. Agence peut supprimer dossier aprÃ¨s consultation
 
-**Règles métier** :
-- Dossier temporaire : durée vie 30j max
+**RÃ¨gles mÃ©tier** :
+- Dossier temporaire : durÃ©e vie 30j max
 - Pas de partage (usage interne agence uniquement)
-- RGPD : consentement implicite si agence détient déjà docs
+- RGPD : consentement implicite si agence dÃ©tient dÃ©jÃ  docs
 
 ---
 
@@ -342,187 +343,187 @@ Response:
 **Description** : L'agence peut marquer un dossier avec un statut.
 
 **Statuts possibles** :
-- `new` : non encore traité (défaut)
-- `viewed` : consulté
-- `shortlisted` : présélectionné
-- `rejected` : refusé
-- `selected` : dossier retenu (logement attribué)
+- `new` : non encore traitÃ© (dÃ©faut)
+- `viewed` : consultÃ©
+- `shortlisted` : prÃ©sÃ©lectionnÃ©
+- `rejected` : refusÃ©
+- `selected` : dossier retenu (logement attribuÃ©)
 
 **Champ BDD** : `folder_agency_status` (table pivot `agency_folders`)
 
 **Page `/dossiers`** :
 ```
-┌─────────────────────────────────────────────────────┐
-│  DOSSIERS (23)                                      │
-├─────────────────────────────────────────────────────┤
-│  Filtres : [Tous ▼] [⭐ Favoris] [✅ Présélec.]    │
-├─────────────────────────────────────────────────────┤
-│  👤 Jean MARTIN - 28 ans - 3542€/mois              │
-│     📍 T2 Paris 15e - 1200€                        │
-│     📊 92/100 🟢  |  ⭐ Favori  |  ✅ Présélec.    │
-│     Reçu le 10/02/2026                              │
-├─────────────────────────────────────────────────────┤
-│  👤 Sophie DURAND - 25 ans - 2800€/mois            │
-│     📍 T1 Paris 18e - 950€                         │
-│     📊 78/100 🟡  |  ☆  |  État : Nouveau          │
-│     Reçu le 09/02/2026                              │
-└─────────────────────────────────────────────────────┘
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚  DOSSIERS (23)                                      â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚  Filtres : [Tous â–¼] [â­ Favoris] [âœ… PrÃ©sÃ©lec.]    â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚  ðŸ‘¤ Jean MARTIN - 28 ans - 3542â‚¬/mois              â”‚
+â”‚     ðŸ“ T2 Paris 15e - 1200â‚¬                        â”‚
+â”‚     ðŸ“Š 92/100 ðŸŸ¢  |  â­ Favori  |  âœ… PrÃ©sÃ©lec.    â”‚
+â”‚     ReÃ§u le 10/02/2026                              â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚  ðŸ‘¤ Sophie DURAND - 25 ans - 2800â‚¬/mois            â”‚
+â”‚     ðŸ“ T1 Paris 18e - 950â‚¬                         â”‚
+â”‚     ðŸ“Š 78/100 ðŸŸ¡  |  â˜†  |  Ã‰tat : Nouveau          â”‚
+â”‚     ReÃ§u le 09/02/2026                              â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
 ```
 
 ---
 
 **US-AGE-031 : Contact Locataire**
 
-**Description** : L'agence peut contacter le locataire via email/téléphone.
+**Description** : L'agence peut contacter le locataire via email/tÃ©lÃ©phone.
 
-**Règles** :
-- Email/téléphone affichés uniquement si locataire a partagé (optionnel dans contexte partage)
+**RÃ¨gles** :
+- Email/tÃ©lÃ©phone affichÃ©s uniquement si locataire a partagÃ© (optionnel dans contexte partage)
 - Bouton "Contacter" ouvre modal :
   ```
-  ┌────────────────────────────────────┐
-  │  CONTACTER JEAN MARTIN             │
-  ├────────────────────────────────────┤
-  │  📧 Email : jean.martin@email.com  │
-  │     [Envoyer un email]             │
-  │                                     │
-  │  📞 Tél : 06 12 34 56 78           │
-  │     [Copier]                        │
-  └────────────────────────────────────┘
+  â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+  â”‚  CONTACTER JEAN MARTIN             â”‚
+  â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+  â”‚  ðŸ“§ Email : jean.martin@email.com  â”‚
+  â”‚     [Envoyer un email]             â”‚
+  â”‚                                     â”‚
+  â”‚  ðŸ“ž TÃ©l : 06 12 34 56 78           â”‚
+  â”‚     [Copier]                        â”‚
+  â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
   ```
-- Log action contact en BDD (traçabilité)
+- Log action contact en BDD (traÃ§abilitÃ©)
 
 ---
 
-## 3.3 Module Anti-Fraude IA (Aperçu)
+## 3.3 Module Anti-Fraude IA (AperÃ§u)
 
-**Note** : Détails complets dans Partie 3, Section 6.
+**Note** : DÃ©tails complets dans Partie 3, Section 6.
 
 ### Analyse Multicouche
 
-**Niveau 1 : Exhaustivité**
-- Vérification présence documents obligatoires selon profil
+**Niveau 1 : ExhaustivitÃ©**
+- VÃ©rification prÃ©sence documents obligatoires selon profil
 
-**Niveau 2 : Conformité**
+**Niveau 2 : ConformitÃ©**
 - Respect des champs obligatoires
 - Formats requis (PDF lisible, image nette)
 - OCR : extraction texte
 
-**Niveau 3 : Validité**
-- Vérification données structurées :
-  - Numéro de sécurité sociale (NIR) : format et cohérence date naissance
+**Niveau 3 : ValiditÃ©**
+- VÃ©rification donnÃ©es structurÃ©es :
+  - NumÃ©ro de sÃ©curitÃ© sociale (NIR) : format et cohÃ©rence date naissance
   - SIRET entreprise : existence via API INSEE
-  - Bande MRZ (passeport/CNI) : checksum et cohérence
+  - Bande MRZ (passeport/CNI) : checksum et cohÃ©rence
   - Adresses : validation via API adresse.data.gouv.fr
 
-**Niveau 4 : Authenticité**
-- Vérification existence entreprise (SIRET)
+**Niveau 4 : AuthenticitÃ©**
+- VÃ©rification existence entreprise (SIRET)
 - Validation adresse (API gouvernementale)
 
-**Niveau 5 : Cohérence Intra-Documentaire**
-- Cohérence interne d'un document (dates, montants, identité)
+**Niveau 5 : CohÃ©rence Intra-Documentaire**
+- CohÃ©rence interne d'un document (dates, montants, identitÃ©)
 
-**Niveau 6 : Cohérence Inter-Documentaire**
+**Niveau 6 : CohÃ©rence Inter-Documentaire**
 - Croisement informations entre documents
 
-**Niveau 7 : Intégrité & Falsification**
-- Analyse métadonnées PDF
-- Détection tampons/signatures suspects
-- Détection altérations visuelles
+**Niveau 7 : IntÃ©gritÃ© & Falsification**
+- Analyse mÃ©tadonnÃ©es PDF
+- DÃ©tection tampons/signatures suspects
+- DÃ©tection altÃ©rations visuelles
 
-**Niveau 8 : Adéquation**
-- Vérification critères financiers (revenus x3 loyer)
+**Niveau 8 : AdÃ©quation**
+- VÃ©rification critÃ¨res financiers (revenus x3 loyer)
 - Contexte de la demande
 
 ---
 
 ## 3.4 Module Administration
 
-### 3.4.1 File de Modération
+### 3.4.1 File de ModÃ©ration
 
 **US-ADM-001 : Queue Dossiers Suspects**
 
-**Description** : Les admins valident manuellement les dossiers détectés suspects par l'IA.
+**Description** : Les admins valident manuellement les dossiers dÃ©tectÃ©s suspects par l'IA.
 
 **Page** : `/admin/moderation`
 
 **Affichage** :
 ```
-┌─────────────────────────────────────────────────────┐
-│  FILE DE MODÉRATION (12 en attente)                │
-├─────────────────────────────────────────────────────┤
-│  👤 Marc DUBOIS - Dossier #12345                   │
-│     📊 Score : 45/100 🔴 SUSPECT                   │
-│     ⚠️ Motifs :                                     │
-│     • Incohérence revenus (fiche paie vs impôts)   │
-│     • Métadonnées PDF modifiées récemment          │
-│     • Adresse employeur invalide (API)             │
-│                                                      │
-│     [📄 Voir dossier] [✅ Valider] [❌ Rejeter]    │
-├─────────────────────────────────────────────────────┤
-│  👤 Julie MARTIN - Dossier #12346                  │
-│     📊 Score : 52/100 🟡 À VÉRIFIER                │
-│     ...                                             │
-└─────────────────────────────────────────────────────┘
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚  FILE DE MODÃ‰RATION (12 en attente)                â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚  ðŸ‘¤ Marc DUBOIS - Dossier #12345                   â”‚
+â”‚     ðŸ“Š Score : 45/100 ðŸ”´ SUSPECT                   â”‚
+â”‚     âš ï¸ Motifs :                                     â”‚
+â”‚     â€¢ IncohÃ©rence revenus (fiche paie vs impÃ´ts)   â”‚
+â”‚     â€¢ MÃ©tadonnÃ©es PDF modifiÃ©es rÃ©cemment          â”‚
+â”‚     â€¢ Adresse employeur invalide (API)             â”‚
+â”‚                                                      â”‚
+â”‚     [ðŸ“„ Voir dossier] [âœ… Valider] [âŒ Rejeter]    â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚  ðŸ‘¤ Julie MARTIN - Dossier #12346                  â”‚
+â”‚     ðŸ“Š Score : 52/100 ðŸŸ¡ Ã€ VÃ‰RIFIER                â”‚
+â”‚     ...                                             â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
 ```
 
 **Actions** :
-- **Valider** : dossier passe statut `verified`, score ajusté manuellement (optionnel)
-- **Rejeter** : dossier marqué `rejected`, raison stockée
-- **Demander complément** : email locataire avec détails
-- **Signaler fraude** : tag `fraud_confirmed`, notification agences ayant consulté
+- **Valider / Confirmer l'analyse** : l'admin confirme l'analyse IA, dossier passe statut `verified`, score ajustÃ© manuellement (optionnel)
+- **Rejeter** : dossier marquÃ© `rejected`, raison stockÃ©e
+- **Demander complÃ©ment** : email locataire avec dÃ©tails
+- **Signaler fraude** : tag `fraud_confirmed`, notification agences ayant consultÃ©
 
-**Règles métier** :
-- Dossiers triés par priorité (score le plus bas d'abord)
-- SLA : traitement sous 48h (alerte si dépassé)
+**RÃ¨gles mÃ©tier** :
+- Dossiers triÃ©s par prioritÃ© (score le plus bas d'abord)
+- SLA : traitement sous 48h (alerte si dÃ©passÃ©)
 
 ---
 
 ### 3.4.2 Dashboard Admin
 
-**US-ADM-010 : Métriques Business**
+**US-ADM-010 : MÃ©triques Business**
 
 **Page** : `/admin/dashboard`
 
-**KPIs affichés** :
+**KPIs affichÃ©s** :
 ```
-┌─────────────────────────────────────────────────────┐
-│  DASHBOARD ADMIN                                    │
-├─────────────────────────────────────────────────────┤
-│  📊 MÉTRIQUES BUSINESS (30 derniers jours)         │
-│                                                      │
-│  👥 Locataires                                      │
-│     Inscrits : 5 234 (+12% vs mois précédent)      │
-│     Actifs : 3 847 (73% des inscrits)              │
-│     Dossiers complets : 2 910 (76% des actifs)     │
-│                                                      │
-│  🏢 Agences                                         │
-│     Payantes : 52 (+8 ce mois)                      │
-│     Essais en cours : 14                            │
-│     Taux conversion : 11.2% (14/125 essais)        │
-│     Churn : 3.8% (2/52)                             │
-│                                                      │
-│  💰 REVENUS                                         │
-│     MRR : 20 800€ HT (25 000€ TTC)                 │
-│     ARR : 249 600€ HT                               │
-│     LTV/CAC : 3.2                                   │
-├─────────────────────────────────────────────────────┤
-│  🔍 MÉTRIQUES OPÉRATIONNELLES                      │
-│                                                      │
-│  File modération : 12 en attente (SLA OK ✅)       │
-│  Taux fraude détectée : 4.2%                        │
-│  Taux faux positifs : 1.8%                          │
-│  Délai moyen analyse IA : 12 sec                    │
-├─────────────────────────────────────────────────────┤
-│  📈 MÉTRIQUES EFFICACITÉ                           │
-│                                                      │
-│  Temps moyen constitution dossier : 22 min         │
-│  Taux partage dossiers : 68%                        │
-│  Délai moyen dépôt → logement trouvé : 18 jours    │
-└─────────────────────────────────────────────────────┘
+â”Œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”
+â”‚  DASHBOARD ADMIN                                    â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚  ðŸ“Š MÃ‰TRIQUES BUSINESS (30 derniers jours)         â”‚
+â”‚                                                      â”‚
+â”‚  ðŸ‘¥ Locataires                                      â”‚
+â”‚     Inscrits : 5 234 (+12% vs mois prÃ©cÃ©dent)      â”‚
+â”‚     Actifs : 3 847 (73% des inscrits)              â”‚
+â”‚     Dossiers complets : 2 910 (76% des actifs)     â”‚
+â”‚                                                      â”‚
+â”‚  ðŸ¢ Agences                                         â”‚
+â”‚     Payantes : 52 (+8 ce mois)                      â”‚
+â”‚     Essais en cours : 14                            â”‚
+â”‚     Taux conversion : 11.2% (14/125 essais)        â”‚
+â”‚     Churn : 3.8% (2/52)                             â”‚
+â”‚                                                      â”‚
+â”‚  ðŸ’° REVENUS                                         â”‚
+â”‚     MRR : 40 000â‚¬ HT (48 000â‚¬ TTC)                 â”‚
+â”‚     ARR : 480 000â‚¬ HT                               â”‚
+â”‚     LTV/CAC : 3.2                                   â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚  ðŸ” MÃ‰TRIQUES OPÃ‰RATIONNELLES                      â”‚
+â”‚                                                      â”‚
+â”‚  File modÃ©ration : 12 en attente (SLA OK âœ…)       â”‚
+â”‚  Taux fraude dÃ©tectÃ©e : 4.2%                        â”‚
+â”‚  Taux faux positifs : 1.8%                          â”‚
+â”‚  DÃ©lai moyen analyse IA : 12 sec                    â”‚
+â”œâ”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”¤
+â”‚  ðŸ“ˆ MÃ‰TRIQUES EFFICACITÃ‰                           â”‚
+â”‚                                                      â”‚
+â”‚  Temps moyen constitution dossier : 22 min         â”‚
+â”‚  Taux partage dossiers : 68%                        â”‚
+â”‚  DÃ©lai moyen dÃ©pÃ´t â†’ logement trouvÃ© : 18 jours    â”‚
+â””â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”˜
 ```
 
-**Implémentation** :
-- Requêtes SQL aggregates (COUNT, AVG, GROUP BY date)
+**ImplÃ©mentation** :
+- RequÃªtes SQL aggregates (COUNT, AVG, GROUP BY date)
 - Cache Redis pour performance (refresh toutes les heures)
 - Export CSV (bouton en haut de page)
 
@@ -537,19 +538,19 @@ Response:
 **Filtres** :
 - Recherche par email, nom, SIRET (agences)
 - Type : locataire / agence / admin
-- Statut : actif / trial / suspendu / supprimé
+- Statut : actif / trial / suspendu / supprimÃ©
 
 **Actions** :
-- **Voir détails** : profil complet, activité, logs
-- **Suspendre** : désactive accès (temporaire)
-- **Supprimer** : hard delete (après confirmation, RGPD)
+- **Voir dÃ©tails** : profil complet, activitÃ©, logs
+- **Suspendre** : dÃ©sactive accÃ¨s (temporaire)
+- **Supprimer** : hard delete (aprÃ¨s confirmation, RGPD)
 - **Changer abonnement** : manuel (cas exceptionnels)
 
 ---
 
-## 4. MODÈLE DE DONNÉES
+## 4. MODÃˆLE DE DONNÃ‰ES
 
-### 4.1 Schémas MySQL
+### 4.1 SchÃ©mas MySQL
 
 #### Table : `users`
 
@@ -569,7 +570,7 @@ CREATE TABLE users (
   tenant_profile ENUM('employee_cdi', 'employee_cdd', 'student', 'freelance', 'retired', 'other'),
   
   -- 2FA
-  totp_secret VARCHAR(255), -- chiffré
+  totp_secret VARCHAR(255), -- chiffrÃ©
   is_2fa_enabled BOOLEAN DEFAULT FALSE,
   
   -- Agence (si role = agency_*)
@@ -602,6 +603,7 @@ CREATE TABLE agencies (
   city VARCHAR(100),
   postal_code VARCHAR(10),
   country VARCHAR(2) DEFAULT 'FR',
+  phone VARCHAR(20) NOT NULL, -- contact téléphonique (obligatoire)
   
   -- Carte pro (optionnel)
   professional_card_number VARCHAR(50),
@@ -630,9 +632,9 @@ CREATE TABLE agencies (
 ```sql
 CREATE TABLE folders (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
-  user_id INT UNSIGNED NOT NULL, -- propriétaire (locataire principal)
+  user_id INT UNSIGNED NOT NULL, -- propriÃ©taire (locataire principal)
   
-  -- Métadonnées
+  -- MÃ©tadonnÃ©es
   status ENUM('incomplete', 'complete', 'verifying', 'verified', 'attention') DEFAULT 'incomplete',
   completion_percentage TINYINT UNSIGNED DEFAULT 0,
   
@@ -650,7 +652,7 @@ CREATE TABLE folders (
   ai_warnings JSON, -- [{type, message, severity}]
   
   -- Cycle de vie
-  expires_at DATETIME, -- date suppression auto (6 mois après création ou dernière MAJ)
+  expires_at DATETIME, -- date suppression auto (6 mois aprÃ¨s crÃ©ation ou derniÃ¨re MAJ)
   
   -- Timestamps
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -687,19 +689,19 @@ CREATE TABLE documents (
   file_size INT UNSIGNED, -- bytes
   mime_type VARCHAR(100),
   
-  -- Métadonnées extraction IA
+  -- MÃ©tadonnÃ©es extraction IA
   extracted_text TEXT, -- OCR
   extracted_data JSON, -- {name, date_of_birth, nir, siret, amounts...}
   
-  -- Validité
+  -- ValiditÃ©
   status ENUM('pending_analysis', 'valid', 'invalid', 'expired', 'attention') DEFAULT 'pending_analysis',
-  issued_at DATE, -- date émission doc (si applicable)
+  issued_at DATE, -- date Ã©mission doc (si applicable)
   expires_at DATE, -- date expiration doc (CNI, passeport...)
   
   -- Analyse IA
   ai_score INT, -- 0-100
   ai_warnings JSON,
-  ai_metadata JSON, -- métadonnées PDF (creation_date, producer...)
+  ai_metadata JSON, -- mÃ©tadonnÃ©es PDF (creation_date, producer...)
   
   -- Commentaire locataire
   comment TEXT,
@@ -735,8 +737,8 @@ CREATE TABLE guarantors (
   email VARCHAR(255),
   phone VARCHAR(20),
   
-  -- Dossier garant (même structure que tenant)
-  folder_id INT UNSIGNED, -- peut pointer vers un folder séparé
+  -- Dossier garant (mÃªme structure que tenant)
+  folder_id INT UNSIGNED, -- peut pointer vers un folder sÃ©parÃ©
   
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   
@@ -759,7 +761,7 @@ CREATE TABLE sharing_links (
   -- Contexte demande
   context JSON, -- {property_type, city, budget, availability, listing_ref}
   
-  -- Validité
+  -- ValiditÃ©
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   expires_at DATETIME,
   revoked_at DATETIME,
@@ -784,15 +786,15 @@ CREATE TABLE sharing_views (
   sharing_link_id CHAR(36) NOT NULL,
   
   -- Viewer
-  agency_id INT UNSIGNED, -- si connecté
-  viewer_email VARCHAR(255), -- si non-connecté (lead)
+  agency_id INT UNSIGNED, -- si connectÃ©
+  viewer_email VARCHAR(255), -- si non-connectÃ© (lead)
   
-  -- Métadonnées
+  -- MÃ©tadonnÃ©es
   viewed_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   ip_address VARCHAR(45),
   user_agent TEXT,
   
-  -- Documents téléchargés
+  -- Documents tÃ©lÃ©chargÃ©s
   documents_downloaded JSON, -- [doc_id1, doc_id2...]
   
   FOREIGN KEY (sharing_link_id) REFERENCES sharing_links(id) ON DELETE CASCADE,
@@ -813,7 +815,7 @@ CREATE TABLE agency_folders (
   agency_id INT UNSIGNED NOT NULL,
   folder_id INT UNSIGNED NOT NULL,
   
-  -- Statut côté agence
+  -- Statut cÃ´tÃ© agence
   status ENUM('new', 'viewed', 'shortlisted', 'rejected', 'selected') DEFAULT 'new',
   is_favorite BOOLEAN DEFAULT FALSE,
   
@@ -850,7 +852,7 @@ CREATE TABLE audit_logs (
   entity_type VARCHAR(50), -- 'folder', 'document', 'user'...
   entity_id INT UNSIGNED,
   
-  -- Détails
+  -- DÃ©tails
   details JSON, -- {file_name, sharing_link_id, ...}
   
   -- Quand
@@ -878,7 +880,7 @@ CREATE TABLE notifications (
   -- Contenu
   title VARCHAR(255) NOT NULL,
   message TEXT,
-  action_url VARCHAR(255), -- lien vers page concernée
+  action_url VARCHAR(255), -- lien vers page concernÃ©e
   
   -- Statut
   is_read BOOLEAN DEFAULT FALSE,
@@ -916,15 +918,15 @@ CREATE TABLE refresh_tokens (
 #### Table : `document_types`
 
 ```sql
--- Référentiel types documents avec règles métier
+-- RÃ©fÃ©rentiel types documents avec rÃ¨gles mÃ©tier
 CREATE TABLE document_types (
   id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
   code VARCHAR(50) UNIQUE NOT NULL, -- 'identity_card', 'payslip'...
   label_fr VARCHAR(255) NOT NULL,
   label_en VARCHAR(255) NOT NULL,
   
-  -- Règles validité
-  validity_months INT UNSIGNED, -- NULL = pas d'expiration auto (sauf date légale)
+  -- RÃ¨gles validitÃ©
+  validity_months INT UNSIGNED, -- NULL = pas d'expiration auto (sauf date lÃ©gale)
   is_required BOOLEAN DEFAULT FALSE,
   required_for_profiles JSON, -- ['employee_cdi', 'employee_cdd']
   
@@ -936,16 +938,16 @@ CREATE TABLE document_types (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 ```
 
-**Données initiales** :
+**DonnÃ©es initiales** :
 ```sql
 INSERT INTO document_types (code, label_fr, label_en, validity_months, is_required, required_for_profiles, sort_order) VALUES
-('identity_card', 'Carte Nationale d''Identité', 'National ID Card', NULL, TRUE, '["all"]', 1),
+('identity_card', 'Carte Nationale d''IdentitÃ©', 'National ID Card', NULL, TRUE, '["all"]', 1),
 ('passport', 'Passeport', 'Passport', NULL, FALSE, '["all"]', 2),
 ('proof_of_residence', 'Justificatif de domicile', 'Proof of Residence', 3, TRUE, '["all"]', 3),
 ('payslip', 'Bulletin de salaire', 'Payslip', 3, TRUE, '["employee_cdi","employee_cdd"]', 4),
 ('employment_contract', 'Contrat de travail', 'Employment Contract', NULL, TRUE, '["employee_cdi","employee_cdd"]', 5),
 ('tax_notice', 'Avis d''imposition', 'Tax Notice', 12, TRUE, '["all"]', 6),
-('student_card', 'Carte étudiante', 'Student Card', 12, TRUE, '["student"]', 7),
+('student_card', 'Carte Ã©tudiante', 'Student Card', 12, TRUE, '["student"]', 7),
 ('kbis', 'Extrait KBIS', 'KBIS Extract', 3, TRUE, '["freelance"]', 8);
 ```
 
@@ -953,32 +955,32 @@ INSERT INTO document_types (code, label_fr, label_en, validity_months, is_requir
 
 ### 4.2 Relations & Contraintes
 
-**Diagramme ER simplifié** :
+**Diagramme ER simplifiÃ©** :
 
 ```
-users (1) ──┬─── (*) folders
-            │
-            └─── (*) guarantors
+users (1) â”€â”€â”¬â”€â”€â”€ (*) folders
+            â”‚
+            â””â”€â”€â”€ (*) guarantors
                  
-folders (1) ──┬─── (*) documents
-              │
-              └─── (*) sharing_links
+folders (1) â”€â”€â”¬â”€â”€â”€ (*) documents
+              â”‚
+              â””â”€â”€â”€ (*) sharing_links
               
-sharing_links (1) ─── (*) sharing_views
+sharing_links (1) â”€â”€â”€ (*) sharing_views
 
-agencies (1) ──┬─── (*) users (role = agency_*)
-               │
-               └─── (*) agency_folders (*) ─── folders
+agencies (1) â”€â”€â”¬â”€â”€â”€ (*) users (role = agency_*)
+               â”‚
+               â””â”€â”€â”€ (*) agency_folders (*) â”€â”€â”€ folders
                
-audit_logs ─── (*) users, agencies, folders, documents
-notifications ─── (*) users
+audit_logs â”€â”€â”€ (*) users, agencies, folders, documents
+notifications â”€â”€â”€ (*) users
 ```
 
-**Contraintes clés** :
-- `folders.user_id` → cascade delete (supprimer user supprime ses folders)
-- `documents.folder_id` → cascade delete
-- `sharing_links.folder_id` → cascade delete
-- `agency_folders` → cascade delete si agency ou folder supprimé
+**Contraintes clÃ©s** :
+- `folders.user_id` â†’ cascade delete (supprimer user supprime ses folders)
+- `documents.folder_id` â†’ cascade delete
+- `sharing_links.folder_id` â†’ cascade delete
+- `agency_folders` â†’ cascade delete si agency ou folder supprimÃ©
 - Soft delete sur `users`, `folders`, `documents` (RGPD : audit trail)
 
 ---
@@ -988,5 +990,5 @@ notifications ─── (*) users
 ---
 
 **SUITE DANS PARTIE 3** :
-- 5. API REST - Endpoints (détaillés)
-- 6. Module Anti-Fraude IA (spécifications complètes)
+- 5. API REST - Endpoints (dÃ©taillÃ©s)
+- 6. Module Anti-Fraude IA (spÃ©cifications complÃ¨tes)
