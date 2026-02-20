@@ -1,4 +1,5 @@
 import express, { Express } from 'express';
+import { successResponse } from './utils/response';
 
 const app: Express = express();
 
@@ -8,7 +9,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Routes will be added here
 app.get('/', (req, res) => {
-  res.json({ message: 'Pouraccord API' });
+  return successResponse(res, null, 'Pouraccord API');
 });
 
 export default app;
