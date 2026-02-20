@@ -1,0 +1,56 @@
+'use strict';
+
+/** @type {import('sequelize-cli').Migration} */
+module.exports = {
+  async up(queryInterface, Sequelize) {
+    await queryInterface.createTable('refresh_tokens', {
+      id: {
+        type: Sequelize.DataTypes.INTEGER.UNSIGNED,
+        autoIncrement: true,
+        primaryKey: true,
+      },
+      user_id: {
+        type: Sequelize.DataTypes.INTEGER.UNSIGNED,
+        allowNull: false,
+        references: {
+          model: 'users',
+          key: 'id',
+        },
+        onUpdate: 'CASCADE',
+        onDelete: 'CASCADE',
+      },
+      token: {
+        type: Sequelize.DataTypes.STRING(512),
+        allowNull: false,
+      },
+      expires_at: {
+        type: Sequelize.DataTypes.DATE,
+        allowNull: false,
+      },
+      revoked_at: {
+        type: Sequelize.DataTypes.DATE,
+        allowNull: true,
+      },
+      created_at: {
+        type: Sequelize.DataTypes.DATE,
+        allowNull: false,
+      },
+      updated_at: {
+        type: Sequelize.DataTypes.DATE,
+        allowNull: false,
+      },
+    }, {
+      charset: 'utf8mb4',
+      collate: 'utf8mb4_unicode_ci',
+      engine: 'InnoDB',
+    });
+
+    await queryInterface.addIndex('refresh_tokens', ['user_id']);
+    await queryInterface.addIndex('refresh_tokens', ['token']);
+    await queryInterface.addIndex('refresh_tokens', ['expires_at']);
+  },
+
+  async down(queryInterface) {
+    await queryInterface.dropTable('refresh_tokens');
+  },
+};
