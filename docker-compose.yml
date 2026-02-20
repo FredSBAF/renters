@@ -8,7 +8,7 @@ services:
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: renters
+      MYSQL_DATABASE: pouraccord_dev
       MYSQL_USER: pouraccord
       MYSQL_PASSWORD: change_me
     ports:
@@ -33,7 +33,7 @@ services:
     environment:
       DB_HOST: mysql
       DB_PORT: 3306
-      DB_NAME: renters
+      DB_NAME: pouraccord_dev
       DB_USER: root
       DB_PASSWORD: root
     ports:
