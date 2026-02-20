@@ -64,3 +64,21 @@ npm run lint
 # Build frontend
 npm run build
 ```
+
+## Docker (SETUP-06)
+
+Lancer toute la stack (MySQL + backend + frontend) pour tester en local :
+
+```bash
+# 1. Créer le fichier d’env Docker (une fois)
+cp backend/.env.docker.example backend/.env.docker
+
+# 2. Démarrer les conteneurs
+docker compose up --build
+```
+
+- **MySQL** : port 3306, base `pouraccord_dev`, user `root` / `root` (ou `pouraccord` / `pouraccord`)
+- **Backend** : http://localhost:3001
+- **Frontend** : http://localhost:3000 (Vite dev, rechargement à chaud)
+
+Arrêter : `docker compose down`. Données MySQL conservées dans le volume `pouraccord-mysql-data`.

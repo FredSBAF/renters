@@ -1,0 +1,67 @@
+# POURACCORD — Stack Docker pour dev / test
+# Usage : cp backend/.env.docker.example backend/.env.docker && docker compose up --build
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: pouraccord-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: renters
+      MYSQL_USER: pouraccord
+      MYSQL_PASSWORD: change_me
+    ports:
+      - "3306:3306"
+    volumes:
+      - pouraccord-mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: pouraccord-backend
+    restart: unless-stopped
+    env_file:
+      - backend/.env.docker
+    environment:
+      DB_HOST: mysql
+      DB_PORT: 3306
+      DB_NAME: renters
+      DB_USER: root
+      DB_PASSWORD: root
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./backend/src:/app/src
+    depends_on:
+      mysql:
+        condition: service_healthy
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: pouraccord-frontend
+    restart: unless-stopped
+    environment:
+      VITE_API_URL: http://localhost:3001
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend/src:/app/src
+      - ./frontend/index.html:/app/index.html
+      - ./frontend/vite.config.ts:/app/vite.config.ts
+      - ./frontend/tsconfig.json:/app/tsconfig.json
+      - ./frontend/tsconfig.node.json:/app/tsconfig.node.json
+    depends_on:
+      - backend
+
+volumes:
+  pouraccord-mysql-data:
