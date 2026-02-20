@@ -1,21 +1,21 @@
 # Backend POURACCORD — Node 20 LTS
+# Build depuis la racine du monorepo pour utiliser package-lock.json (builds reproductibles)
 FROM node:20-alpine
 
 WORKDIR /app
 
-# Fichiers de dépendances (monorepo : pas de package-lock ici, on utilise npm install)
-COPY package.json ./
+# Manifeste et lock file racine (monorepo)
+COPY package.json package-lock.json ./
+# Workspace backend
+COPY backend/package.json ./backend/
+COPY backend/tsconfig.json ./backend/
+COPY backend/src ./backend/src
 
-# Install (production + dev pour ts-node-dev en mode dev)
-RUN npm install
-
-# Code source
-COPY tsconfig.json ./
-COPY src ./src
+# Install reproductible à partir du lock file
+RUN npm ci
 
 # Port exposé
 EXPOSE 3001
 
-# En dev : hot reload (le volume monte src/ à la place)
-# En prod : build puis node dist/server.js
-CMD ["npm", "run", "dev"]
+# En dev : hot reload (le volume monte backend/src/ à la place)
+CMD ["npm", "run", "dev", "--workspace=@pouraccord/backend"]
