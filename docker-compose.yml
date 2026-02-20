@@ -24,8 +24,8 @@ services:
 
   backend:
     build:
-      context: ./backend
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: backend/Dockerfile
     container_name: pouraccord-backend
     restart: unless-stopped
     env_file:
@@ -39,7 +39,7 @@ services:
     ports:
       - "3001:3001"
     volumes:
-      - ./backend/src:/app/src
+      - ./backend/src:/app/backend/src
     depends_on:
       mysql:
         condition: service_healthy
