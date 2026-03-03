@@ -1,6 +1,8 @@
 import express, { Express } from 'express';
 import { successResponse } from './utils/response';
 import { logger } from './utils/logger';
+import routes from './routes';
+import './models'; // load associations
 
 const app: Express = express();
 
@@ -8,14 +10,12 @@ const app: Express = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Routes will be added here
 app.get('/', (req, res) => {
   return successResponse(res, null, 'Pouraccord API');
 });
 
 /**
  * GET /health — Health check for load balancers and monitoring.
- * Returns status, timestamp and process uptime. Logged via Winston.
  */
 app.get('/health', (req, res) => {
   logger.debug('GET /health');
@@ -26,5 +26,7 @@ app.get('/health', (req, res) => {
   };
   return successResponse(res, data, 'Health check');
 });
+
+app.use('/', routes);
 
 export default app;

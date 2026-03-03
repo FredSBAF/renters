@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+
+<html lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#137fec",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#101922",
+                    },
+                    fontFamily: {
+                        "display": ["Manrope"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body { font-family: 'Manrope', sans-serif; }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display min-h-screen">
+<div class="flex min-h-screen">
+<!-- Left Side: Visual/Hero Section -->
+<div class="hidden lg:flex lg:w-1/2 relative overflow-hidden bg-primary/10">
+<img alt="Bureau immobilier moderne" class="absolute inset-0 w-full h-full object-cover mix-blend-overlay opacity-60" data-alt="Modern high-end glass real estate office interior" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAnL67oo_GEtFG-DyQlx8YLxOqnQw_mQGv_VxMOCDvjbFcc8B22hBtmiGPLljLkJGVuO8uPGJdWOW7e_rLpzApJkM7dhUty8Vf6f_t8ZJ-fFKkrO6D4jb75rCz0VvOj4J26DbyOUIhjDDeTQEnsrfU8Odm7b34CtBx8CXA-1M8mhZFFnaxIkxYR8kwGmj8u-yYh16aVZW8KC4Xwy4br_2jSGAasm4yPQXpMw5pMNZ3gciqWb9Nx6_XmKpL8FV3Iftt7KMz37UF7uko"/>
+<div class="relative z-10 flex flex-col justify-between p-16 w-full text-white">
+<div class="flex items-center gap-2">
+<div class="bg-white p-2 rounded-lg">
+<span class="material-icons text-primary text-3xl">handshake</span>
+</div>
+<span class="text-2xl font-bold tracking-tight text-white drop-shadow-md">PourAccord</span>
+</div>
+<div class="max-w-md">
+<h1 class="text-5xl font-extrabold leading-tight mb-6 drop-shadow-md">
+                        Digitalisez vos <br/>
+<span class="text-primary-light">accords B2B</span>
+</h1>
+<p class="text-xl text-white/90 leading-relaxed">
+                        L'espace dédié aux professionnels de l'immobilier pour accélérer la signature et la gestion de vos mandats.
+                    </p>
+</div>
+<div class="flex items-center gap-8">
+<div class="flex items-center gap-2">
+<span class="material-icons text-primary/80">verified_user</span>
+<span class="text-sm font-medium">Standard Certifié</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-icons text-primary/80">insights</span>
+<span class="text-sm font-medium">Performance Agence</span>
+</div>
+</div>
+</div>
+<!-- Gradient Overlay for readability -->
+<div class="absolute inset-0 bg-gradient-to-tr from-background-dark/80 via-background-dark/40 to-transparent"></div>
+</div>
+<!-- Right Side: Login Form Section -->
+<div class="w-full lg:w-1/2 flex flex-col justify-center items-center p-8 lg:p-24 bg-white dark:bg-background-dark">
+<div class="w-full max-w-md space-y-8">
+<!-- Header & Badge -->
+<div class="text-center lg:text-left">
+<div class="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold uppercase tracking-wider mb-6">
+<span class="w-2 h-2 rounded-full bg-primary animate-pulse mr-2"></span>
+                        Connexion Espace Agence
+                    </div>
+<h2 class="text-3xl font-bold text-slate-900 dark:text-white">Bienvenue</h2>
+<p class="mt-2 text-slate-500 dark:text-slate-400">Accédez à vos outils de gestion immobilière</p>
+</div>
+<!-- Form -->
+<form action="#" class="space-y-6">
+<div>
+<label class="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2" for="email">
+                            Email professionnel
+                        </label>
+<div class="relative">
+<span class="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">business_center</span>
+<input class="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all text-slate-900 dark:text-white" id="email" name="email" placeholder="agence@contact.fr" required="" type="email"/>
+</div>
+</div>
+<div>
+<div class="flex justify-between items-center mb-2">
+<label class="block text-sm font-semibold text-slate-700 dark:text-slate-300" for="password">
+                                Mot de passe
+                            </label>
+<a class="text-xs font-semibold text-primary hover:underline transition-all" href="#">Mot de passe oublié ?</a>
+</div>
+<div class="relative">
+<span class="material-icons absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xl">lock_outline</span>
+<input class="w-full pl-10 pr-4 py-3 bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all text-slate-900 dark:text-white" id="password" name="password" placeholder="••••••••" required="" type="password"/>
+</div>
+</div>
+<div class="flex items-center">
+<input class="h-4 w-4 text-primary focus:ring-primary border-slate-300 rounded" id="remember-me" name="remember-me" type="checkbox"/>
+<label class="ml-2 block text-sm text-slate-600 dark:text-slate-400" for="remember-me">
+                            Rester connecté
+                        </label>
+</div>
+<button class="w-full bg-primary hover:bg-primary/90 text-white font-bold py-4 rounded-lg shadow-lg shadow-primary/30 transition-all transform hover:-translate-y-0.5 active:translate-y-0" type="submit">
+                        Connexion Agence
+                    </button>
+</form>
+<!-- Partnerships -->
+<div class="text-center">
+<p class="text-sm text-slate-500 dark:text-slate-400">
+                        Pas encore partenaire ? 
+                        <a class="text-primary font-bold hover:underline" href="#">Devenir agence partenaire</a>
+</p>
+</div>
+<!-- Trust Badges -->
+<div class="pt-8 mt-8 border-t border-slate-100 dark:border-slate-800 flex flex-wrap justify-center gap-6 opacity-70 grayscale hover:grayscale-0 transition-all">
+<div class="flex items-center gap-2">
+<span class="material-icons text-slate-400 text-lg">verified</span>
+<span class="text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">Conformité RGPD garantie</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="material-icons text-slate-400 text-lg">credit_card</span>
+<span class="text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">Sécurisé par Stripe</span>
+</div>
+</div>
+</div>
+<!-- Footer Small Link for Mobile visibility -->
+<div class="mt-auto pt-10 text-center lg:hidden">
+<span class="text-slate-400 text-xs">© 2024 PourAccord. Espace Professionnel sécurisé.</span>
+</div>
+</div>
+</div>
+</body></html>
