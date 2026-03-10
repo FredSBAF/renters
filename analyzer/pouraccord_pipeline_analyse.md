@@ -880,3 +880,7 @@ ANALYSIS_MAX_RETRIES=3
 - CDC Partie 3, Section 6 — Module Anti-Fraude IA (spécifications fonctionnelles)
 - CDC Partie 1, Section 2 — Architecture Générale
 - CDC Partie 4, Section 11 — Déploiement et Infrastructure
+
+
+To test the discovery type 
+streamlit run analyzer/dashboard.py
