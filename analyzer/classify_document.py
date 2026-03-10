@@ -8,7 +8,7 @@ import tempfile
 import requests
 import pytesseract
 from pdf2image import convert_from_path, convert_from_bytes
-from PIL import Image
+from PIL import Image, ImageEnhance, ImageOps
 from urllib.parse import urlparse
 
 # Configure logging
@@ -56,14 +56,52 @@ DOCUMENT_KEYWORDS = {
     ]
 }
 
+def preprocess_image(image):
+    """
+    Apply image preprocessing to improve OCR accuracy.
+    """
+    try:
+        # Convert to Grayscale
+        processed_img = image.convert('L')
+        
+        # Increase Contrast
+        enhancer = ImageEnhance.Contrast(processed_img)
+        processed_img = enhancer.enhance(2.0) # Increase contrast significantly for faint text
+
+        # Sharpness
+        enhancer = ImageEnhance.Sharpness(processed_img)
+        processed_img = enhancer.enhance(1.5)
+
+        # Binarization (Thresholding) - Optional but often helps with clean printed text
+        # processed_img = processed_img.point(lambda x: 0 if x < 140 else 255, '1')
+
+        # Scale up if image is small (often the case with embedded ID cards)
+        width, height = processed_img.size
+        TARGET_WIDTH = 2500
+        if width < TARGET_WIDTH:
+            ratio = TARGET_WIDTH / width
+            new_size = (int(width * ratio), int(height * ratio))
+            processed_img = processed_img.resize(new_size, Image.Resampling.LANCZOS)
+
+        return processed_img
+    except Exception as e:
+        logger.warning(f"Image preprocessing failed: {e}")
+        return image
+
 def extract_text_from_image(image):
     """
     Extract text from a PIL Image using Tesseract.
     """
     try:
+        # Preprocess image for better OCR
+        processed_image = preprocess_image(image)
+
         # Use French language if available, fallback to English
-        # You might need to install tesseract-lang-fra package
-        text = pytesseract.image_to_string(image, lang='fra+eng')
+        # psm 3: Fully automatic page segmentation, but no OSD. (Default)
+        # psm 6: Assume a single uniform block of text. (Good for simple docs)
+        # Let's stick to default for now or try both if one fails?
+        # For mixed documents, default is usually safer.
+        text = pytesseract.image_to_string(processed_image, lang='fra+eng')
         return text
     except Exception as e:
         logger.error(f"OCR Error: {e}")
@@ -92,8 +130,8 @@ def load_document(file_path_or_url):
         
         if lower_filename.endswith('.pdf'):
             # Convert first page of PDF to image
-            # 200 DPI is usually enough for classification
-            images = convert_from_bytes(content, first_page=1, last_page=1, dpi=200)
+            # 300 DPI for better OCR on small text (ID cards)
+            images = convert_from_bytes(content, first_page=1, last_page=1, dpi=300)
             if images:
                 return images[0]
             else:
