@@ -753,6 +753,19 @@
 
 ## 6. MODULE ANTI-FRAUDE IA
 
+### 6.0 Document de Référence Technique
+
+> L'implémentation détaillée du pipeline est documentée dans un document dédié :
+> **`pouraccord_pipeline_analyse.md`** (ou `.docx`)
+> 
+> Ce document couvre :
+> - Le contrat d'interface standard entre chaque script
+> - Les 7 scripts atomiques (inputs, outputs, seuils, fallbacks)
+> - L'orchestration N8N (workflow, intégration Node.js, callback)
+> - La gestion des erreurs à 3 niveaux + watchdog
+> - Les variables d'environnement dédiées
+> - Le plan de déploiement en 3 phases (pipeline.py → N8N → Celery)
+
 ### 6.1 Architecture du Microservice
 
 **Stack** :

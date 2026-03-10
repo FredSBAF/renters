@@ -1,0 +1,226 @@
+{
+  "success": true,
+  "count": 22,
+  "results": [
+    {
+      "file": "training/documents locataires/Clémence_Neuquelman/Justificatif_Domicile/Locataire/QUIT_20260205_11222.pdf",
+      "document_id": "training/documents locataires/Clémence_Neuquelman/Justificatif_Domicile/Locataire/QUIT_20260205_11222.pdf",
+      "success": true,
+      "declared_type": null,
+      "detected_type": "rent_receipt",
+      "confidence": 0.5,
+      "status": "MATCH",
+      "extracted_text_snippet": "Quittance  tous les services de la  4  Facture n°L622602-0075 du 06/02/2026 (€) Association d'Entraide Universitaire Mme NEUQUELMAN Clemence 47 boulevard Vauban 105 Résidence WeLiv Piktura 59000 Lille..."
+    },
+    {
+      "file": "training/documents locataires/Clémence_Neuquelman/Justificatif_Domicile/Locataire/QUIT_20260205_11222-2.pdf",
+      "document_id": "training/documents locataires/Clémence_Neuquelman/Justificatif_Domicile/Locataire/QUIT_20260205_11222-2.pdf",
+      "success": true,
+      "declared_type": null,
+      "detected_type": "rent_receipt",
+      "confidence": 0.5,
+      "status": "MATCH",
+      "extracted_text_snippet": "Quittance  tous les services de la  4  Facture n°L622601-0075 du 05/01/2026 (€) Association d'Entraide Universitaire Mme NEUQUELMAN Clemence 47 boulevard Vauban 105 Résidence WeLiv Piktura 59000 Lille..."
+    },
+    {
+      "file": "training/documents locataires/Clémence_Neuquelman/Justificatif_Domicile/Locataire/QUIT_20260205_11222-3.pdf",
+      "document_id": "training/documents locataires/Clémence_Neuquelman/Justificatif_Domicile/Locataire/QUIT_20260205_11222-3.pdf",
+      "success": true,
+      "declared_type": null,
+      "detected_type": "rent_receipt",
+      "confidence": 0.5,
+      "status": "MATCH",
+      "extracted_text_snippet": "Quittance  tous les services de la  4  Facture n°L622512-0074 du 05/12/2025 (€) Association d'Entraide Universitaire Mme NEUQUELMAN Clemence 47 boulevard Vauban 105 Résidence WeLiv Piktura 59000 Lille..."
+    },
+    {
+      "file": "training/documents locataires/Clémence_Neuquelman/Justificatif_Domicile/Garant/justificatif domicile Michel NEUQUELMAN.pdf",
+      "document_id": "training/documents locataires/Clémence_Neuquelman/Justificatif_Domicile/Garant/justificatif domicile Michel NEUQUELMAN.pdf",
+      "success": true,
+      "declared_type": null,
+      "detected_type": "proof_of_address",
+      "confidence": 0.83,
+      "status": "MATCH",
+      "extracted_text_snippet": "EDF-SA au capital de 2 084 365 041 euros - Siége social 22-30 avenue de Wagram 75008 Paris - R.C.S. Paris 552 081 317 - N° TVA FR 03 552 081 317  NOUS CONTACTER  N° client : 5 007 328 898  Q Par Inter..."
+    },
+    {
+      "file": "training/documents locataires/Clémence_Neuquelman/Situation_Pro/Locataire/Document_de_Synthese_J00213351299_v1_2.pdf",
+      "document_id": "training/documents locataires/Clémence_Neuquelman/Situation_Pro/Locataire/Document_de_Synthese_J00213351299_v1_2.pdf",
+      "success": true,
+      "declared_type": null,
+      "detected_type": "company_registry",
+      "confidence": 0.36,
+      "status": "MATCH",
+      "extracted_text_snippet": "Synthése de dépét au Guichet Unique  | | REPUBLIQUE FRANGAISE  Liberté Egalité Fraternité  GUICHET UNIQUE DES ENTREPRISES Synthése de dépét — Formalité de création Ce document récapitule les informati..."
+    },
+    {
+      "file": "training/documents locataires/Clémence_Neuquelman/Situation_Pro/Garant/avis imposition michel neuquelman.jpg",
+      "document_id": "training/documents locataires/Clémence_Neuquelman/Situation_Pro/Garant/avis imposition michel neuquelman.jpg",
+      "success": true,
+      "declared_type": null,
+      "detected_type": "tax_notice",
+      "confidence": 0.57,
+      "status": "MATCH",
+      "extracted_text_snippet": "Eu : DIRECTION GENERALE -REPUBLI QUE “a DES FINANCES PUBLIQUES ot FRANCAISE Li sur les revenus de 2024  Exgalité Fraternité  CENTRE DES FINANCES PUBLIQUES SIP SAINT OMER  1 ALL HONORE DE BALZAC BP3000..."
+    },
+    {
+      "file": "training/documents locataires/Clémence_Neuquelman/Justificatif_ressources/Locataire/Attestation rattachement foyer fiscal.pdf",
+      "document_id": "training/documents locataires/Clémence_Neuquelman/Justificatif_ressources/Locataire/Attestation rattachement foyer fiscal.pdf",
+      "success": true,
+      "declared_type": null,
+      "detected_type": "tax_notice",
+      "confidence": 0.29,
+      "status": "MATCH",
+      "extracted_text_snippet": "ATTESTATION DE RATTACHEMENT AU FOYER FISCAL  Je/nous soussigné(s) : Michel NEUQUELMAN  Demeurant: 135 Rue des Hauts d’Helfaut 62570 HELFAUT  Certifie que ma fille:  Nom : NEUQUELMAN Prénom Clémence  E..."
+    },
+    {
+      "file": "training/documents locataires/Clémence_Neuquelman/Justificatif_ressources/Garant/IMG_4912.pdf",
+      "document_id": "training/documents locataires/Clémence_Neuquelman/Justificatif_ressources/Garant/IMG_4912.pdf",
+      "success": true,
+      "declared_type": null,
+      "detected_type": "payslip",
+      "confidence": 0.22,
+      "status": "MATCH",
+      "extracted_text_snippet": "~~ , stig BULLETIN DE PAYE | A 89610 | - D __———— aa 7 ols DE /NOVEMBRE 2025 | 2025 | 151,67 # |  am UWE Pramcane PUY DE DOME  nu Te | 000841001386 ! 17 5153 362 062 DDFIP DU PAS DE CALAIS 13 | 062 09..."
+    },
+    {
+      "file": "training/documents locataires/Clémence_Neuquelman/C_Identité/Locataire/Carte d'identité Clémence.pdf",
+      "document_id": "training/documents locataires/Clémence_Neuquelman/C_Identité/Locataire/Carte d'identité Clémence.pdf",
+      "success": true,
+      "declared_type": null,
+      "detected_type": "unknown",
+      "confidence": 0.0,
+      "status": "UNKNOWN",
+      "extracted_text_snippet": "..."
+    },
+    {
+      "file": "training/documents locataires/Clémence_Neuquelman/C_Identité/Garant/IMG_4907.JPG",
+      "document_id": "training/documents locataires/Clémence_Neuquelman/C_Identité/Garant/IMG_4907.JPG",
+      "success": true,
+      "declared_type": null,
+      "detected_type": "id_card",
+      "confidence": 1.0,
+      "status": "MATCH",
+      "extracted_text_snippet": "B86204LW2 ‘  a i‘ a. , 582006  wie Bi  Vipwle  ID FRABBOROSLW20<<ccceceeeeece[y  6BOTIISMS 205242 FRA<K <<< <<< KK <8 NEUVQUELMAN<<MI CHEL<ROGER<<<<<<  ..."
+    },
+    {
+      "file": "training/documents locataires/William_Menard/Justificatif_Domicile/Locataire/QUIT_20260205_9962 (2).pdf",
+      "document_id": "training/documents locataires/William_Menard/Justificatif_Domicile/Locataire/QUIT_20260205_9962 (2).pdf",
+      "success": true,
+      "declared_type": null,
+      "detected_type": "rent_receipt",
+      "confidence": 0.5,
+      "status": "MATCH",
+      "extracted_text_snippet": "Quittance  tous les services de la  4  Facture n°L622512-0071 du 05/12/2025 (€)  Association d'Entraide Universitaire MMENARD William  47 boulevard Vauban 212  Résidence WeLiv Piktura 59000 Lille Rési..."
+    },
+    {
+      "file": "training/documents locataires/William_Menard/Justificatif_Domicile/Locataire/QUIT_20260205_9962.pdf",
+      "document_id": "training/documents locataires/William_Menard/Justificatif_Domicile/Locataire/QUIT_20260205_9962.pdf",
+      "success": true,
+      "declared_type": null,
+      "detected_type": "rent_receipt",
+      "confidence": 0.5,
+      "status": "MATCH",
+      "extracted_text_snippet": "Quittance  tous les services de la  4  Facture n°L622602-0072 du 06/02/2026 (€)  Association d'Entraide Universitaire MMENARD William  47 boulevard Vauban 212  Résidence WeLiv Piktura 59000 Lille Rési..."
+    },
+    {
+      "file": "training/documents locataires/William_Menard/Justificatif_Domicile/Locataire/QUIT_20260205_9962 (1).pdf",
+      "document_id": "training/documents locataires/William_Menard/Justificatif_Domicile/Locataire/QUIT_20260205_9962 (1).pdf",
+      "success": true,
+      "declared_type": null,
+      "detected_type": "rent_receipt",
+      "confidence": 0.5,
+      "status": "MATCH",
+      "extracted_text_snippet": "Quittance  tous les services de la  4  Facture n°L622601-0072 du 05/01/2026 (€)  Association d'Entraide Universitaire MMENARD William  47 boulevard Vauban 212  Résidence WeLiv Piktura 59000 Lille Rési..."
+    },
+    {
+      "file": "training/documents locataires/William_Menard/Justificatif_Domicile/Garant/attestation_domicile (1).pdf",
+      "document_id": "training/documents locataires/William_Menard/Justificatif_Domicile/Garant/attestation_domicile (1).pdf",
+      "success": true,
+      "declared_type": null,
+      "detected_type": "proof_of_address",
+      "confidence": 0.67,
+      "status": "MATCH",
+      "extracted_text_snippet": "> CNGiIC  Numéro de contrat : 000511622614 Lieu de consommation :  28 RUE DES BENEDICTINES 57950 MONTIGNY LES METZ  MR et MME STEINMETZ THOMAS Emmanuel Marlene 28 ALLEE DES BENEDICTINES 57950 MONTIGNY..."
+    },
+    {
+      "file": "training/documents locataires/William_Menard/Situation_Pro/Locataire/Document_de_Synthese_J00211108998_valide.pdf",
+      "document_id": "training/documents locataires/William_Menard/Situation_Pro/Locataire/Document_de_Synthese_J00211108998_valide.pdf",
+      "success": true,
+      "declared_type": null,
+      "detected_type": "company_registry",
+      "confidence": 0.55,
+      "status": "MATCH",
+      "extracted_text_snippet": "Synthése définitive au Guichet Unique  | | REPUBLIQUE FRANGAISE  Liberté Egalité Fraternité  GUICHET UNIQUE DES ENTREPRISES  Formalité 00211108998  - - | | INSTITUT NATIONAL  DE LA PROPRIETE INDUSTRIE..."
+    },
+    {
+      "file": "training/documents locataires/William_Menard/Situation_Pro/Garant/Avis_d_impot_2025_sur_les_revenus_2024.pdf",
+      "document_id": "training/documents locataires/William_Menard/Situation_Pro/Garant/Avis_d_impot_2025_sur_les_revenus_2024.pdf",
+      "success": true,
+      "declared_type": null,
+      "detected_type": "tax_notice",
+      "confidence": 0.86,
+      "status": "MATCH",
+      "extracted_text_snippet": "| REPUBLIQUE FRANCAISE Liberté inh Egalité es Fraternité  i  Vos références  Numéro fiscal : Déclarant 1 (C) : 11 69 761 801 019 Déclarant 2 (C) : 17 36 940 295 195 Référence de l’avis : 25 57 0032135..."
+    },
+    {
+      "file": "training/documents locataires/William_Menard/Justificatif_ressources/Locataire/attestation sur honneur  pour William MENARD.pdf",
+      "document_id": "training/documents locataires/William_Menard/Justificatif_ressources/Locataire/attestation sur honneur  pour William MENARD.pdf",
+      "success": true,
+      "declared_type": null,
+      "detected_type": "proof_of_address",
+      "confidence": 0.17,
+      "status": "MATCH",
+      "extracted_text_snippet": "ATTESTATION SUR L’HONNEUR  Je soussignée, |  Madame Marléne THOMAS,  Professeure des écoles,  Demeurant au 28 allée des Bénédictines — 57950 Montigny-lés-Metz, Email : menethomas@gmail.com  Téléphone ..."
+    },
+    {
+      "file": "training/documents locataires/William_Menard/Justificatif_ressources/Garant/2026_01_BP_janvier.pdf",
+      "document_id": "training/documents locataires/William_Menard/Justificatif_ressources/Garant/2026_01_BP_janvier.pdf",
+      "success": true,
+      "declared_type": null,
+      "detected_type": "payslip",
+      "confidence": 0.22,
+      "status": "MATCH",
+      "extracted_text_snippet": "a DDFIP BULLETIN DE PAYE N° ORDRE |  j A 53632 as eo Fi ie DE BA MOSELDE MOIS DE JANVIER 2026  ele = See = eee TEMPS DE TRAVAIL 151 A 67 H  REPUBLIQUE FRANCAISE - TOUT RENSEIGNEMENT RELATIF AU CONTENU..."
+    },
+    {
+      "file": "training/documents locataires/William_Menard/Justificatif_ressources/Garant/2025_12_BP_decembre.pdf",
+      "document_id": "training/documents locataires/William_Menard/Justificatif_ressources/Garant/2025_12_BP_decembre.pdf",
+      "success": true,
+      "declared_type": null,
+      "detected_type": "payslip",
+      "confidence": 0.22,
+      "status": "MATCH",
+      "extracted_text_snippet": "DDFIP BULLETIN DE PAYE N° ORDRE | —- a A 55008 Eines ac ected 8 Siaiuitia Mewes) DECEMBRE 2025 bari Rea = at TEMPS DE TRAVAIL 151,67 H  REPUBLIQUE FRANCAISE - TOUT RENSEIGNEMENT RELATIF AU CONTENU DE ..."
+    },
+    {
+      "file": "training/documents locataires/William_Menard/Justificatif_ressources/Garant/2025_11_BP_novembre.pdf",
+      "document_id": "training/documents locataires/William_Menard/Justificatif_ressources/Garant/2025_11_BP_novembre.pdf",
+      "success": true,
+      "declared_type": null,
+      "detected_type": "payslip",
+      "confidence": 0.22,
+      "status": "MATCH",
+      "extracted_text_snippet": "| sof a DDFIP BULLETIN DE PAYE N° ORDRE | A 55716 ene Bes ia | NOVENSRE 7025 barat = Egalts = rate TEMPS DE TRAVAIL 151,67 H  REPUBLIQUE FRANCAISE - TOUT RENSEIGNEMENT RELATIF AU CONTENU DE CE BULLETI..."
+    },
+    {
+      "file": "training/documents locataires/William_Menard/C_Identité/Locataire/Carte identité William MENARD.pdf",
+      "document_id": "training/documents locataires/William_Menard/C_Identité/Locataire/Carte identité William MENARD.pdf",
+      "success": true,
+      "declared_type": null,
+      "detected_type": "id_card",
+      "confidence": 1.0,
+      "status": "MATCH",
+      "extracted_text_snippet": "IDF RAMENARD<<<<<<<<<<<eeeeee<<057062 ~~ 1907579561947WILLIAM<<PIERRO406107M3  ..."
+    },
+    {
+      "file": "training/documents locataires/William_Menard/C_Identité/Garant/2026-02-15-thomas.pdf",
+      "document_id": "training/documents locataires/William_Menard/C_Identité/Garant/2026-02-15-thomas.pdf",
+      "success": true,
+      "declared_type": null,
+      "detected_type": "id_card",
+      "confidence": 0.67,
+      "status": "MATCH",
+      "extracted_text_snippet": "REPUBLIQUE FRANCAISE  Liberté Egalité Fraternité  Justificatif d’identité a uSage unique  Ne EALHIBRMXTY83MX  CADRE D'UTILISATION  Frédéric DETEZ de location appartement la DREVE  GENERE LE DATE LIMIT..."
+    }
+  ]
+}
