@@ -23,6 +23,9 @@ python3 analyzer/run/run_training_classification.py --help
 # classify everything under training/, write report locally
 python3 analyzer/run/run_training_classification.py
 
+#classique
+python3 analyzer/run/run_training_classification.py --output analyzer/run/results.json
+
 # specify a different training folder or output file
 python3 analyzer/run/run_training_classification.py  --dir "training/documents locataires" --output /tmp/train-results.json
 

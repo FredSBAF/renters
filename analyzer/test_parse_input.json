@@ -1,0 +1,19 @@
+{
+  "folder_id": 123,
+  "results": [
+    {
+      "document_id": "doc_id_card",
+      "detected_type": "id_card",
+      "data": {
+        "raw_text": "REPUBLIQUE FRANCAISE\nCarte Nationale d'Identité\nNom: MARTIN\nPrénom: JEAN\nIDF RAMARTIN<<<<<<<<<<<<<<<<<<<\n8801015M2501013FRA<<<<<<<<<<<2\nJEAN<<PIERRE<PAUL<<<<<<<<<<<<<<"
+      }
+    },
+    {
+      "document_id": "doc_payslip",
+      "detected_type": "payslip",
+      "data": {
+        "raw_text": "BULLETIN DE PAIE\nEmployeur: ACME Corp\nSIRET 123 456 789 00012\nPériode du 01/01/2025 au 31/01/2025\nNet à payer 2345.67 €"
+      }
+    }
+  ]
+}

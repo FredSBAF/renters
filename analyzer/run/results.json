@@ -6,221 +6,311 @@
       "file": "training/documents locataires/Clémence_Neuquelman/Justificatif_Domicile/Locataire/QUIT_20260205_11222.pdf",
       "document_id": "training/documents locataires/Clémence_Neuquelman/Justificatif_Domicile/Locataire/QUIT_20260205_11222.pdf",
       "success": true,
-      "declared_type": null,
-      "detected_type": "rent_receipt",
-      "confidence": 0.5,
-      "status": "MATCH",
-      "extracted_text_snippet": "tous les services de la vie étudiante  Association d'Entraide Universitaire 47 boulevard Vauban  59000 Lille SIRET n°78368569600016 APE n°5629B TVA intracommunautaire n°FRO6783685696  Période de factu..."
+      "data": {
+        "raw_text": "tous les services de la vie étudiante Association d'Entraide Universitaire 47 boulevard Vauban 59000 Lille SIRET n°78368569600016 APE n°5629B TVA intracommunautaire n°FRO6783685696 Période de facturation du 01/02/2026 au 28/02/2026 Quittance Facture n°L622602-0075 du 06/02/2026 (€) PIK | Loyer PIK | Charges forfaitaire 2025 2026 PIK | Services 2025 2026 Mme NEUQUELMAN Clémence 105 Résidence WeLiv Piktura Résidence WeLiv Piktura 75 boulevard République 59 100 ROUBAIX Montants exprimés en euro (€) Total dd : 372.78 Déja payé : 372.78 Aides recues : 0.00 Reste da: 0.00 IBAN: FR7630003011100005026011236 — BIC: SOGEFRPP — N° SIRET: 78368569600016",
+        "confidence_score": 0.91,
+        "page_count": 1,
+        "engine_used": "tesseract",
+        "language_detected": "fr"
+      },
+      "warnings": [],
+      "fallback_triggered": false
     },
     {
       "file": "training/documents locataires/Clémence_Neuquelman/Justificatif_Domicile/Locataire/QUIT_20260205_11222-2.pdf",
       "document_id": "training/documents locataires/Clémence_Neuquelman/Justificatif_Domicile/Locataire/QUIT_20260205_11222-2.pdf",
       "success": true,
-      "declared_type": null,
-      "detected_type": "rent_receipt",
-      "confidence": 0.5,
-      "status": "MATCH",
-      "extracted_text_snippet": "tous les services de la vie étudiante  Association d'Entraide Universitaire 47 boulevard Vauban  59000 Lille SIRET n°78368569600016 APE n°5629B TVA intracommunautaire n°FRO6783685696  Période de factu..."
+      "data": {
+        "raw_text": "tous les services de la vie étudiante Association d'Entraide Universitaire 47 boulevard Vauban 59000 Lille SIRET n°78368569600016 APE n°5629B TVA intracommunautaire n°FRO6783685696 Période de facturation du 01/01/2026 au 31/01/2026 Quittance Facture n°L622601-0075 du 05/01/2026 (€) PIK | Loyer PIK | PAF vie étudiante PIK | Charges forfaitaire 2025 2026 PIK | Services 2025 2026 Mme NEUQUELMAN Clémence 105 Résidence WeLiv Piktura Résidence WeLiv Piktura 75 boulevard République 59 100 ROUBAIX Montants exprimés en euro (€) Total da : 468.78 Déja payé : 468.78 Aides recues : 0.00 Reste da : 0.00 IBAN: FR7630003011100005026011236 — BIC: SOGEFRPP — N° SIRET: 78368569600016",
+        "confidence_score": 0.92,
+        "page_count": 1,
+        "engine_used": "tesseract",
+        "language_detected": "fr"
+      },
+      "warnings": [],
+      "fallback_triggered": false
     },
     {
       "file": "training/documents locataires/Clémence_Neuquelman/Justificatif_Domicile/Locataire/QUIT_20260205_11222-3.pdf",
       "document_id": "training/documents locataires/Clémence_Neuquelman/Justificatif_Domicile/Locataire/QUIT_20260205_11222-3.pdf",
       "success": true,
-      "declared_type": null,
-      "detected_type": "rent_receipt",
-      "confidence": 0.5,
-      "status": "MATCH",
-      "extracted_text_snippet": "tous les services de la vie étudiante  Association d'Entraide Universitaire 47 boulevard Vauban  59000 Lille SIRET n°78368569600016 APE n°5629B TVA intracommunautaire n°FRO6783685696  Période de factu..."
+      "data": {
+        "raw_text": "tous les services de la vie étudiante Association d'Entraide Universitaire 47 boulevard Vauban 59000 Lille SIRET n°78368569600016 APE n°5629B TVA intracommunautaire n°FRO6783685696 Période de facturation du 01/12/2025 au 31/12/2025 Quittance Facture n°L622512-0074 du 05/12/2025 (€) PIK | Charges forfaitaire 2024/2025 PIK | Services 2024/2025 PIK | Loyer Mme NEUQUELMAN Clémence 105 Résidence WeLiv Piktura Résidence WeLiv Piktura 75 boulevard République 59 100 ROUBAIX Montants exprimés en euro (€) Total dd : 366.60 Déja payé : 366.60 Aides recues : 0.00 Reste da: 0.00 IBAN: FR7630003011100005026011236 — BIC: SOGEFRPP — N° SIRET: 78368569600016",
+        "confidence_score": 0.91,
+        "page_count": 1,
+        "engine_used": "tesseract",
+        "language_detected": "fr"
+      },
+      "warnings": [],
+      "fallback_triggered": false
     },
     {
       "file": "training/documents locataires/Clémence_Neuquelman/Justificatif_Domicile/Garant/justificatif domicile Michel NEUQUELMAN.pdf",
       "document_id": "training/documents locataires/Clémence_Neuquelman/Justificatif_Domicile/Garant/justificatif domicile Michel NEUQUELMAN.pdf",
       "success": true,
-      "declared_type": null,
-      "detected_type": "proof_of_address",
-      "confidence": 0.83,
-      "status": "MATCH",
-      "extracted_text_snippet": "NOUS CONTACTER  N° client : 5 007 328 898  Q Par Internet edf.fr  application mobile : EDF&MOI mail : serviceclient@edf.fr  fg Par téléphone Du lundi au samedi dés 8h et jusqu'a 20h  3404 (Service gra..."
+      "data": {
+        "raw_text": "NOUS CONTACTER N° client : 5 007 328 898 Q Par Internet edf.fr application mobile : EDF&MOI mail : serviceclient@edf.fr fg Par téléphone Du lundi au samedi dés 8h et jusqu'a 20h 3404 (Service gratuit + prix appel) Mon Compte sur Serveur Vocal 09 70 83 33 33 (Service gratuit + prix appel) Par courrier EDF SERVICE CLIENTS TSA 21941 62978 ARRAS CEDEX 9 Par courrier EDF TSA 81401 87014 LIMOGES Cedex 1 fh Lieu de consommation LOGT 11 LE HAUT D HELFAUT 2E TRANCHE 135 RUE DES HAUTS D HELFAUT 62570 HELFAUT Titulaire du contrat NEUQUELMAN MICHEL NEUQUELMAN DELPHINE Votre contrat N° de client : 5 007 328 898 N° de compte : 4 01 7 007 134 059 (numéro a transmettre pour le réglement de vos factures) Electricité « Tarif Bleu » * Point de livraison (PDL) : N° 01495947873320 * Puissance : 06 KVA EDF-SA au capital de 2 084 365 041 euros - Siége social 22-30 avenue de Wagram 75008 Paris - R.C.S. Paris 552 081 317 - N° TVA FR 03 552 081 317 NOUS ENVOYER UN CHEQUE ENERGIE FR € @ (am > = » > eDF NEUQUELMAN MICHEL NEUQUELMAN DELPHINE 135 RUE DES HAUTS D HELFAUT 62570 HELFAUT ATTESTATION TITULAIRE DE CONTRAT Par la présente, EDF atteste que MICHEL NEUQUELMAN et DELPHINE NEUQUELMAN sont actuellement titulaires d'un contrat auprés d'EDF pour le logement situé au 135 RUE DES HAUTS D HELFAUT 62570 HELFAUT. Ce contrat a été établi aux noms de MICHEL NEUQUELMAN et DELPHINE NEUQUELMAN sur la base de leurs déclarations. Pour servir et valoir ce que de droit. A Paris, le 15 Février 2026 Guillaume Votre conseiller EDF Cachet Electronique Visible d’authentification de ce document",
+        "confidence_score": 0.91,
+        "page_count": 1,
+        "engine_used": "tesseract",
+        "language_detected": "fr"
+      },
+      "warnings": [],
+      "fallback_triggered": false
     },
     {
       "file": "training/documents locataires/Clémence_Neuquelman/Situation_Pro/Locataire/Document_de_Synthese_J00213351299_v1_2.pdf",
       "document_id": "training/documents locataires/Clémence_Neuquelman/Situation_Pro/Locataire/Document_de_Synthese_J00213351299_v1_2.pdf",
       "success": true,
-      "declared_type": null,
-      "detected_type": "company_registry",
-      "confidence": 0.36,
-      "status": "MATCH",
-      "extracted_text_snippet": "Synthése de dépét au Guichet Unique  | | REPUBLIQUE FRANCAISE Liberté  Egalité  Fraternité  GUICHET UNIQUE DES ENTREPRISES Synthése de dépét — Formalité de création  Ce document récapitule les informa..."
+      "data": {
+        "raw_text": "Synthése de dépét au Guichet Unique | | REPUBLIQUE FRANCAISE Liberté Egalité Fraternité GUICHET UNIQUE DES ENTREPRISES Synthése de dépét — Formalité de création Ce document récapitule les informations contenues dans la formalité JO0O213351299 concernant la société Clemence Neuquelman a la date du 03 février 2026 Résumé de votre formalité Création d’une entreprise individuelle Nom de naissance et prénoms de I'entrepreneur : Forme juridique : Adresse de I'entreprise : Complément de localisation : Référence client : Déclarant signataire Nom : Prénoms : Adresse : Mail : Téléphone : Document signé : Neuquelman Clémence Christelle Entrepreneur individuel 18 RUE du Haze 59200 Tourcoing FRANCE M1 Kurem Studio Neuquelman Clémence 18 rue du haze 59200 Tourcoing France kuremstudio@gmail.com 0780010791 Oui Numéro de liasse : Date de dépot : Organisme(s) compétent(s) pour valider la formalité : Formalité J00213351299 = = || INSTITUT NATIONAL DE LA PROPRIETE INDUSTRIELLE J00213351299 03/02/2026 INSEE Page 1/8\n\nSynthése de dépét au Guichet Unique Observations Diffusion INSEE : Non Diffusion commerciale : Non Piéces jointes Piéces jointes déposées pour traitement Nombre de piéces jointes déposées : 1 Intitulé de la piéce jointe demandée Nom du fichier Justificatif d'identité (recto/verso) Carte_d_identite_Clemence.pdf Formalité J00213351299 Page 2/8\n\nSynthése de dépét au Guichet Unique Informations de I'entreprise Identité de l'entrepreneur Nom : Prénom : Genre : Pseudonyme : Date de naissance : Commune de naissance : Pays de naissance : Nationalité : Situation matrimoniale : Volet social de I'entrepreneur Numéro de sécurité sociale : Régime d'assurance maladie : Activité simultanée : Bénéficiaire du statut d'ambulant : Adresse de I'entrepreneur : Complément de localisation : Courriel : Indicatif téléphonique : Numéro de téléphone : Régime microsocial Périodicité du versement : Identité de l'entreprise Forme juridique : Structure de l'entreprise : Micro-entreprise : Nature de I'activité principale : Reliée a une entreprise agricole : Entreprise agricole : Neuquelman Clémence, Christelle Féminin Kurem 11/10/2002 Blendecques FRANCE Frangaise Célibataire 202106213926858 Régime général Non Non 18. RUE du Haze 59200 Tourcoing FRANCE M1 kuremstudio@gmail.com +33 0780010791 Mensuel Entrepreneur individuel Avec établissement Oui Libérale non réglementée Non Non Formalité J00213351299 Page 3/8\n\nSynthése de dépét au Guichet Unique Formalité J00213351299 Affiliation au régime agricole (RA) : Non Figure au registre des actifs agricoles (RAA): Non Adresse de |'établissement 18 RUE du Haze Adresse : 59200 Tourcoing FRANCE Complément de localisation : M1 Entreprise fixée au domicile de l'entrepreneur: Oui Contrat d'appui Contrat d'appui déclaré : Non Renonciation a l'insaisissabilité de la résidence principale Pas de renonciation de l'insaisissabilite de la résidence principale Déclaration d'insaisissabilite de la / des résidence(s) avec les informations suivantes Pas de déclaration d'insaisissabilite d'une résidence secondaire Page 4/8\n\nSynthése de dépét au Guichet Unique Etablissements Nombre d'établissements dans la formalité : Etablissements Nature de I'établissement pour I'entreprise : Nom commercial/ Nom d’exploitation : Adresse de I’établissement : Formalité J00213351299 Etablissement principal Kurem Studio 18 RUE du Haze 59200 Tourcoing FRANCE Complément de localisation : M1 Présence de salarié : Non Emploie son (ou ses) premier(s) salarié(s) : Non Activités Nombre d'activités indiquées - 2 Description de I'activité principale Activité principale de |'établissement : Oui Activité principale de l'entreprise: Oui Date de début de I'activité : 10/01/2026 Exercice de I'activite : Permanente Activité non sédentaire : Non Activité dans le prolongement d'une Non activité agricole : Nature d'activité : Description détaillée Libérale non réglementée Graphisme, production de visuels pour répondre a la demande du client Catégorisation de l'activitée : Précision activité : Marin Professionnel : Type d'origine : Description de I'activité numéro 2 Activité principale de |'établissement : Activité principale de I'entreprise : Date de début de I'activité : Exercice de I'activité : 1. Activités de services 2. Activités spécialisées, scientifiques et techniques 3. Activités graphiques et design 4. Activités spécialisées de design Activité de services Non Création Non Non 10/01/2026 Permanente Page 5/8\n\nSynthése de dépét au Guichet Unique Formalité J00213351299 Activité non sédentaire : Non Activité dans le prolongement d'une Non activité agricole : Nature d'activité : Libérale non réglementée Description détaillée Activité d'illustratrice, numérique/digital ou traditionnel, pour répondre ala demande du client 1. Activités de services 2. Arts, culture et divertissement 3. Activités créatives, artistiques et de spectacle 4. Création artistique relevant des arts plastiques et graphiques Catégorisation de lactivite : Artiste / Auteur : Oui Marin Professionnel : Non Type d'origine : Création Nom de domaine Nom de domaine : kuremstudio.com Page 6/8\n\nSynthése de dépét au Guichet Unique Options Fiscales Régime d'imposition des bénéfices : Régime d'imposition de la TVA: Option pour le versement libératoire : Régime spécial BNC Franchise en base TVA Non Formalité J00213351299 Page 7/8\n\nSynthése de dépét au Guichet Unique Adresse de correspondance Type de correspondant : Adresse de correspondance : Complément de localisation : Courriel : Indicatif téléphonique : Numéro de téléphone : Entrepreneur 18 RUE du Haze 59200 Tourcoing FRANCE M1 kuremstudio@gmail.com +33 0780010791 Formalité J00213351299 Page 8/8",
+        "confidence_score": 0.9,
+        "page_count": 8,
+        "engine_used": "tesseract",
+        "language_detected": "fr"
+      },
+      "warnings": [],
+      "fallback_triggered": false
     },
     {
       "file": "training/documents locataires/Clémence_Neuquelman/Situation_Pro/Garant/avis imposition michel neuquelman.jpg",
       "document_id": "training/documents locataires/Clémence_Neuquelman/Situation_Pro/Garant/avis imposition michel neuquelman.jpg",
       "success": true,
-      "declared_type": null,
-      "detected_type": "tax_notice",
-      "confidence": 0.57,
-      "status": "MATCH",
-      "extracted_text_snippet": "=z is]  ‘ DIRECTION GENERAL | 1 E DES FINANCES PUBLI REPUBLIQUE Impét sur les revenus de 2024 _  FRANCAISE  F wri cet avis ost galiré disponible en giquant ie.) Fraternité bu sur impots.gouv.  CENTRE ..."
+      "data": {
+        "raw_text": "=z is] ‘ DIRECTION GENERAL | 1 E DES FINANCES PUBLI REPUBLIQUE Impét sur les revenus de 2024 _ FRANCAISE F wri cet avis ost galiré disponible en giquant ie.) Fraternité bu sur impots.gouv. CENTRE DES FINANCES PUBLIQUES SIP _ SAINT OMER efey PAR aS : +e: alee Pate SN Ete 1 ALL HONORE DE BALZAC BP30009 Shee Be AEN a : 62967 LONGUENESSE CEDEX BS ay ae aye Dy *¢ Vos références hs mabe fiscal : éclarant 1 (C) : 18 08 879 168 4 Déclarant 2 (C) : 08 22 808 943 320 Référence de lavis : 25 62 0174037 45 Adresse d’imposition au 01/01/2025 : NEUQUELMAN MICHEL OU NEUQUELMAN DELPHINE 135 RUE DES HAUTS D HELFAUT 62570 HELFAUT 135 RUE DES HAUTS D HELFAUT 62570 HELFAUT Numéro FIP : 620 49 15 1526257789 3A Numéro de réle : 011 Date d’établissement : 10/07/2025 Date de mise en recouvrement: 31/07/2025 Somme qu'il vous reste a payer 54,00 € Identifiant service : 62227 Cette somme sera prélevée le 25 septembre 2025. Vee hart \\ LURK do <i i we ks Laz } bk (lene & Kevaver Maw | dk vt}207 b een pe — Compte qui! sera débité : FR76 1627 5205 000X XXKX XXX8 915 Identifiant de la banque : CEPAFRPP627 Nom du créancier : DIRECTION GENERALE DES FINANCES PUBLIQUES Référence Unique Mandat : FR46ZZZ0050021H08H71168818PAS2A25 Vos contacts “— «Par messagerle sécurisée dans votre espace particufier sur impots.gouv-fr — Par telephone au 0 809 401 401 ° du lundi au vendregi, de 8h30 a 19h F Sur place horalres de votre centre des finances publiques sur impots.gouv.fr, rubrique Contact et prise de RDV SIP SAINT-OMER SAID SAINT-OMER 1 ALLEE HONORE DE BALZAC BP 30009 62967 LONGUENESSE CEDEX La date du prélévement se substitue a la date limite de paiement fixée au 15/09/2025. Revenu fiscal de référence : Nombre de parts : Plus de détails dans la (les) page (5) suivante (s). et de régulariser votre prélevement a la source réalisé en 2024 suite a votre ffectuée en 2025. Cet avis perm déclaration des revenus @ outes les informations relatives a votre prélevement a la source (taux, options we); Pour retrouver t rendez-vous sur le service « Gérer mon prélévement a la source » accessible dans votre espace particulier sur impots.gouv.fr.",
+        "confidence_score": 0.8,
+        "page_count": 1,
+        "engine_used": "tesseract",
+        "language_detected": "fr"
+      },
+      "warnings": [],
+      "fallback_triggered": false
     },
     {
       "file": "training/documents locataires/Clémence_Neuquelman/Justificatif_ressources/Locataire/Attestation rattachement foyer fiscal.pdf",
       "document_id": "training/documents locataires/Clémence_Neuquelman/Justificatif_ressources/Locataire/Attestation rattachement foyer fiscal.pdf",
       "success": true,
-      "declared_type": null,
-      "detected_type": "tax_notice",
-      "confidence": 0.29,
-      "status": "MATCH",
-      "extracted_text_snippet": "ATTESTATION DE RATTACHEMENT AU FOYER FISCAL  Je/nous soussigné(s) : Michel NEUQUELMAN  Demeurant: 135 Rue des Hauts d’Helfaut 62570 HELFAUT  Certifie que ma fille:  Nom : NEUQUELMAN Prénom Clémence  E..."
+      "data": {
+        "raw_text": "ATTESTATION DE RATTACHEMENT AU FOYER FISCAL Je/nous soussigné(s) : Michel NEUQUELMAN Demeurant: 135 Rue des Hauts d’Helfaut 62570 HELFAUT Certifie que ma fille: Nom : NEUQUELMAN Prénom Clémence Est rattaché(e) 4 mon/notre foyer fiscal pour les revenus de \"année 2024 déclarés en 2025 Fait pour valoir ce que de droit, Fait a Helfaut, Le 15/02/2026 Signature",
+        "confidence_score": 0.92,
+        "page_count": 1,
+        "engine_used": "tesseract",
+        "language_detected": "fr"
+      },
+      "warnings": [],
+      "fallback_triggered": false
     },
     {
       "file": "training/documents locataires/Clémence_Neuquelman/Justificatif_ressources/Garant/IMG_4912.pdf",
       "document_id": "training/documents locataires/Clémence_Neuquelman/Justificatif_ressources/Garant/IMG_4912.pdf",
       "success": true,
-      "declared_type": null,
-      "detected_type": "payslip",
-      "confidence": 0.22,
-      "status": "MATCH",
-      "extracted_text_snippet": "BULLETIN DE PAYE , : : A 89610 |  1300841001386 13000841000701 ST OMER SIP  SS oe eS Se a a 68 01 62 765 080}| 60 ||00| |A.A. PALIC. FIN.PUBL|| 00 || 08 | 0435 ||  ‘an | wit OR AA TION ELEMENTS A PAYE..."
+      "data": {
+        "raw_text": "BULLETIN DE PAYE , : : A 89610 | 1300841001386 13000841000701 ST OMER SIP SS oe eS Se a a 68 01 62 765 080}| 60 ||00| |A.A. PALIC. FIN.PUBL|| 00 || 08 | 0435 || ‘an | wit OR AA TION ELEMENTS A PAYER i 101000 ‘ 101050 RETE 237, 101052 RETENUE Pc IMT . 21,35 200042 FORFAIT TELETRAVAIL . 7.88 RAPPEL ANNEE URANTE € 200321 IND. MENSUELLE TRCHNICITE . 106,76 200631 PRIME DE RENDEMENT € 150,78 200674 IND. ADM. ET TECHNICITE ¢ 178558 201800 ACF TECHNICITE . ino! ae 202206 IND. COMPENSATRICE CSG . 22,28 401201 c.s.G. Non DEDUCTIBLE € 64,43 401301 C.s.G. DEDUCTIBLE € 182,55 401501 c.R.pD-s. € 13,42 73,87 403301 COTIS PATRON. ALLOC FAMIL . 38,55 403397 COT PAT AF MAJORATION . 10,71 403501 COT PAT FNAL DEPLAFONNEE . 6,42 403801 CONT SOLIDARITE AUTONOMIE . 207,72 404001 COT PAT MALADIE DEPLAFON 1676, 30 411050 CONTRIB. PC € 57 411052 CONTRIB.PC IMT € ore 411058 CONTRIBUTION ATI . | 501080 COT SAL RAFP € 21,4) 21,41 501180 COT PAT RAFP € 14,99 554500 COT PAT VST MOBILITE € 2,14 554510 COT PAT VST MOBILITE ADD. : 604972 TRANSFERT PRIMES / POINTS ¢ 13,92 : € 79 011100 NET A PAYER AVANT IMPOT SUR LE REVENU € 3193 59 011300 MONTANT NET SOCIAL > 558000 IMPOT SUR LE REVENU PRELEVE A LA SOURCE € 24,96 (TAUX PERSONNALISE 1,108) . & 7 € e € € 7 © 7 ; € 7 7 . FMUMERO SECURE SOOALE Pe le 2753,57 |l€ 579,74 jie 2142,53| l1 68 01 62 765 080 60 NET A PAYER 2 173.83 « ee le ii S20 MR NEUQUELMAN MICHEL | Se ee a 135 RUE HAUTS D'HELFAUT l€ 24 963,80 |\\€ 2 269,44 | 62570 HELFAUT P COMPTABLE ASSIGNATAIRE | ppFIp 063 Sd 6LOG062 - EZA~ BBIAVG 26 N 2025 - é ™ MINISTERE DE iaction BT OES COMPTES ruBLICS | FR76 1627 5205 0004 0400 3958 915 ; CEPAFRPP627 ON LT Deed = ee ee Ee DAWES VOTRE TESST OCORSERVEZ CE SOCumEeT a ' 4 SANS Liwytatiow GE Duate =e ere: = - ; a 2 ae , Pee a oe a ar al\n\nbor] . ferme DECEMBRE 2025 OO — 151,67 H PUY DE DOME semi aye Pear esse | 17 5153 | ' 062 0951 || Ci ST OMER SIP_____ | Die SE eo a ee ES ee 1207 3. 68 01 62 765 080|| 60 |/00| |A.A. PALIC. FIN.PUBL|| 00 | | s {| 0435 || ii ELEMENTS POUR INFORMATION 362 062 ||DDFIP DU PAS DE CALAIS | 13000841001386 | 13000841000701 A PAYER 2141,41 101000 TRAITEMENT BRUT 101050 RETENUE PC 237,70 101052 RETENUE PC IMT 21,35 200321 IND. MENSUELLE TECHNICITE 106,76 200631 PRIME DE RENDEMENT 150,78 200674 IND. ADM. ET TECHNICITE 178,38 201800 ACF TECHNICITE 146,80 202206 IND. COMPENSATRICE CSG 22,24 401201 C.S.G. NON DEDUCTIBLE 64,43 401301 C.S.G. DEDUCTIBLE 182,55 401501 C.R.D.S. 13,42 403301 COTIS PATRON. ALLOC FAMIL 73,87 403397 COT PAT AF MAJORATION 38,55 403501 COT PAT FNAL DEPLAFONNEE 10,71 403801 CONT SOLIDARITE AUTONOMIE 6,42 404001 COT PAT MALADIE DEPLAFON 207,72 411050 CONTRIB. PC 1676,30 411052 CONTRIB.PC IMT 83,57 411058 CONTRIBUTION ATI 6,85 501080 COT SAL RAFP 21,41 501180 COT PAT RAFP 21,41 554500 COT PAT VST MOBILITE 14,99 554510 COT PAT VST MOBILITE ADD. 2,14 604972 TRANSFERT PRIMES / POINTS 13,92 011100 NET A PAYER AVANT IMPOT SUR LE REVENU 2191,59 011300 MONTANT NET SOCIAL 2191.59 24,96 558000 IMPOT SUR LE REVENU PRELEVE A LA SOURCE (TAUX PERSONNALISE 1,10%) AA AM MD ADAMADMDNAM AMD MAMA AH MDMA MA MAMMA MH A AMAA AM MAMA ARAMA AMAMDAAMS ee | « 4074.98 | ERUReE|< 2746,37 | le 579,74 jle 2 1 68 01 62 765 080 60 [€ _2142,53] —— — - NEUQUELMAN MICHEL — cat 135 RUE HAUTS D’'HELFAUT | le 27 233,24 |le_ _—-2 269,44 | 62570 HELFAUT a 3 F COMPTABLE ASGIGNATAIRE | __ DDEIP 063 | ; Z 22 DE 2025 — | MINISTERE BE L-aACtTION | 6T DES COMPTES ruRLICS FR76 1627 5205 0004 0400 3958 915 CEPAFRPP627 Cans vVotae twréatr t CONSERVER Ch DOC uMEAT SASS LIMITAT YS Sea Ge DOvuaee\n\n| DDOFIP i ', - we ae JANVIER 2026 | | PUY DE DOME 151,67 H | :.' = = £ f Be asf 17/5153 || 362 062 |/DDFIP DU PAS DE CALAIS | 13000841001386 | _ 062 0951 | tL ———C—CsS | ST OMER SIP 7 = 13000841000701 | Ce Sse cos SESE ERS [= ES i oe 207) 1 68 O1 62 765 080 || 60 |/00) A.A. PALIC. FIN.PUBL|| 00 || 08 || 0435 || | ELEMENTS A PAYER POUR INFORMA TION 2141,41 101000 TRAITEMENT BRUT 101050 RETENUE PC 101052 RETENUE PC IMT 200321 IND. MENSUELLE TECHNICITE 200631 PRIME DE RENDEMENT 200674 IND. ADM. ET TECHNICITE 201600 ACF TECHNICITE 202206 IND. COMPENSATRICE CSG 202510 PARTICIPATION PREVOYANCE 401201 C.S.G. NON DEDUCTIBLE 401301 C.8.G. DEDUCTIBLE 401501 C.R.D.S. 403301 COTIS PATRON. ALLOC FAMIL 403397 COT PAT AF MAJORATION 403501 COT PAT FNAL DEPLAFONNEE 403801 CONT SOLIDARITE AUTONOMIE 404001 COT PAT MALADIE DEPLAFON 411050 CONTRIB. PC 411052 CONTRIB.PC IMT 411058 CONTRIBUTION ATI 501080 COT SAL RAFP 501180 COT PAT RAFP 554500 COT PAT VST MOBILITE 554510 COT PAT VST MOBILITE ADD. 604972 TRANSFERT PRIMES / POINTS 730187 GMF COT. SAL. PREVOYANCE 237,70 21,35 106,76 150,78 178,38 146,80 22,71 7,00 64,61 183,06 13,46 21,41 13,92 25,00 2173,33 011100 NET A PAYER AVANT IMPOT SUR LE REVENU 2166.33 011300 MONTANT NET SOCIAL 558000 IMPOT SUR LE REVENU PRELEVE A LA SOURCE (TAOX PERSONNALISE 1,108) 24,77 HBAAAMQA AMAA MAHA MDH AMAA AMAA MDA MHA MH AAM MAMA MAA AAA AHA MAMA AAAAAAM® ¥O' 8 PaAPLACATIONG 1 Yes L<__4972.37_| EE ¢ 2753,64 |je 605,28 |/e 2252.45 a NET A PAYER | 2 148,56 e| AL _CHARGI 01 62 765 080 60 a le s 2.141,41 | MR NEUQUELMAN MICHEL 135 RUE HAUTS D'HELFAUT lé 2 251,40 |lé 2 251,40 | 62570 HELFAUT fC COMPTABLE ASSIGNATARE | ppFrp 063 ———————C—S 8 2026 GL OLDSZ - CTA ~ WiAwd —=—i UINISTRas BE L action SY Gea ComrTES reetics | FR76 1627 5205 0004 0400 3958 915 ~ CEPAFRPP627",
+        "confidence_score": 0.71,
+        "page_count": 3,
+        "engine_used": "tesseract",
+        "language_detected": "fr"
+      },
+      "warnings": [],
+      "fallback_triggered": false
     },
     {
       "file": "training/documents locataires/Clémence_Neuquelman/C_Identité/Locataire/Carte d'identité Clémence.pdf",
       "document_id": "training/documents locataires/Clémence_Neuquelman/C_Identité/Locataire/Carte d'identité Clémence.pdf",
       "success": true,
-      "declared_type": null,
-      "detected_type": "id_card",
-      "confidence": 1.0,
-      "status": "MATCH",
-      "extracted_text_snippet": "IDF RANEUQUELMAN<<<<<<<<<<<<<<<062020 1906621516665CLEMENCE<<CHRIO210111F1  ..."
+      "data": {
+        "raw_text": "IDF RANEUQUELMAN<<<<<<<<<<<<<<<062020 1906621516665CLEMENCE<<CHRIO210111F1",
+        "confidence_score": 0.68,
+        "page_count": 1,
+        "engine_used": "tesseract",
+        "language_detected": "fr"
+      },
+      "warnings": [],
+      "fallback_triggered": false
     },
     {
       "file": "training/documents locataires/Clémence_Neuquelman/C_Identité/Garant/IMG_4907.JPG",
       "document_id": "training/documents locataires/Clémence_Neuquelman/C_Identité/Garant/IMG_4907.JPG",
       "success": true,
-      "declared_type": null,
-      "detected_type": "id_card",
-      "confidence": 1.0,
-      "status": "MATCH",
-      "extracted_text_snippet": "atPusLiQue FRANCAISE NEVOQUELMAN  Michel Roge:  . ~ i aT. <@ -—<r he FRA Ww 011968 LAINT -OMER  re)  B8G6204LW2 2xosi0i  ‘w 582006  TN OEE we ee 1. 6 = 25 05 2022 , wwe >8DS PQ raven OHS MALTS O vet F..."
+      "data": {
+        "raw_text": "atPusLiQue FRANCAISE NEVOQUELMAN Michel Roge: . ~ i aT. <@ -—<r he FRA Ww 011968 LAINT -OMER re) B8G6204LW2 2xosi0i ‘w 582006 TN OEE we ee 1. 6 = 25 05 2022 , wwe >8DS PQ raven OHS MALTS O vet Faust Gd57R Pt fear BAe ve WES oss Ker — ) | vin hee we eae oy ta a Pwr bo UL Vo 2¢ IDFRABBGROSLU20<<cccecccceeec 6BO119SMS205242FRA<K<<<<<<ccccg NEUVQUELMAN<<MI CHEL<ROGER<<<<<e< 711SMO I E966",
+        "confidence_score": 0.35,
+        "page_count": 1,
+        "engine_used": "tesseract",
+        "language_detected": "fr"
+      },
+      "warnings": [
+        "LOW_CONFIDENCE_OCR"
+      ],
+      "fallback_triggered": false
     },
     {
       "file": "training/documents locataires/William_Menard/Justificatif_Domicile/Locataire/QUIT_20260205_9962 (2).pdf",
       "document_id": "training/documents locataires/William_Menard/Justificatif_Domicile/Locataire/QUIT_20260205_9962 (2).pdf",
       "success": true,
-      "declared_type": null,
-      "detected_type": "rent_receipt",
-      "confidence": 0.5,
-      "status": "MATCH",
-      "extracted_text_snippet": "tous les services de la vie étudiante  Association d'Entraide Universitaire 47 boulevard Vauban  59000 Lille SIRET n°78368569600016 APE n°5629B TVA intracommunautaire n°FRO6783685696  Période de factu..."
+      "data": {
+        "raw_text": "tous les services de la vie étudiante Association d'Entraide Universitaire 47 boulevard Vauban 59000 Lille SIRET n°78368569600016 APE n°5629B TVA intracommunautaire n°FRO6783685696 Période de facturation du 01/12/2025 au 31/12/2025 Quittance Facture n°L622512-0071 du 05/12/2025 (€) PIK | Charges forfaitaire 2025 2026 PIK | Loyer PIK | Services 2025 2026 M MENARD Wiliam 212 Résidence WeLiv Piktura Résidence WeLiv Piktura 75 boulevard République 59 100 ROUBAIX Montants exprimés en euro (€) Total dd : 372.78 Déja payé : 372.78 Aides recues : 0.00 Reste da: 0.00 IBAN: FR7630003011100005026011236 — BIC: SOGEFRPP — N° SIRET: 78368569600016",
+        "confidence_score": 0.91,
+        "page_count": 1,
+        "engine_used": "tesseract",
+        "language_detected": "fr"
+      },
+      "warnings": [],
+      "fallback_triggered": false
     },
     {
       "file": "training/documents locataires/William_Menard/Justificatif_Domicile/Locataire/QUIT_20260205_9962.pdf",
       "document_id": "training/documents locataires/William_Menard/Justificatif_Domicile/Locataire/QUIT_20260205_9962.pdf",
       "success": true,
-      "declared_type": null,
-      "detected_type": "rent_receipt",
-      "confidence": 0.5,
-      "status": "MATCH",
-      "extracted_text_snippet": "tous les services de la vie étudiante  Association d'Entraide Universitaire 47 boulevard Vauban  59000 Lille SIRET n°78368569600016 APE n°5629B TVA intracommunautaire n°FRO6783685696  Période de factu..."
+      "data": {
+        "raw_text": "tous les services de la vie étudiante Association d'Entraide Universitaire 47 boulevard Vauban 59000 Lille SIRET n°78368569600016 APE n°5629B TVA intracommunautaire n°FRO6783685696 Période de facturation du 01/02/2026 au 28/02/2026 Quittance Facture n°L622602-0072 du 06/02/2026 (€) PIK | Charges forfaitaire 2025 2026 PIK | Loyer PIK | Services 2025 2026 M MENARD Wiliam 212 Résidence WeLiv Piktura Résidence WeLiv Piktura 75 boulevard République 59 100 ROUBAIX Montants exprimés en euro (€) Total dd : 372.78 Déja payé : 372.78 Aides recues : 0.00 Reste da: 0.00 IBAN: FR7630003011100005026011236 — BIC: SOGEFRPP — N° SIRET: 78368569600016",
+        "confidence_score": 0.91,
+        "page_count": 1,
+        "engine_used": "tesseract",
+        "language_detected": "fr"
+      },
+      "warnings": [],
+      "fallback_triggered": false
     },
     {
       "file": "training/documents locataires/William_Menard/Justificatif_Domicile/Locataire/QUIT_20260205_9962 (1).pdf",
       "document_id": "training/documents locataires/William_Menard/Justificatif_Domicile/Locataire/QUIT_20260205_9962 (1).pdf",
       "success": true,
-      "declared_type": null,
-      "detected_type": "rent_receipt",
-      "confidence": 0.5,
-      "status": "MATCH",
-      "extracted_text_snippet": "tous les services de la vie étudiante  Association d'Entraide Universitaire 47 boulevard Vauban  59000 Lille SIRET n°78368569600016 APE n°5629B TVA intracommunautaire n°FRO6783685696  Période de factu..."
+      "data": {
+        "raw_text": "tous les services de la vie étudiante Association d'Entraide Universitaire 47 boulevard Vauban 59000 Lille SIRET n°78368569600016 APE n°5629B TVA intracommunautaire n°FRO6783685696 Période de facturation du 01/01/2026 au 31/01/2026 Quittance Facture n°L622601-0072 du 05/01/2026 (€) PIK | Charges forfaitaire 2025 2026 PIK | Loyer PIK | Services 2025 2026 M MENARD Wiliam 212 Résidence WeLiv Piktura Résidence WeLiv Piktura 75 boulevard République 59 100 ROUBAIX Montants exprimés en euro (€) Total dd : 372.78 Déja payé : 372.78 Aides recues : 0.00 Reste da: 0.00 IBAN: FR7630003011100005026011236 — BIC: SOGEFRPP — N° SIRET: 78368569600016",
+        "confidence_score": 0.91,
+        "page_count": 1,
+        "engine_used": "tesseract",
+        "language_detected": "fr"
+      },
+      "warnings": [],
+      "fallback_triggered": false
     },
     {
       "file": "training/documents locataires/William_Menard/Justificatif_Domicile/Garant/attestation_domicile (1).pdf",
       "document_id": "training/documents locataires/William_Menard/Justificatif_Domicile/Garant/attestation_domicile (1).pdf",
       "success": true,
-      "declared_type": null,
-      "detected_type": "proof_of_address",
-      "confidence": 0.5,
-      "status": "MATCH",
-      "extracted_text_snippet": "GUE  : Numéro de contrat :  000511622614  Lieu d tion : : MR et MME STEINMETZ THOMAS Emmanuel Marlene teu de consommanon : 28 ALLEE DES BENEDICTINES  28 RUE DES BENEDICTINES 57950 MONTIGNY LES METZ  5..."
+      "data": {
+        "raw_text": "GUE : Numéro de contrat : 000511622614 Lieu d tion : : MR et MME STEINMETZ THOMAS Emmanuel Marlene teu de consommanon : 28 ALLEE DES BENEDICTINES 28 RUE DES BENEDICTINES 57950 MONTIGNY LES METZ 57950 MONTIGNY LES METZ Point de Comptage et d’Estimation gaz : 05592908798545 Point de livraison électricité : NA : Energie concernée : Gaz naturel ‘“ Grace au code sécurisé 2D-DOC, les administrations et sociétés Ae agréées peuvent vérifier votre pratt identité ! Il garantit la prise Ho PFE en compte de votre justificatif — ENGIE par les administrations. Attestation de titulaire de contrat Madame, Monsieur, Par la présente, ENGIE atteste qu’en date du 15-02-2026 etdepuisle 01-05-2025 MR et MME STEINMETZ THOMAS Emmanuel Marlene beénéficie(nt) d’un contrat auprés d’ENGIE pour le logement situé au : 28 RUE DES BENEDICTINES 57950 - MONTIGNY LES METZ Le présent document peut valoir justificatif de domicile et est établi sur la base des déclarations du(des) titulaire(s) de contrat lors de la souscription. Merci de votre confiance, Votre conseiller ENGIE. Pour moins de papier et plusde jj, Pour toutes questions, contacter le facilité, utilisez le 2D-Doc directement service client. www.particuliers.engie.fr depuis l'application Engie. [aaa ENGIE, Société Anonyme au capital de 2.435.285.011 €, ayant son siége social 1, place Samuel de Champlain - 92400 Courbevoie, immatriculée au Registre du Commerce et des Sociétés de Nanterre sous le numéro 542 107 651. Pour nous écrire, Service Clients ENGIE, TSA 87494, 769334 ROUEN CEDEX 09 ou sur notre site internet www.particuliers.engie.fr",
+        "confidence_score": 0.88,
+        "page_count": 1,
+        "engine_used": "tesseract",
+        "language_detected": "fr"
+      },
+      "warnings": [],
+      "fallback_triggered": false
     },
     {
       "file": "training/documents locataires/William_Menard/Situation_Pro/Locataire/Document_de_Synthese_J00211108998_valide.pdf",
       "document_id": "training/documents locataires/William_Menard/Situation_Pro/Locataire/Document_de_Synthese_J00211108998_valide.pdf",
       "success": true,
-      "declared_type": null,
-      "detected_type": "company_registry",
-      "confidence": 0.55,
-      "status": "MATCH",
-      "extracted_text_snippet": "Synthése définitive au Guichet Unique  | | REPUBLIQUE FRANCAISE Liberté  Egalité  Fraternité  GUICHET UNIQUE DES ENTREPRISES  Formalité J0021 1108998  = = || INSTITUT NATIONAL  DE LA PROPRIETE INDUSTR..."
+      "data": {
+        "raw_text": "Synthése définitive au Guichet Unique | | REPUBLIQUE FRANCAISE Liberté Egalité Fraternité GUICHET UNIQUE DES ENTREPRISES Formalité J0021 1108998 = = || INSTITUT NATIONAL DE LA PROPRIETE INDUSTRIELLE Synthése de dépét — Version définitive — Formalité de création validée Ce document récapitule les informations contenues dans la formalité JO0211108998 concernant la société William MENARD ala date du 27 janvier 2026 Résumé de votre formalité Création d’une entreprise individuelle Nom de naissance et MENARD William Pierre Numéro de liasse : prénoms de I'entrepreneur: ~ Michel Date de dépot : N° d'identification (SIREN): 100386093 Formalité validée par : Forme juridique : Entrepreneur individuel Date de validation de la 75 BOULEVARD de la formalité : Adresse de I'entreprise : République 59100 Roubaix FRANCE Complément de localisation: Appartement 212 Référence client : Micro entreprise WEEYAM Consultez les informations de votre entreprise sur data.inpi.fr/entreprises/100386093 J00211108998 27/01/2026 INSEE Je 27/01/2026 27/01/2026 Votre formalité sur le guichet est terminée. Le 27/01/2026 a 12:09, les informations de la formalités ont été mises a disposition des administrations sociales (URSSAF ou MSA selon l’activité principale exercée) et fiscales pour traitement. En cas de difficulté, vous pouvez prendre contact directement avec vos interlocuteurs locaux. Déclarant signataire Nom : MENARD Prénoms : William Mail : weeyam.pro@gmail.com Téléphone : 0666268934 Document signé : Oui Date signature : 27/01/2026 Page 1/7\n\nSynthése définitive au Guichet Unique Observations Diffusion INSEE : Oui Diffusion commerciale : Non Piéces jointes Piéces jointes déposées pour traitement Nombre de piéces jointes déposées : 1 Intitulé de la piéce jointe demandée Nom du fichier Justificatif d'identité (recto/verso) Carte_identite_William_MENARD.pdf Formalité J0021 1108998 Page 2/7\n\nSynthése définitive au Guichet Unique Informations de I'entreprise Identité de l'entrepreneur Nom : Prénom : Genre : Pseudonyme : Date de naissance : Commune de naissance : Pays de naissance : Nationalité : Situation matrimoniale : Volet social de I'entrepreneur Numéro de sécurité sociale : Régime d'assurance maladie : Activité simultanée : Bénéficiaire du statut d'ambulant : Adresse de I'entrepreneur : Complément de localisation : Courriel : Indicatif téléphonique : Numéro de téléphone : Régime microsocial Périodicité du versement : Identité de l'entreprise Date d’immatriculation au RNE : Forme juridique : Structure de l'entreprise : Micro-entreprise : Nature de I'activité principale : Reliée a une entreprise agricole : MENARD William, Pierre, Michel Masculin WEEYAM 10/06/2004 Metz FRANCE Frangaise Célibataire 1040657463501 22 Régime général Non Non 75. BOULEVARD de la République 59100 Roubaix FRANCE Appartement 212 weeyam.pro@gmail.com +33 0666268934 Mensuel 27/01/2026 Entrepreneur individuel Avec établissement Oui Libérale non réglementée Non Formalité J0021 1108998 Page 3/7\n\nSynthése définitive au Guichet Unique Formalité J00211 108998 Entreprise agricole : Non Code APE : 7410Z Affiliation au régime agricole (RA) : Non Figure au registre des actifs agricoles (RAA): Non Adresse de |'établissement 75 BOULEVARD de la République Adresse : 59100 Roubaix FRANCE Complément de localisation : Appartement 212 Entreprise fixée au domicile de l'entrepreneur: = Qui Contrat d’appui Contrat d'appui déclaré: Non Renonciation a I'insaisissabilité de la résidence principale Pas de renonciation de I'insaisissabilite de la résidence principale Déclaration d'insaisissabilite de la / des résidence(s) avec les informations suivantes Pas de déclaration d'insaisissabilite d'une résidence secondaire Page 4/7\n\nSynthése définitive au Guichet Unique Etablissements Nombre d'établissements dans la formalité : Etablissements - 00015 SIRET de I'établissement : Numéro interne de classement (NIC) : Code APE de I'établissement : Nature de I'établissement pour l'entreprise : Nom commercial/ Nom d’exploitation : Adresse de I’établissement : Formalité J0021 1108998 10038609300015 00015 7410Z Etablissement principal WEEYAM 75 BOULEVARD de la République 59100 Roubaix FRANCE Complément de localisation : Appartement 212 Présence de salarié : Non Emploie son (ou ses) premier(s) salarié(s) : Non Activités Nombre d'activités indiquées : 1 Description de I'activité principale Activité principale de I'établissement: Oui Activité principale de I'entreprise : Oui Date de début de I'activité : 27/01/2026 Exercice de I'activiteé : Permanente Activité non sédentaire : Non Activité dans le prolongement d'une activité agricole : Nature d'activitée : Description détaillée Non Libérale non réglementée Graphiste, production de visuels pour répondre aux demandes d'un client. Catégorisation de I'activité : Précision activité : Artiste / Auteur : Marin Professionnel : Type d'origine : 1. Activités de services 2. Activités spécialisées, scientifiques et techniques 3. Activités graphiques et design 4. Activités spécialisées de design Activité-de services Non Non Création Page 5/7\n\nSynthése définitive au Guichet Unique Options Fiscales Régime d'imposition des bénéfices : Régime d'imposition de la TVA: Option pour le versement libératoire : Régime spécial BNC Franchise en base TVA Non Formalité J0021 1108998 Page 6/7\n\nSynthése définitive au Guichet Unique Adresse de correspondance Type de correspondant : Destinataire : Adresse de correspondance : Complément de localisation : Courriel : Indicatif téléphonique : Numéro de téléphone : Formalité J0021 1108998 L'entreprise MENARD William Pierre Michel 75 BOULEVARD de la République 59100 Roubaix FRANCE Appartement 212 weeyam.pro@gmail.com +33 0666268934 Page 7/7",
+        "confidence_score": 0.9,
+        "page_count": 7,
+        "engine_used": "tesseract",
+        "language_detected": "fr"
+      },
+      "warnings": [],
+      "fallback_triggered": false
     },
     {
       "file": "training/documents locataires/William_Menard/Situation_Pro/Garant/Avis_d_impot_2025_sur_les_revenus_2024.pdf",
       "document_id": "training/documents locataires/William_Menard/Situation_Pro/Garant/Avis_d_impot_2025_sur_les_revenus_2024.pdf",
       "success": true,
-      "declared_type": null,
-      "detected_type": "tax_notice",
-      "confidence": 0.86,
-      "status": "MATCH",
-      "extracted_text_snippet": "| af B | DIRECTION GENERALE DES FINANCES PUBLIQUES REPUBLIQUE Impét sur les revenus de 2024 AVISIR-RG  FRANCAISE Avis d'impét établi en 2025 La notice de cet avis est  Liberté disponible en cliquant_i..."
+      "data": {
+        "raw_text": "| af B | DIRECTION GENERALE DES FINANCES PUBLIQUES REPUBLIQUE Impét sur les revenus de 2024 AVISIR-RG FRANCAISE Avis d'impét établi en 2025 La notice de cet avis est Liberté disponible en cliquant_ici Exgalité ou sur impots.gouv.fr Fraternité CENTRE DES FINANCES PUBLIQUES SIP METZ 8 RUE DES CLERCS BP 82130 57053 METZ CEDEX 2 Vos références Numéro fiscal : Déclarant 1 (C) : 11 69 761 801 019 Déclarant 2 (C) : 17 36 940 295 195 Référence de l’avis : 25 57 0032135 28 Adresse d’imposition au 01/01/2025 : STEINMETZ EMMANUEL OU THOMAS MARLENE 28 RUE DES BENEDICTINES 57950 MONTIGNY LES METZ 28 RUE DES BENEDICTINES 57950 MONTIGNY LES METZ Numéro FIP: 570 83 97 6077337789 3A Numéro de réle : 011 Date d’établissement : 09/07/2025 Date de mise en recouvrement: 31/07/2025 Somme qu'il vous reste a payer 3 093,00 € Cette somme sera prélevée selon cet échéancier : Identifiant service : 57027 Vos contacts 25 septembre 2025: 773,00 € _ 27 octobre 2025: 773,00 € Par messagerie sécurisée 27 novembre 2025: 773,00 € dans votre espace particulier sur impots.gouv.fr 29 décembre 2025: 774.00 € UL Par téléphone au 0 809 401 401 * du lundi au vendredi, de 8h30 a 19h F Sur place Compte qui sera débité : FR76 1027 8059 000X XXXX XXX0 143 horaires de votre centre des finances publiques sur Identifiant de la banque : CMCIFR2AXXX impots.gouv.fr, rubrique Contact et prise de RDV . . : ne Nom du créancier : DIRECTION GENERALE DES FINANCES PUBLIQUES Référence Unique Mandat : FR46ZZZ0050021 A69G6A801219PAS1A25 SIP METZ SAID METZ 8 RUE DES CLERCS ee oo _ ; _ BOITE POSTALE 82130 Cet échéancier se substitue a la date limite de paiement fixée au 57053 METZ CEDEX 2 15/09/2025. Revenu fiscal de référence : Nombre de parts : * Gervice gratuit + coat de rappel) Plus de détails dans la (les) page (s) suivante (s). Cet avis permet de régulariser votre prélevement a la source réalisé en 2024 suite a votre déclaration des revenus effectuée en 2025. Pour retrouver toutes les informations relatives a votre prélevement a la source (taux, options ...), rendez-vous sur le service « Gérer mon prélévement a la source » accessible dans votre espace particulier sur impots.gouv.fr.\n\nAvis d'impét établi en 2025 Impét sur les revenus de 2024 N°fiscal : 11 69 761 801 019 Feuillet n°: 1 / 2 Déclarant 1 - Nom de naissance : STEINMETZ EMMANUEL Déclarant 2 - Nom de naissance : THOMAS MARLENE cas particulier slibataires 2nfants mai m = mil RESIDENCE EXCLUSIVE RESIDENCE ALTERNEE 2,00 Détail des revenus Déclar. 1 Déclar. 2 Total SAlAIES oe. ceeecccccceceeeeceeeceeeeeseeeceeeeaaseeeeeeeeaeeeeeeeae 11069 37468 Heures supplémentaires et jours RTT NON CXONESES. .........00000ceeeeeeeeeeeeceeeeeeeeeeeeceeeeueeeeeeeaes 0 Total des salaires et assimilés 2.................:::ccccceeee 11069 37468 Déduction 10% ou frais réelS........ eee cee eeeeeeeeeeee - 1107 - 3747 Salaires, pensions, rentes nets...............::cccceesseees 9962 33721 43683 Revenus percus par le foyer fiscal Revenus fonciers nets..........::.:ccssceeceesseeeeeeeeeeeees - 949 Revenu brut global... eeeeeesseeeeeeeeeneeeeeeeeeees 42734 Revenu iMposSable.........eeeeeeeeeeeeeeeseeeeeeeeeeeees 42734 Taux effectif (revenu total ou mondial)..................+ 62571 Impét aprés application du taux effectif 14 3485 IMPOT NET Total de l'impdt sur le revenu net...........-:::cceeeees 3485 CALCUL DU SOLDE DE VOTRE IMPOT POUR 2024 : IMPOT SUR LE REVENU Impét sur le revenu 2024 dd 5: 3485 Retenue a la source prélevée en 2024 par vos verseurs de revenus : - 392 Solde d'impét sur les revenus 2024 °...... 3093 TOTAL DE VOTRE IMPOSITION NETTE RESTANT A PAYER 3093 INFORMATIONS COMPLEMENTAIRES Revenu fiscal de référence 79... eee 64643 Revenus exonérés Déclar. 1 Heures supplémentaires et jours RTT..............:+ Déclarés 2302 Heures supplémentaires et jours RTT...........-.2:6 Nets 2072 Revenus industriels et commerciaux (régime micro-entreprise).............eeeeeeeeeeeereteeeeeees Déclarés 39675 Revenus industriels et commerciaux (régime micro-entreprise).............:::cceeceeceeeeeeeeeeees Nets (35) 19837 Suite en page suivante >>> Si vous souhaitez contester le montant de votre impét, vous pouvez effectuer une réclamation sur votre messagerie sécurisée sur impots.gouv.fr ou par courrier adressé a votre centre des finances publiques jusqu’au 31 décembre 2027 (dans les conditions prévues aux articles R* 190-1 et R* 196-1 du livre des procédures fiscales). Retrouvez dans la notice des précisions sur le traitement algorithmique ayant permis la détermination du montant de votre imposition, ainsi que son détail.\n\nAvis d'impot établi en 2025 Impét sur les revenus de 2024 N°fiscal : 11 69 761 801 019 Feuilletn®: 2 / 2 >>> Suite de votre avis PLAFOND EPARGNE RETRAITE Le plafond disponible pour la déduction des cotisations versées en 2025, pour la déclaration des revenus a souscrire en 2026 est de : Déclar. 1 Déclar. 2 Plafond total de 2023.............ccccccssssssseeeeeeeeeeeessses 16741 16741 Plafond non utilisé pour les revenus de 2022........ 4114 4114 Plafond non utilisé pour les revenus de 2023........ + 4114 + 4114 Plafond non utilisé pour les revenus de 2024........ + 4399 + 4399 Plafond calculé sur les revenus de 2024............... + 4637 + 4637 Plafond pour les cotisations versées en 2025....... = 17264 = 17264 PRELEVEMENT A LA SOURCE 2025 Pour consulter ou moduler votre taux de PAS et retrouver l'ensemble de vos informations rendez-vous sur impots.gouv.fr/votre espace particulier/gérer mon prélevement a la source ou appelez le 0809 401 401 AUTRES INFORMATIONS Taux moyen d'iMPOSitiON........ eee tees eeeeeee 8,16% Il correspond au taux auquel l'ensemble des revenus de votre foyer fiscal déclarés pour 2024 est taxé. Le taux moyen d'imposition est différent du taux d¢ prélévement a la source, car ce dernier est calculé hors réductions ou crédits d'impét et ne tient pas compte de certains revenus, comme les plus-values de cession de vgleurs mobiliéres ou les revenus taxés a taux forfaitaire. Taux marginal d'imposition.............eeeeeeeeeeees 30,00% Le taux marginal correspond au taux de la tranche) la plus élevée du baréeme de I'impét sur le revenu auquel sont tayés pour l'année 2024 les revenus déclarés de votre foyer fiscal.",
+        "confidence_score": 0.87,
+        "page_count": 3,
+        "engine_used": "tesseract",
+        "language_detected": "fr"
+      },
+      "warnings": [],
+      "fallback_triggered": false
     },
     {
       "file": "training/documents locataires/William_Menard/Justificatif_ressources/Locataire/attestation sur honneur  pour William MENARD.pdf",
       "document_id": "training/documents locataires/William_Menard/Justificatif_ressources/Locataire/attestation sur honneur  pour William MENARD.pdf",
       "success": true,
-      "declared_type": null,
-      "detected_type": "proof_of_address",
-      "confidence": 0.17,
-      "status": "MATCH",
-      "extracted_text_snippet": "ATTESTATION SUR L’HONNEUR  Je soussignée, :  Madame Marléne THOMAS,  Professeure des écoles,  Demeurant au 28 allée des Bénédictines - 57950 Montigny-lés-Metz. Email : menethomas@gmail.com  Téléphone ..."
+      "data": {
+        "raw_text": "ATTESTATION SUR L’HONNEUR Je soussignée, : Madame Marléne THOMAS, Professeure des écoles, Demeurant au 28 allée des Bénédictines - 57950 Montigny-lés-Metz. Email : menethomas@gmail.com Téléphone : 06 81 19 89 53 Atteste sur Ihonneur que mon fils : William MENARD, né le 10 juin 2004, est rattaché a mon foyer fiscal a ce jour. | Je précise que mon fils ne dispose pas encore d’une situation professionnelle stable et que je mengage a étre sa garante dans le cadre de la location d’un logement. La présente attestation est établie pour servir et valoir ce que de droit. Fait a Montigny-lés-Metz, le 16 février 2026 Signature précédée de la mention : « Lu et approuvé, bon pour attestation sur I'honneur »",
+        "confidence_score": 0.89,
+        "page_count": 1,
+        "engine_used": "tesseract",
+        "language_detected": "fr"
+      },
+      "warnings": [],
+      "fallback_triggered": false
     },
     {
       "file": "training/documents locataires/William_Menard/Justificatif_ressources/Garant/2026_01_BP_janvier.pdf",
       "document_id": "training/documents locataires/William_Menard/Justificatif_ressources/Garant/2026_01_BP_janvier.pdf",
       "success": true,
-      "declared_type": null,
-      "detected_type": "payslip",
-      "confidence": 0.22,
-      "status": "MATCH",
-      "extracted_text_snippet": "DDFIP BULLETIN DE PAYE N° ORDRE | = | A 53632 Liberté « Hgotteé « Frarernitd DE LA MOSELLE VO JANVIER 2026 Liberté + Egalité + Fraternité TEMPS DE TRAVAIL 151,67 H  REPUBLIQUE FRANGAISE : | : TOUT REN..."
+      "data": {
+        "raw_text": "DDFIP BULLETIN DE PAYE N° ORDRE | = | A 53632 Liberté « Hgotteé « Frarernitd DE LA MOSELLE VO JANVIER 2026 Liberté + Egalité + Fraternité TEMPS DE TRAVAIL 151,67 H REPUBLIQUE FRANGAISE : | : TOUT RENSEIGNEMENT RELATIF AU CONTENU DE CE BULLETIN DE PAYE DOIT ETRE DEMANDE AU SERVICE GESTIONNAIRE INDIQUE CI-DESSOUS, RAPPELEZ VOTRE NUMERO D'IDENTIFICATION AFFECTATION crenen | 15 0017 603 057 ||ENSEIGNEMENT ELEMENTAIRE MOSELLE | 378704311 00018 057 3010 E.E.PU 21570017000032 IDENTIFICATION = ENFANTS 2 INDICE OU TAUX HORAIRE | 206 || 2 73 04 57 463 228 || 33 ||00| |PROFESSEUR ECOLES HC|| 00 || 05 || 0768 || | CODE ELEMENTS A PAYER A DEDUIRE POUR INFORMATION 101000| TRAITEMENT BRUT € 3780, 69 101050) RETENUE PC € 419,66 201914/1.S.A.E € 70,13 202206| IND. COMPENSATRICE CSG € 60,60 202321|/PRIME EQUIPT INFORMATIQUE € 176,00 202354) PARTICIPATION A LA PSC € 15,00 401201/C.S.G. NON DEDUCTIBLE € 95,97 401301\\/C.S.G. DEDUCTIBLE € 271,92 401501/C.R.D.S. € 19,99 403301)/COTIS PATRON. ALLOC FAMIL € 130,43 403397/COT PAT AF MAJORATION € 68,06 403501|/COT PAT FNAL DEPLAFONNEE € 18,90 403801/CONT SOLIDARITE AUTONOMIE € 11,34 404001|COT PAT MALADIE DEPLAFON € 366,73 411050} CONTRIB. PC € 3110,75 411058|CONTRIBUTION ATI € 12,10 501080|/COT SAL RAFP € 13,71 501180|COT PAT RAFP € 13,71 554500/COT PAT VST MOBILITE € 75,61 604970| TRANSFERT PRIMES / POINTS € 32,42 € € 011100) NET A PAYER AVANT IMPOT SUR LE REVENU € 3248,75 011300| MONTANT NET SOCIAL € 3233,75 558000/ IMPOT SUR LE REVENU PRELEVE A LA SOURCE € 198,52 (TAUX PERSONNALISE 5,903) € € € € € € € € € € € € € € € € € € € € € € € € VOIR EXPLICATIONS AU VERSO * RAPPELS : VOIR DECOMPTE | le € | € | ec 78 77,63 | RO © 4102,42 || 1052,19 ||/€ 3807,63| 2 73 04 57 463 228 33 : . € Il € 3_780,69 | | MME THOMAS MARLENE eS oe 28 ALL DES BENEDICTINES € 3 364,71 ||€ 3 364,71 57950 MONTIGNY LES METZ DDFIP 057 6 LONG? - ESA - ABLAWd 26 JANVIER 2026 ———1. | Er DE compres SunLies FR76 1027 8059 0000 0214 3680 144 CMCIFR2A DANS VOTRE INTERET. CONSERVEZ CE DOCUMENT SANS LIMITATION DE DUREE",
+        "confidence_score": 0.78,
+        "page_count": 1,
+        "engine_used": "tesseract",
+        "language_detected": "fr"
+      },
+      "warnings": [],
+      "fallback_triggered": false
     },
     {
       "file": "training/documents locataires/William_Menard/Justificatif_ressources/Garant/2025_12_BP_decembre.pdf",
       "document_id": "training/documents locataires/William_Menard/Justificatif_ressources/Garant/2025_12_BP_decembre.pdf",
       "success": true,
-      "declared_type": null,
-      "detected_type": "payslip",
-      "confidence": 0.22,
-      "status": "MATCH",
-      "extracted_text_snippet": "| sof ¥ DDFIP BULLETIN DE PAYE N° ORDRE | A 55008 — DE LA MOSELLE NOG DECEMBRE 2025 Liberté « Egalité + Fraternité TEMPS DE TRAVAIL 151,67 H  REPUBLIQUE FRANGAISE : | : TOUT RENSEIGNEMENT RELATIF AU C..."
+      "data": {
+        "raw_text": "| sof ¥ DDFIP BULLETIN DE PAYE N° ORDRE | A 55008 — DE LA MOSELLE NOG DECEMBRE 2025 Liberté « Egalité + Fraternité TEMPS DE TRAVAIL 151,67 H REPUBLIQUE FRANGAISE : | : TOUT RENSEIGNEMENT RELATIF AU CONTENU DE CE BULLETIN DE PAYE DOIT ETRE DEMANDE AU SERVICE GESTIONNAIRE INDIQUE CI-DESSOUS, RAPPELEZ VOTRE NUMERO D'IDENTIFICATION AFFECTATION crenen | 15 0017 603 057 ENSEIGNEMENT ELEMENTAIRE MOSELLE | 378704311 00018 057 3010 E.E.PU 21570017000032 IDENTIFICATION = ENFANTS 2 INDICE OU TAUX HORAIRE | 206 || 2 73 04 57 463 228 || 33 ||00| |PROFESSEUR ECOLES HC|| 00 || 05 || 0768 || | CODE ELEMENTS A PAYER A DEDUIRE POUR INFORMATION 101000/ TRAITEMENT BRUT € 3780, 69 101050|/RETENUE PC € 419,66 201914/1I.S.A.E € 70,13 202206|IND. COMPENSATRICE CSG € 48,36 202354| PARTICIPATION A LA PSC € 15,00 401201/C.S.G. NON DEDUCTIBLE € 91,53 401301/C.S.G. DEDUCTIBLE € 259,34 401501/C.R.D.S. S 19,07 403301/COTIS PATRON. ALLOC FAMIL € 130,43 403397|COT PAT AF MAJORATION € 68,06 403501/COT PAT FNAL DEPLAFONNEE € 18,90 403801|CONT SOLIDARITE AUTONOMIE € 11,34 404001/COT PAT MALADIE DEPLAFON € 366,73 411050| CONTRIB. PC € 2959,52 411058|CONTRIBUTION ATI € 12,10 501080|/COT SAL RAFP € 4,31 501180/COT PAT RAFP € 4,31 554500|COT PAT VST MOBILITE g 75,61 604970| TRANSFERT PRIMES / POINTS € 32,42 € € 011100| NET A PAYER AVANT IMPOT SUR LE REVENU € 3087,85 011300] MONTANT NET SOCIAL € 3072,85 558000|IMPOT SUR LE REVENU PRELEVE A LA SOURCE € 188,71 (TAUX PERSONNALISE 5,908) € € € g € € € g € e € € € € € € € € € S € € € € € VOIR EXPLICATIONS AU VERSO * RAPPELS : VOIR DECOMPTE | | € | € | € | ee © 7528,76 | ROMO) < 3914,18 ||€ 1015,04 ||€ 3647,00| 2 73 04 57 463 228 33 : . NETAPAYER | 2 899,14 € € Il € 3_780,69 | | MME THOMAS MARLENE eS oe 28 ALL DES BENEDICTINES € 38 073,88 |\\€ 3.198,45 57950 MONTIGNY LES METZ DDFIP 057 6 LONG? - ESA - ABLAWd 18 DECEMBRE 2025 ———1. | Er DE compres SunLies FR76 1027 8059 0000 0214 3680 144 CMCIFR2A DANS VOTRE INTERET. CONSERVEZ CE DOCUMENT SANS LIMITATION DE DUREE",
+        "confidence_score": 0.78,
+        "page_count": 1,
+        "engine_used": "tesseract",
+        "language_detected": "fr"
+      },
+      "warnings": [],
+      "fallback_triggered": false
     },
     {
       "file": "training/documents locataires/William_Menard/Justificatif_ressources/Garant/2025_11_BP_novembre.pdf",
       "document_id": "training/documents locataires/William_Menard/Justificatif_ressources/Garant/2025_11_BP_novembre.pdf",
       "success": true,
-      "declared_type": null,
-      "detected_type": "payslip",
-      "confidence": 0.22,
-      "status": "MATCH",
-      "extracted_text_snippet": "| sof ¥ DDFIP BULLETIN DE PAYE N° ORDRE | A 55716 — DE LA MOSELLE NOG NOVEMBRE 2025 Liberté « Egalité + Fraternité TEMPS DE TRAVAIL 151,67 H  REPUBLIQUE FRANGAISE : | : TOUT RENSEIGNEMENT RELATIF AU C..."
+      "data": {
+        "raw_text": "| sof ¥ DDFIP BULLETIN DE PAYE N° ORDRE | A 55716 — DE LA MOSELLE NOG NOVEMBRE 2025 Liberté « Egalité + Fraternité TEMPS DE TRAVAIL 151,67 H REPUBLIQUE FRANGAISE : | : TOUT RENSEIGNEMENT RELATIF AU CONTENU DE CE BULLETIN DE PAYE DOIT ETRE DEMANDE AU SERVICE GESTIONNAIRE INDIQUE CI-DESSOUS, RAPPELEZ VOTRE NUMERO D'IDENTIFICATION AFFECTATION crenen | 15 0017 603 057 ||ENSEIGNEMENT ELEMENTAIRE MOSELLE | 378704311 00018 057 3010 E.E.PU 21570017000032 IDENTIFICATION ENFANTS 2 INDICE OU TAUX HORAIRE | 206 || 2 73 04 57 463 228 || 33 ||00| |PROFESSEUR ECOLES HC|| 00 || 05 || 0768 || | CODE ELEMENTS A PAYER A DEDUIRE POUR INFORMATION 101000| TRAITEMENT BRUT € 3780, 69 101050) RETENUE PC € 419,66 201914/I.S.A.E € 70,13 202206| IND. COMPENSATRICE CSG € 48,36 202206|/ IND. COMPENSATRICE CSG € 25,98 RAPPEL ANNEE COURANTE € 202354) PARTICIPATION A LA PSC € 15,00 401201/C.S.G. NON DEDUCTIBLE € 92,14 401301/C.S.G. DEDUCTIBLE € 261,08 401501/C.R.D.S. € 19,20 403301/COTIS PATRON. ALLOC FAMIL € 130,43 403397|/COT PAT AF MAJORATION € 68,06 403501/COT PAT FNAL DEPLAFONNEE € 18,90 403801|/CONT SOLIDARITE AUTONOMIE € 11,34 404001/COT PAT MALADIE DEPLAFON € 366,73 411050) CONTRIB.PC € 2959,52 411058)CONTRIBUTION ATI € 12,10 501080 COT SAL RAFP € 5,60 501180|/COT PAT RAFP € 5,60 554500/COT PAT VST MOBILITE € 75,61 604970) TRANSFERT PRIMES / POINTS € 32,42 € € 011100) NET A PAYER AVANT IMPOT SUR LE REVENU € 3110,06 011300) MONTANT NET SOCIAL € 3095,06 558000) IMPOT SUR LE REVENU PRELEVE A LA SOURCE € 190,06 (TAUX PERSONNALISE 5,90%) € € € € € € € € € € € € € € € € € € € € € € € VOIR EXPLICATIONS AU VERSO * RAPPELS : VOIR DECOMPTE | le € | € | ec 7556,03 | MERION < 3940,16 ||€ 1020,16 ||\\€ 3648,29| 2 73 04 57 463 228 33 : . NETAPAYER | 2 920,00 € Il € 3_780,69 | | MME THOMAS MARLENE eS oe 28 ALL DES BENEDICTINES € 34 875,43 ||€ 3. 221,40 57950 MONTIGNY LES METZ DDFIP 057 6 LONG? - ESA - ABLAWd 24 NOVEMBRE 2025 ———1. | Er DE compres SunLies FR76 1027 8059 0000 0214 3680 144 CMCIFR2A DANS VOTRE INTERET. CONSERVEZ CE DOCUMENT SANS LIMITATION DE DUREE",
+        "confidence_score": 0.78,
+        "page_count": 1,
+        "engine_used": "tesseract",
+        "language_detected": "fr"
+      },
+      "warnings": [],
+      "fallback_triggered": false
     },
     {
       "file": "training/documents locataires/William_Menard/C_Identité/Locataire/Carte identité William MENARD.pdf",
       "document_id": "training/documents locataires/William_Menard/C_Identité/Locataire/Carte identité William MENARD.pdf",
       "success": true,
-      "declared_type": null,
-      "detected_type": "unknown",
-      "confidence": 0.0,
-      "status": "UNKNOWN",
-      "extracted_text_snippet": "22.07.2029  u’au  lable  arte va  ..."
+      "data": {
+        "raw_text": "22.07.2029 u’au lable arte va",
+        "confidence_score": 0.72,
+        "page_count": 1,
+        "engine_used": "tesseract",
+        "language_detected": "fr"
+      },
+      "warnings": [],
+      "fallback_triggered": false
     },
     {
       "file": "training/documents locataires/William_Menard/C_Identité/Garant/2026-02-15-thomas.pdf",
       "document_id": "training/documents locataires/William_Menard/C_Identité/Garant/2026-02-15-thomas.pdf",
       "success": true,
-      "declared_type": null,
-      "detected_type": "id_card",
-      "confidence": 0.67,
-      "status": "MATCH",
-      "extracted_text_snippet": "Es REPUBLIQUE FRANCAISE  Liberté Egalité Fraternité  Justificatif d’identité  a usage unique  N° EALHIBRMXTY83MX  CADRE D’UTILISATION  DESTINEA  Frédéric DETEZ de la DREVE  GENERE LE  15/02/2026  EMET..."
+      "data": {
+        "raw_text": "Es REPUBLIQUE FRANCAISE Liberté Egalité Fraternité Justificatif d’identité a usage unique N° EALHIBRMXTY83MX CADRE D’UTILISATION DESTINEA Frédéric DETEZ de la DREVE GENERE LE 15/02/2026 EMETTEUR THOMAS PRENOMS MARLENE ANNE JOSETTE NATIONALITE F FRA LIEU DE NAISSANCE METZ JUSTIFICATIF OBTENU A PARTIR D'UNE CARTE D‘IDENTITE VALIDE AU MOMENT DE LA GENERATION DANS L’‘APPLICATION FRANCE IDENTITE. CE DOCUMENT NE POURRA ETRE UTILISE EN DEHORS DU CADRE SPECIFIQUE POUR LEQUEL IL A ETE DEFINI. MOTIF location appartement DATE LIMITE D’UTILISATION 15/03/2026 DATE DE NAISSANCE 14/04/1973 Scanner ce QR code avec l'application France Identité ou vérifier ce justificatif sur france-identite.gouv.fr/justificatif CETTE ATTESTATION ELECTRONIQUE D’IDENTITE A ETE GENEREE A PARTIR DE DONNEES ISSUES D’UNE CARTE D’IDENTITE VALIDE ET DE LAPPLICATION FRANCE IDENTITE, CONFORMEMENT AU DECRET N°2022-676 DU 26 AVRIL 2022 AUTORISANT LA CREATION D‘UN MOYEN D'IDENTIFICATION ELECTRONIQUE DENOMME « SERVICE DE GARANTIE DE L'IDENTITE NUMERIQUE » (SGIN) — CETTE ATTESTATION EST SIGNEE ELECTRONIQUEMENT PAR LE MINISTERE DE L'INTERIEUR AFIN DE GARANTIR LINTEGRITE ET LEXACTITUDE DES ATTRIBUTS D'IDENTITE AUPRES DES DESTINATAIRES AUXQUELS ELLE EST TRANSMISE — LE TRAITEMENT DES DONNEES A CARACTERE PERSONNEL DE L’USAGER DANS LE CADRE DU SGIN S‘OPERE CONFORMEMENT AUX EXIGENCES DU REGLEMENT 2016/679 DU PARLEMENT EUROPEEN ET DU CONSEIL DU 27 AVRIL 2016 RELATIF A LA PROTECTION DES PERSONNES PHYSIQUES A L'EGARD DU TRAITEMENT DES DONNEES A CARACTERE PERSONNEL ET A LA LIBRE CIRCULATION DE CES DONNEES (RGPD).",
+        "confidence_score": 0.9,
+        "page_count": 1,
+        "engine_used": "tesseract",
+        "language_detected": "fr"
+      },
+      "warnings": [],
+      "fallback_triggered": false
     }
   ]
 }

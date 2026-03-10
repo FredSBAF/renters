@@ -1,0 +1,204 @@
+{
+  "success": true,
+  "count": 22,
+  "results": [
+    {
+      "file": "training/documents locataires/Clémence_Neuquelman/Justificatif_Domicile/Locataire/QUIT_20260205_11222.pdf",
+      "document_id": "training/documents locataires/Clémence_Neuquelman/Justificatif_Domicile/Locataire/QUIT_20260205_11222.pdf",
+      "success": false,
+      "data": {},
+      "warnings": [
+        "PARSE_INCOMPLETE"
+      ]
+    },
+    {
+      "file": "training/documents locataires/Clémence_Neuquelman/Justificatif_Domicile/Locataire/QUIT_20260205_11222-2.pdf",
+      "document_id": "training/documents locataires/Clémence_Neuquelman/Justificatif_Domicile/Locataire/QUIT_20260205_11222-2.pdf",
+      "success": false,
+      "data": {},
+      "warnings": [
+        "PARSE_INCOMPLETE"
+      ]
+    },
+    {
+      "file": "training/documents locataires/Clémence_Neuquelman/Justificatif_Domicile/Locataire/QUIT_20260205_11222-3.pdf",
+      "document_id": "training/documents locataires/Clémence_Neuquelman/Justificatif_Domicile/Locataire/QUIT_20260205_11222-3.pdf",
+      "success": false,
+      "data": {},
+      "warnings": [
+        "PARSE_INCOMPLETE"
+      ]
+    },
+    {
+      "file": "training/documents locataires/Clémence_Neuquelman/Justificatif_Domicile/Garant/justificatif domicile Michel NEUQUELMAN.pdf",
+      "document_id": "training/documents locataires/Clémence_Neuquelman/Justificatif_Domicile/Garant/justificatif domicile Michel NEUQUELMAN.pdf",
+      "success": false,
+      "data": {},
+      "warnings": [
+        "PARSE_INCOMPLETE"
+      ]
+    },
+    {
+      "file": "training/documents locataires/Clémence_Neuquelman/Situation_Pro/Locataire/Document_de_Synthese_J00213351299_v1_2.pdf",
+      "document_id": "training/documents locataires/Clémence_Neuquelman/Situation_Pro/Locataire/Document_de_Synthese_J00213351299_v1_2.pdf",
+      "success": false,
+      "data": {},
+      "warnings": [
+        "PARSE_INCOMPLETE"
+      ]
+    },
+    {
+      "file": "training/documents locataires/Clémence_Neuquelman/Situation_Pro/Garant/avis imposition michel neuquelman.jpg",
+      "document_id": "training/documents locataires/Clémence_Neuquelman/Situation_Pro/Garant/avis imposition michel neuquelman.jpg",
+      "success": false,
+      "data": {},
+      "warnings": [
+        "PARSE_INCOMPLETE"
+      ]
+    },
+    {
+      "file": "training/documents locataires/Clémence_Neuquelman/Justificatif_ressources/Locataire/Attestation rattachement foyer fiscal.pdf",
+      "document_id": "training/documents locataires/Clémence_Neuquelman/Justificatif_ressources/Locataire/Attestation rattachement foyer fiscal.pdf",
+      "success": false,
+      "data": {},
+      "warnings": [
+        "PARSE_INCOMPLETE"
+      ]
+    },
+    {
+      "file": "training/documents locataires/Clémence_Neuquelman/Justificatif_ressources/Garant/IMG_4912.pdf",
+      "document_id": "training/documents locataires/Clémence_Neuquelman/Justificatif_ressources/Garant/IMG_4912.pdf",
+      "success": false,
+      "data": {},
+      "warnings": [
+        "PARSE_INCOMPLETE"
+      ]
+    },
+    {
+      "file": "training/documents locataires/Clémence_Neuquelman/C_Identité/Locataire/Carte d'identité Clémence.pdf",
+      "document_id": "training/documents locataires/Clémence_Neuquelman/C_Identité/Locataire/Carte d'identité Clémence.pdf",
+      "success": false,
+      "data": {},
+      "warnings": [
+        "PARSE_INCOMPLETE"
+      ]
+    },
+    {
+      "file": "training/documents locataires/Clémence_Neuquelman/C_Identité/Garant/IMG_4907.JPG",
+      "document_id": "training/documents locataires/Clémence_Neuquelman/C_Identité/Garant/IMG_4907.JPG",
+      "success": false,
+      "data": {},
+      "warnings": [
+        "PARSE_INCOMPLETE"
+      ]
+    },
+    {
+      "file": "training/documents locataires/William_Menard/Justificatif_Domicile/Locataire/QUIT_20260205_9962 (2).pdf",
+      "document_id": "training/documents locataires/William_Menard/Justificatif_Domicile/Locataire/QUIT_20260205_9962 (2).pdf",
+      "success": false,
+      "data": {},
+      "warnings": [
+        "PARSE_INCOMPLETE"
+      ]
+    },
+    {
+      "file": "training/documents locataires/William_Menard/Justificatif_Domicile/Locataire/QUIT_20260205_9962.pdf",
+      "document_id": "training/documents locataires/William_Menard/Justificatif_Domicile/Locataire/QUIT_20260205_9962.pdf",
+      "success": false,
+      "data": {},
+      "warnings": [
+        "PARSE_INCOMPLETE"
+      ]
+    },
+    {
+      "file": "training/documents locataires/William_Menard/Justificatif_Domicile/Locataire/QUIT_20260205_9962 (1).pdf",
+      "document_id": "training/documents locataires/William_Menard/Justificatif_Domicile/Locataire/QUIT_20260205_9962 (1).pdf",
+      "success": false,
+      "data": {},
+      "warnings": [
+        "PARSE_INCOMPLETE"
+      ]
+    },
+    {
+      "file": "training/documents locataires/William_Menard/Justificatif_Domicile/Garant/attestation_domicile (1).pdf",
+      "document_id": "training/documents locataires/William_Menard/Justificatif_Domicile/Garant/attestation_domicile (1).pdf",
+      "success": false,
+      "data": {},
+      "warnings": [
+        "PARSE_INCOMPLETE"
+      ]
+    },
+    {
+      "file": "training/documents locataires/William_Menard/Situation_Pro/Locataire/Document_de_Synthese_J00211108998_valide.pdf",
+      "document_id": "training/documents locataires/William_Menard/Situation_Pro/Locataire/Document_de_Synthese_J00211108998_valide.pdf",
+      "success": false,
+      "data": {},
+      "warnings": [
+        "PARSE_INCOMPLETE"
+      ]
+    },
+    {
+      "file": "training/documents locataires/William_Menard/Situation_Pro/Garant/Avis_d_impot_2025_sur_les_revenus_2024.pdf",
+      "document_id": "training/documents locataires/William_Menard/Situation_Pro/Garant/Avis_d_impot_2025_sur_les_revenus_2024.pdf",
+      "success": false,
+      "data": {},
+      "warnings": [
+        "PARSE_INCOMPLETE"
+      ]
+    },
+    {
+      "file": "training/documents locataires/William_Menard/Justificatif_ressources/Locataire/attestation sur honneur  pour William MENARD.pdf",
+      "document_id": "training/documents locataires/William_Menard/Justificatif_ressources/Locataire/attestation sur honneur  pour William MENARD.pdf",
+      "success": false,
+      "data": {},
+      "warnings": [
+        "PARSE_INCOMPLETE"
+      ]
+    },
+    {
+      "file": "training/documents locataires/William_Menard/Justificatif_ressources/Garant/2026_01_BP_janvier.pdf",
+      "document_id": "training/documents locataires/William_Menard/Justificatif_ressources/Garant/2026_01_BP_janvier.pdf",
+      "success": false,
+      "data": {},
+      "warnings": [
+        "PARSE_INCOMPLETE"
+      ]
+    },
+    {
+      "file": "training/documents locataires/William_Menard/Justificatif_ressources/Garant/2025_12_BP_decembre.pdf",
+      "document_id": "training/documents locataires/William_Menard/Justificatif_ressources/Garant/2025_12_BP_decembre.pdf",
+      "success": false,
+      "data": {},
+      "warnings": [
+        "PARSE_INCOMPLETE"
+      ]
+    },
+    {
+      "file": "training/documents locataires/William_Menard/Justificatif_ressources/Garant/2025_11_BP_novembre.pdf",
+      "document_id": "training/documents locataires/William_Menard/Justificatif_ressources/Garant/2025_11_BP_novembre.pdf",
+      "success": false,
+      "data": {},
+      "warnings": [
+        "PARSE_INCOMPLETE"
+      ]
+    },
+    {
+      "file": "training/documents locataires/William_Menard/C_Identité/Locataire/Carte identité William MENARD.pdf",
+      "document_id": "training/documents locataires/William_Menard/C_Identité/Locataire/Carte identité William MENARD.pdf",
+      "success": false,
+      "data": {},
+      "warnings": [
+        "PARSE_INCOMPLETE"
+      ]
+    },
+    {
+      "file": "training/documents locataires/William_Menard/C_Identité/Garant/2026-02-15-thomas.pdf",
+      "document_id": "training/documents locataires/William_Menard/C_Identité/Garant/2026-02-15-thomas.pdf",
+      "success": false,
+      "data": {},
+      "warnings": [
+        "PARSE_INCOMPLETE"
+      ]
+    }
+  ]
+}

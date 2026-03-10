@@ -10,3 +10,4 @@ logs/
 *.log
 .DS_Store
 training/
+analyzer/run/results.json
