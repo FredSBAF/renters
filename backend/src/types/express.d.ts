@@ -5,6 +5,8 @@ declare global {
         id: number;
         email: string;
         role: string;
+        agencyId?: number | null;
+        is_2fa_enabled?: boolean;
       };
     }
   }

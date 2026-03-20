@@ -3,6 +3,7 @@ import { User } from './User';
 import { RefreshToken } from './RefreshToken';
 import { EmailVerificationToken } from './EmailVerificationToken';
 import { PasswordResetToken } from './PasswordResetToken';
+import { UserConsent } from './UserConsent';
 
 User.belongsTo(Agency, { foreignKey: 'agency_id' });
 Agency.hasMany(User, { foreignKey: 'agency_id' });
@@ -16,4 +17,14 @@ User.hasMany(EmailVerificationToken, { foreignKey: 'user_id' });
 PasswordResetToken.belongsTo(User, { foreignKey: 'user_id' });
 User.hasMany(PasswordResetToken, { foreignKey: 'user_id' });
 
-export { Agency, User, RefreshToken, EmailVerificationToken, PasswordResetToken };
+UserConsent.belongsTo(User, { foreignKey: 'user_id' });
+User.hasMany(UserConsent, { foreignKey: 'user_id' });
+
+export {
+  Agency,
+  User,
+  RefreshToken,
+  EmailVerificationToken,
+  PasswordResetToken,
+  UserConsent,
+};

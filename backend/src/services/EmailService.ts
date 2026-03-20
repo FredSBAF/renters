@@ -38,3 +38,27 @@ export async function sendVerificationEmail(
   });
   logger.info(`Verification email sent to ${to}`);
 }
+
+export async function sendAgencyInvitationEmail(
+  to: string,
+  invitationToken: string
+): Promise<void> {
+  const joinUrl = `${config.frontendUrl}/agent/join?token=${encodeURIComponent(invitationToken)}`;
+  const html = `
+    <p>Vous avez été invité(e) à rejoindre une agence sur Pouraccord.</p>
+    <p>Utilisez le lien ci-dessous pour rejoindre l'espace agence :</p>
+    <p><a href="${joinUrl}">${joinUrl}</a></p>
+    <p>Ce lien expire dans 7 jours.</p>
+  `;
+  if (config.env === 'test') {
+    logger.debug(`[EmailService] Would send agency invitation to ${to}`);
+    return;
+  }
+  await transporter.sendMail({
+    from: `"${config.email.fromName}" <${config.email.from}>`,
+    to,
+    subject: 'Invitation agence — Pouraccord',
+    html,
+  });
+  logger.info(`Agency invitation email sent to ${to}`);
+}

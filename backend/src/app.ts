@@ -27,6 +27,7 @@ app.get('/health', (req, res) => {
   return successResponse(res, data, 'Health check');
 });
 
+app.use('/api/v1', routes);
 app.use('/', routes);
 
 export default app;
