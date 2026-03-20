@@ -52,6 +52,9 @@ const envSchema = Joi.object({
 
   STRIPE_SECRET_KEY: Joi.string().required(),
   STRIPE_WEBHOOK_SECRET: Joi.string().required(),
+  STRIPE_PRICE_ID: Joi.string().required(),
+  STRIPE_SUCCESS_URL: Joi.string().uri().required(),
+  STRIPE_CANCEL_URL: Joi.string().uri().required(),
 
   AI_SERVICE_URL: Joi.string().uri().required(),
   AI_SERVICE_SECRET: Joi.string().required(),
@@ -126,6 +129,9 @@ export const config = {
   stripe: {
     secretKey: raw.STRIPE_SECRET_KEY as string,
     webhookSecret: raw.STRIPE_WEBHOOK_SECRET as string,
+    priceId: raw.STRIPE_PRICE_ID as string,
+    successUrl: raw.STRIPE_SUCCESS_URL as string,
+    cancelUrl: raw.STRIPE_CANCEL_URL as string,
   },
   ai: {
     serviceUrl: raw.AI_SERVICE_URL as string,

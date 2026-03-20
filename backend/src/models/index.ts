@@ -4,6 +4,7 @@ import { RefreshToken } from './RefreshToken';
 import { EmailVerificationToken } from './EmailVerificationToken';
 import { PasswordResetToken } from './PasswordResetToken';
 import { UserConsent } from './UserConsent';
+import { PaymentLog } from './PaymentLog';
 
 User.belongsTo(Agency, { foreignKey: 'agency_id' });
 Agency.hasMany(User, { foreignKey: 'agency_id' });
@@ -20,6 +21,9 @@ User.hasMany(PasswordResetToken, { foreignKey: 'user_id' });
 UserConsent.belongsTo(User, { foreignKey: 'user_id' });
 User.hasMany(UserConsent, { foreignKey: 'user_id' });
 
+PaymentLog.belongsTo(Agency, { foreignKey: 'agency_id' });
+Agency.hasMany(PaymentLog, { foreignKey: 'agency_id' });
+
 export {
   Agency,
   User,
@@ -27,4 +31,5 @@ export {
   EmailVerificationToken,
   PasswordResetToken,
   UserConsent,
+  PaymentLog,
 };

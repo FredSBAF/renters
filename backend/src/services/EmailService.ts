@@ -62,3 +62,90 @@ export async function sendAgencyInvitationEmail(
   });
   logger.info(`Agency invitation email sent to ${to}`);
 }
+
+export async function sendSubscriptionConfirmation(email: string): Promise<void> {
+  const billingUrl = `${config.frontendUrl}/billing`;
+  const html = `
+    <p>Votre abonnement Renters est activé.</p>
+    <p>Montant: 300 EUR HT / mois.</p>
+    <p>Accédez a votre espace facturation: <a href="${billingUrl}">${billingUrl}</a></p>
+  `;
+  if (config.env === 'test') {
+    logger.debug(`[EmailService] Would send subscription confirmation to ${email}`);
+    return;
+  }
+  await transporter.sendMail({
+    from: `"${config.email.fromName}" <${config.email.from}>`,
+    to: email,
+    subject: 'Votre abonnement Renters est activé',
+    html,
+  });
+  logger.info(`Subscription confirmation email sent to ${email}`);
+}
+
+export async function sendPaymentFailed(
+  email: string,
+  attemptCount: number
+): Promise<void> {
+  const billingUrl = `${config.frontendUrl}/billing`;
+  const suspensionText =
+    attemptCount >= 3
+      ? '<p>Votre compte risque d etre suspendu (ou est suspendu) apres plusieurs echecs.</p>'
+      : '';
+  const html = `
+    <p>Nous n avons pas pu traiter votre dernier paiement.</p>
+    <p>Merci de mettre a jour votre moyen de paiement:</p>
+    <p><a href="${billingUrl}">${billingUrl}</a></p>
+    <p>Nombre de tentatives: ${attemptCount}</p>
+    ${suspensionText}
+  `;
+  if (config.env === 'test') {
+    logger.debug(`[EmailService] Would send payment failed email to ${email}`);
+    return;
+  }
+  await transporter.sendMail({
+    from: `"${config.email.fromName}" <${config.email.from}>`,
+    to: email,
+    subject: 'Echec de paiement - Action requise',
+    html,
+  });
+  logger.info(`Payment failed email sent to ${email}`);
+}
+
+export async function sendSubscriptionCancelled(email: string): Promise<void> {
+  const html = `
+    <p>Votre abonnement Renters a ete resilie.</p>
+    <p>Votre acces reste actif jusqu a la fin de la periode en cours.</p>
+  `;
+  if (config.env === 'test') {
+    logger.debug(`[EmailService] Would send subscription cancelled email to ${email}`);
+    return;
+  }
+  await transporter.sendMail({
+    from: `"${config.email.fromName}" <${config.email.from}>`,
+    to: email,
+    subject: 'Votre abonnement Renters a ete resilie',
+    html,
+  });
+  logger.info(`Subscription cancelled email sent to ${email}`);
+}
+
+export async function sendTrialEnding(email: string, daysLeft: number): Promise<void> {
+  const billingUrl = `${config.frontendUrl}/billing`;
+  const html = `
+    <p>Votre essai gratuit se termine dans ${daysLeft} jours.</p>
+    <p>Pour continuer a utiliser Renters, activez votre abonnement:</p>
+    <p><a href="${billingUrl}">${billingUrl}</a></p>
+  `;
+  if (config.env === 'test') {
+    logger.debug(`[EmailService] Would send trial ending reminder to ${email}`);
+    return;
+  }
+  await transporter.sendMail({
+    from: `"${config.email.fromName}" <${config.email.from}>`,
+    to: email,
+    subject: `Votre essai gratuit se termine dans ${daysLeft} jours`,
+    html,
+  });
+  logger.info(`Trial ending email sent to ${email}`);
+}
