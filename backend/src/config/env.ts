@@ -37,6 +37,8 @@ const envSchema = Joi.object({
   AWS_SECRET_ACCESS_KEY: Joi.string().required(),
   AWS_REGION: Joi.string().default('eu-west-3'),
   AWS_S3_BUCKET: Joi.string().required(),
+  MAX_FILE_SIZE_MB: Joi.number().default(5),
+  ALLOWED_MIME_TYPES: Joi.string().default('application/pdf,image/jpeg,image/png'),
 
   SENDGRID_API_KEY: Joi.string().required(),
   EMAIL_FROM: Joi.string().email().required(),
@@ -58,10 +60,32 @@ const envSchema = Joi.object({
 
   AI_SERVICE_URL: Joi.string().uri().required(),
   AI_SERVICE_SECRET: Joi.string().required(),
+  AI_SERVICE_TIMEOUT_MS: Joi.number().default(30000),
+  AI_SCORE_AUTO_VALIDATE: Joi.number().default(80),
+  AI_SCORE_MANUAL_REVIEW: Joi.number().default(40),
+  SHARING_LINK_EXPIRY_DAYS: Joi.number().default(30),
+  SHARING_LINK_BASE_URL: Joi.string().uri().required(),
 
   RATE_LIMIT_WINDOW_MS: Joi.number().default(900000),
   RATE_LIMIT_MAX_REQUESTS: Joi.number().default(100),
   AUTH_RATE_LIMIT_MAX: Joi.number().default(5),
+  GDPR_FOLDER_EXPIRY_MONTHS: Joi.number().default(6),
+  GDPR_ACCOUNT_GRACE_DAYS: Joi.number().default(30),
+  GDPR_AUDIT_LOG_ANONYMIZE_YEARS: Joi.number().default(3),
+  GDPR_EXPORT_LINK_EXPIRY_HOURS: Joi.number().default(24),
+  RATE_LIMIT_AUTH_WINDOW_MS: Joi.number().default(900000),
+  RATE_LIMIT_AUTH_MAX: Joi.number().default(5),
+  RATE_LIMIT_REGISTER_MAX: Joi.number().default(3),
+  RATE_LIMIT_UPLOAD_WINDOW_MS: Joi.number().default(3600000),
+  RATE_LIMIT_UPLOAD_MAX: Joi.number().default(20),
+  RATE_LIMIT_SHARING_WINDOW_MS: Joi.number().default(3600000),
+  RATE_LIMIT_SHARING_MAX: Joi.number().default(10),
+  RATE_LIMIT_EXPORT_WINDOW_MS: Joi.number().default(86400000),
+  RATE_LIMIT_EXPORT_MAX: Joi.number().default(3),
+  RATE_LIMIT_FORGOT_PASSWORD_WINDOW_MS: Joi.number().default(3600000),
+  RATE_LIMIT_FORGOT_PASSWORD_MAX: Joi.number().default(3),
+  RATE_LIMIT_API_AGENCY_WINDOW_MS: Joi.number().default(60000),
+  RATE_LIMIT_API_AGENCY_MAX: Joi.number().default(60),
 })
   .unknown(true)
   .options({ abortEarly: false });
@@ -118,6 +142,10 @@ export const config = {
     region: raw.AWS_REGION as string,
     s3Bucket: raw.AWS_S3_BUCKET as string,
   },
+  upload: {
+    maxFileSizeMb: raw.MAX_FILE_SIZE_MB as number,
+    allowedMimeTypes: (raw.ALLOWED_MIME_TYPES as string).split(','),
+  },
   email: {
     sendgridKey: raw.SENDGRID_API_KEY as string,
     from: raw.EMAIL_FROM as string,
@@ -136,11 +164,33 @@ export const config = {
   ai: {
     serviceUrl: raw.AI_SERVICE_URL as string,
     secret: raw.AI_SERVICE_SECRET as string,
+    timeoutMs: raw.AI_SERVICE_TIMEOUT_MS as number,
+    scoreAutoValidate: raw.AI_SCORE_AUTO_VALIDATE as number,
+    scoreManualReview: raw.AI_SCORE_MANUAL_REVIEW as number,
+  },
+  sharing: {
+    expiryDays: raw.SHARING_LINK_EXPIRY_DAYS as number,
+    baseLinkUrl: raw.SHARING_LINK_BASE_URL as string,
   },
   rateLimit: {
     windowMs: raw.RATE_LIMIT_WINDOW_MS as number,
     max: raw.RATE_LIMIT_MAX_REQUESTS as number,
     authMax: raw.AUTH_RATE_LIMIT_MAX as number,
+  },
+  gdpr: {
+    folderExpiryMonths: raw.GDPR_FOLDER_EXPIRY_MONTHS as number,
+    accountGraceDays: raw.GDPR_ACCOUNT_GRACE_DAYS as number,
+    auditLogAnonymizeYears: raw.GDPR_AUDIT_LOG_ANONYMIZE_YEARS as number,
+    exportLinkExpiryHours: raw.GDPR_EXPORT_LINK_EXPIRY_HOURS as number,
+  },
+  rateLimits: {
+    auth: { windowMs: raw.RATE_LIMIT_AUTH_WINDOW_MS as number, max: raw.RATE_LIMIT_AUTH_MAX as number },
+    register: { windowMs: raw.RATE_LIMIT_AUTH_WINDOW_MS as number, max: raw.RATE_LIMIT_REGISTER_MAX as number },
+    upload: { windowMs: raw.RATE_LIMIT_UPLOAD_WINDOW_MS as number, max: raw.RATE_LIMIT_UPLOAD_MAX as number },
+    sharing: { windowMs: raw.RATE_LIMIT_SHARING_WINDOW_MS as number, max: raw.RATE_LIMIT_SHARING_MAX as number },
+    export: { windowMs: raw.RATE_LIMIT_EXPORT_WINDOW_MS as number, max: raw.RATE_LIMIT_EXPORT_MAX as number },
+    forgotPassword: { windowMs: raw.RATE_LIMIT_FORGOT_PASSWORD_WINDOW_MS as number, max: raw.RATE_LIMIT_FORGOT_PASSWORD_MAX as number },
+    agencyApi: { windowMs: raw.RATE_LIMIT_API_AGENCY_WINDOW_MS as number, max: raw.RATE_LIMIT_API_AGENCY_MAX as number },
   },
 } as const;
 

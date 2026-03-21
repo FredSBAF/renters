@@ -1,7 +1,7 @@
 import cron from 'node-cron';
 import { Op } from 'sequelize';
 import { Agency, User } from '../models';
-import { sendTrialEnding } from '../services/EmailService';
+import { NotificationService } from '../services/NotificationService';
 import { logger } from '../utils/logger';
 
 cron.schedule('0 9 * * *', async () => {
@@ -29,7 +29,7 @@ cron.schedule('0 9 * * *', async () => {
     const daysLeft = Math.ceil(
       (new Date(agency.trial_ends_at).getTime() - now.getTime()) / 86400000
     );
-    await sendTrialEnding(owner.email, daysLeft);
+    await NotificationService.notifyTrialEnding(owner.id, daysLeft);
     sentCount += 1;
     logger.info(`Trial reminder sent for agency=${agency.id} owner=${owner.email}`);
   }

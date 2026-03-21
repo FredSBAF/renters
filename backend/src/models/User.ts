@@ -10,7 +10,7 @@ import { sequelize } from '../config/database';
 import type { Agency } from './Agency';
 
 export type UserRole = 'tenant' | 'agency_owner' | 'agency_agent' | 'admin';
-export type UserStatus = 'pending_verification' | 'active' | 'suspended' | 'deleted';
+export type UserStatus = 'pending_verification' | 'active' | 'suspended' | 'deleted' | 'pending_deletion';
 export type TenantProfile =
   | 'employee_cdi'
   | 'employee_cdd'
@@ -38,6 +38,9 @@ export class User extends Model<InferAttributes<User>, InferCreationAttributes<U
   declare created_at: CreationOptional<Date>;
   declare updated_at: CreationOptional<Date>;
   declare deleted_at: CreationOptional<Date | null>;
+  declare deletion_requested_at: CreationOptional<Date | null>;
+  declare deletion_cancellation_token: CreationOptional<string | null>;
+  declare deletion_cancellation_token_expires_at: CreationOptional<Date | null>;
 
   declare agency?: NonAttribute<Agency>;
 }
@@ -56,7 +59,7 @@ User.init(
       allowNull: false,
     },
     status: {
-      type: DataTypes.ENUM('pending_verification', 'active', 'suspended', 'deleted'),
+      type: DataTypes.ENUM('pending_verification', 'active', 'suspended', 'deleted', 'pending_deletion'),
       allowNull: false,
       defaultValue: 'pending_verification',
     },
@@ -83,6 +86,9 @@ User.init(
     created_at: { type: DataTypes.DATE, allowNull: false },
     updated_at: { type: DataTypes.DATE, allowNull: false },
     deleted_at: { type: DataTypes.DATE, allowNull: true },
+    deletion_requested_at: { type: DataTypes.DATE, allowNull: true },
+    deletion_cancellation_token: { type: DataTypes.STRING(255), allowNull: true, unique: true },
+    deletion_cancellation_token_expires_at: { type: DataTypes.DATE, allowNull: true },
   },
   { sequelize, tableName: 'users', underscored: true, paranoid: true }
 );

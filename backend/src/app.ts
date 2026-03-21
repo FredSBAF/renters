@@ -4,6 +4,9 @@ import { logger } from './utils/logger';
 import routes from './routes';
 import webhookRouter from './routes/webhook.routes';
 import billingRouter from './routes/billing.routes';
+import { autoAuditLog } from './middlewares/auditLog.middleware';
+import { preventNoSQLInjection, preventXSS, validateContentType } from './middlewares/inputValidation.middleware';
+import { requestId, sanitizeInput, suspendedAccountCheck } from './middlewares/security.middleware';
 import './models'; // load associations
 
 const app: Express = express();
@@ -15,8 +18,14 @@ app.use(
 );
 
 // Basic middleware
+app.use(requestId);
+app.use(sanitizeInput);
+app.use(preventNoSQLInjection);
+app.use(preventXSS);
+app.use(validateContentType);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(autoAuditLog);
 
 app.get('/', (req, res) => {
   return successResponse(res, null, 'Pouraccord API');
@@ -36,6 +45,7 @@ app.get('/health', (req, res) => {
 });
 
 app.use('/api/v1', routes);
+app.use('/api/v1', suspendedAccountCheck);
 app.use('/api/v1/billing', billingRouter);
 app.use('/', routes);
 

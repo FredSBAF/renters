@@ -5,14 +5,18 @@ import {
   requireAgency2FA,
   requireRole,
 } from '../middlewares/auth.middleware';
+import { agencyApiLimiter, registerLimiter } from '../middlewares/rateLimiter.middleware';
+import { agencySubscriptionCheck } from '../middlewares/security.middleware';
 
 const router = Router();
 
-router.post('/register', AgencyController.register);
+router.use(agencyApiLimiter);
+router.post('/register', registerLimiter, AgencyController.register);
 router.post('/join', AgencyController.joinByToken);
 
 router.use(authMiddleware);
 router.use(requireAgency2FA);
+router.use(agencySubscriptionCheck);
 
 router.get('/me', requireRole('agency_owner', 'agency_agent'), AgencyController.getMyAgency);
 router.post(

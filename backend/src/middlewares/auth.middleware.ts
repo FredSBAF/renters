@@ -32,6 +32,7 @@ export async function authMiddleware(
       role: user.role,
       agencyId: user.agency_id,
       is_2fa_enabled: user.is_2fa_enabled,
+      status: user.status,
     };
     next();
   } catch {
@@ -67,6 +68,41 @@ export function requireAgency2FA(req: Request, res: Response, next: NextFunction
       403
     );
     return;
+  }
+  next();
+}
+
+export async function optionalAuth(
+  req: Request,
+  _res: Response,
+  next: NextFunction
+): Promise<void> {
+  const authHeader = req.headers.authorization;
+  const token = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null;
+  if (!token) {
+    next();
+    return;
+  }
+
+  try {
+    const decoded = jwt.verify(token, config.jwt.secret) as unknown as {
+      sub: number;
+      email: string;
+      role: string;
+    };
+    const user = await User.findByPk(decoded.sub);
+    if (user) {
+      req.user = {
+        id: user.id,
+        email: user.email,
+        role: user.role,
+        agencyId: user.agency_id,
+        is_2fa_enabled: user.is_2fa_enabled,
+        status: user.status,
+      };
+    }
+  } catch {
+    // Intentionally ignore invalid tokens for optional auth.
   }
   next();
 }

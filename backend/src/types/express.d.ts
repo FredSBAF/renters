@@ -7,7 +7,9 @@ declare global {
         role: string;
         agencyId?: number | null;
         is_2fa_enabled?: boolean;
+        status?: string;
       };
+      requestId?: string;
     }
   }
 }

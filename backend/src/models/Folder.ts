@@ -25,6 +25,7 @@ export class Folder extends Model<InferAttributes<Folder>, InferCreationAttribut
   declare created_at: CreationOptional<Date>;
   declare updated_at: CreationOptional<Date>;
   declare deleted_at: CreationOptional<Date | null>;
+  declare folder_expiry_notified_at: CreationOptional<Date | null>;
 }
 
 Folder.init(
@@ -72,6 +73,7 @@ Folder.init(
     created_at: { type: DataTypes.DATE, allowNull: false },
     updated_at: { type: DataTypes.DATE, allowNull: false },
     deleted_at: { type: DataTypes.DATE, allowNull: true },
+    folder_expiry_notified_at: { type: DataTypes.DATE, allowNull: true },
   },
   {
     sequelize,

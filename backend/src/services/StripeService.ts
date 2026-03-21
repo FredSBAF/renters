@@ -7,6 +7,7 @@ import {
   sendSubscriptionConfirmation,
 } from './EmailService';
 import { logger } from '../utils/logger';
+import { NotificationService } from './NotificationService';
 
 const stripe = new Stripe(config.stripe.secretKey, { apiVersion: '2023-10-16' as never });
 
@@ -117,6 +118,7 @@ export class StripeService {
         });
         if (owner) {
           await sendSubscriptionConfirmation(owner.email);
+          await NotificationService.notifySubscriptionActivated(owner.id);
         }
         break;
       }
@@ -192,6 +194,7 @@ export class StripeService {
         });
         if (owner) {
           await sendPaymentFailed(owner.email, invoice.attempt_count ?? 1);
+          await NotificationService.notifyPaymentFailed(owner.id, invoice.attempt_count ?? 1);
         }
         break;
       }

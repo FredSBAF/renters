@@ -8,6 +8,7 @@ import {
   UserConsent,
 } from '../models';
 import { sendAgencyInvitationEmail, sendVerificationEmail } from './EmailService';
+import { NotificationService } from './NotificationService';
 import { logger } from '../utils/logger';
 
 const SALT_ROUNDS = 12;
@@ -285,5 +286,14 @@ export class AgencyService {
       throw new Error('AGENCY_NOT_FOUND');
     }
     return agency;
+  }
+
+  static async notifyNewSharedFolder(
+    agencyOwnerId: number,
+    tenantName: string,
+    folderId: number,
+    score?: number
+  ): Promise<void> {
+    await NotificationService.notifyNewFolderShared(agencyOwnerId, tenantName, folderId, score);
   }
 }
