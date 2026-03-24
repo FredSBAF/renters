@@ -1,0 +1,1279 @@
+openapi: 3.0.3
+info:
+  title: Pouraccord API
+  description: |
+    API REST de la plateforme Pouraccord (dossiers locataires, partage, agences, facturation).
+
+    **Format des réponses** : enveloppe commune `success`, `data`, `message`, `errors` (tableau de chaînes).
+
+    **Authentification** : en-tête `Authorization: Bearer <access_token>` (JWT) pour les routes protégées.
+
+    Spécification source : `/api/openapi.yaml` · Interface Swagger : `/api/docs`
+  version: 1.0.0
+  contact:
+    name: Pouraccord
+
+servers:
+  - url: http://localhost:3001
+    description: Développement local
+  - url: https://api.example.com
+    description: Production (à adapter)
+
+tags:
+  - name: Système
+    description: Racine et santé
+  - name: Auth
+    description: Inscription, connexion, tokens
+  - name: Users
+    description: Profil, 2FA, RGPD
+  - name: Agencies
+    description: Espace agence, équipe
+  - name: Folders
+    description: Dossier locataire
+  - name: Documents
+    description: Fichiers du dossier
+  - name: Sharing
+    description: Liens de partage et consultation
+  - name: Guarantors
+    description: Garant / co-locataire
+  - name: Notifications
+  - name: Admin
+    description: Administration (rôle admin)
+  - name: Moderation
+    description: File de modération (rôle admin)
+  - name: Billing
+    description: Stripe, abonnement agence
+  - name: Webhooks
+    description: Callbacks externes (signature Stripe)
+
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Access token JWT (claim `sub` = user id)
+
+  schemas:
+    ApiEnvelope:
+      type: object
+      required: [success, message, errors]
+      properties:
+        success:
+          type: boolean
+        data:
+          nullable: true
+        message:
+          type: string
+        errors:
+          type: array
+          items:
+            type: string
+
+    RegisterBody:
+      type: object
+      required:
+        - full_name
+        - email
+        - password
+        - password_confirmation
+        - accept_terms
+        - accept_privacy
+      properties:
+        full_name:
+          type: string
+          minLength: 2
+          maxLength: 200
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          minLength: 8
+        password_confirmation:
+          type: string
+        accept_terms:
+          type: boolean
+          enum: [true]
+        accept_privacy:
+          type: boolean
+          enum: [true]
+
+    LoginBody:
+      type: object
+      required: [email, password]
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+        totp_code:
+          type: string
+          minLength: 6
+          maxLength: 6
+          description: Code 2FA si activé
+
+    RefreshBody:
+      type: object
+      required: [refresh_token]
+      properties:
+        refresh_token:
+          type: string
+
+    TokenBody:
+      type: object
+      required: [token]
+      properties:
+        token:
+          type: string
+
+    ForgotPasswordBody:
+      type: object
+      required: [email]
+      properties:
+        email:
+          type: string
+          format: email
+
+    ResetPasswordBody:
+      type: object
+      required: [token, password, password_confirmation]
+      properties:
+        token:
+          type: string
+        password:
+          type: string
+          minLength: 8
+        password_confirmation:
+          type: string
+
+    Verify2faBody:
+      type: object
+      required: [totp_code]
+      properties:
+        totp_code:
+          type: string
+          minLength: 6
+          maxLength: 6
+
+paths:
+  /:
+    get:
+      tags: [Système]
+      summary: Bannière API
+      operationId: root
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiEnvelope'
+
+  /health:
+    get:
+      tags: [Système]
+      summary: Health check
+      operationId: health
+      responses:
+        '200':
+          description: Service disponible
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiEnvelope'
+
+  /api/v1/auth/register:
+    post:
+      tags: [Auth]
+      summary: Inscription locataire
+      operationId: authRegister
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RegisterBody'
+      responses:
+        '201':
+          description: Compte créé, email de vérification envoyé (ou log en dev)
+        '400':
+          description: Validation
+        '409':
+          description: Email déjà utilisé
+
+  /api/v1/auth/verify-email:
+    post:
+      tags: [Auth]
+      summary: Valider l'email avec le token reçu
+      operationId: authVerifyEmail
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenBody'
+      responses:
+        '200':
+          description: Email vérifié
+        '400':
+          description: Token invalide ou expiré
+
+  /api/v1/auth/login:
+    post:
+      tags: [Auth]
+      summary: Connexion
+      operationId: authLogin
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginBody'
+      responses:
+        '200':
+          description: Tokens et utilisateur
+        '401':
+          description: Identifiants invalides
+
+  /api/v1/auth/refresh:
+    post:
+      tags: [Auth]
+      summary: Rafraîchir les tokens
+      operationId: authRefresh
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RefreshBody'
+      responses:
+        '200':
+          description: Nouveaux tokens
+        '401':
+          description: Refresh token invalide
+
+  /api/v1/auth/logout:
+    post:
+      tags: [Auth]
+      summary: Déconnexion (révoque le refresh côté serveur)
+      operationId: authLogout
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Déconnecté
+        '401':
+          description: Non authentifié
+
+  /api/v1/auth/forgot-password:
+    post:
+      tags: [Auth]
+      summary: Demande de réinitialisation mot de passe
+      operationId: authForgotPassword
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForgotPasswordBody'
+      responses:
+        '200':
+          description: Si l'email existe, un lien est envoyé
+
+  /api/v1/auth/reset-password:
+    post:
+      tags: [Auth]
+      summary: Définir un nouveau mot de passe
+      operationId: authResetPassword
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResetPasswordBody'
+      responses:
+        '200':
+          description: Mot de passe mis à jour
+        '400':
+          description: Token invalide
+
+  /api/v1/users/me:
+    get:
+      tags: [Users]
+      summary: Profil utilisateur connecté
+      operationId: usersMeGet
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Profil
+        '401':
+          description: Non authentifié
+    patch:
+      tags: [Users]
+      summary: Mettre à jour le profil
+      operationId: usersMePatch
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Champs modifiables (voir validateur backend)
+      responses:
+        '200':
+          description: Mis à jour
+
+  /api/v1/users/me/enable-2fa:
+    post:
+      tags: [Users]
+      summary: Démarrer l'activation 2FA (retourne secret / QR)
+      operationId: usersEnable2fa
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Données TOTP à enregistrer dans l'app
+
+  /api/v1/users/me/verify-2fa:
+    post:
+      tags: [Users]
+      summary: Confirmer le code 2FA pour activer
+      operationId: usersVerify2fa
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Verify2faBody'
+      responses:
+        '200':
+          description: 2FA activée
+
+  /api/v1/users/me/disable-2fa:
+    post:
+      tags: [Users]
+      summary: Désactiver 2FA
+      operationId: usersDisable2fa
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+
+  /api/v1/users/me/data-export:
+    get:
+      tags: [Users]
+      summary: Demande d'export RGPD
+      operationId: usersDataExport
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Lien ou statut d'export
+
+  /api/v1/users/me/delete-account:
+    post:
+      tags: [Users]
+      summary: Demander la suppression de compte (RGPD)
+      operationId: usersDeleteAccount
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Demande enregistrée
+
+  /api/v1/users/me/consents:
+    get:
+      tags: [Users]
+      summary: Liste des consentements
+      operationId: usersConsentsGet
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Consentements
+
+  /api/v1/users/me/cancel-deletion:
+    post:
+      tags: [Users]
+      summary: Annuler une demande de suppression (token dans le corps ou query selon impl.)
+      operationId: usersCancelDeletion
+      responses:
+        '200':
+          description: Annulé
+
+  /api/v1/agencies/register:
+    post:
+      tags: [Agencies]
+      summary: Inscription agence
+      operationId: agenciesRegister
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '201':
+          description: Agence créée
+
+  /api/v1/agencies/join:
+    post:
+      tags: [Agencies]
+      summary: Rejoindre une agence via token d'invitation
+      operationId: agenciesJoin
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Agent rattaché
+
+  /api/v1/agencies/me:
+    get:
+      tags: [Agencies]
+      summary: Détail agence (owner/agent, 2FA agence requis)
+      operationId: agenciesMe
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Agence
+
+  /api/v1/agencies/team:
+    get:
+      tags: [Agencies]
+      summary: Liste de l'équipe
+      operationId: agenciesTeamGet
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Membres
+
+  /api/v1/agencies/team/invite:
+    post:
+      tags: [Agencies]
+      summary: Inviter un agent (owner uniquement)
+      operationId: agenciesTeamInvite
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Invitation envoyée
+
+  /api/v1/agencies/team/{userId}:
+    delete:
+      tags: [Agencies]
+      summary: Retirer un agent
+      operationId: agenciesTeamRemove
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Retiré
+
+  /api/v1/folders/document-types:
+    get:
+      tags: [Folders]
+      summary: Types de documents (public pour consultation formulaire)
+      operationId: foldersDocumentTypes
+      responses:
+        '200':
+          description: Liste des types
+
+  /api/v1/folders/me:
+    get:
+      tags: [Folders]
+      summary: Mon dossier (locataire)
+      operationId: foldersMeGet
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Dossier
+
+  /api/v1/folders/me/status:
+    patch:
+      tags: [Folders]
+      summary: Mettre à jour le statut du dossier
+      operationId: foldersMeStatus
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: OK
+
+  /api/v1/folders/me/completion:
+    get:
+      tags: [Folders]
+      summary: Avancement du dossier
+      operationId: foldersMeCompletion
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Métriques de complétion
+
+  /api/v1/folders/required-documents:
+    get:
+      tags: [Folders]
+      summary: Documents requis pour le profil
+      operationId: foldersRequiredDocuments
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Liste
+
+  /api/v1/documents/upload:
+    post:
+      tags: [Documents]
+      summary: Upload d'un document (multipart/form-data)
+      operationId: documentsUpload
+      security:
+        - bearerAuth: []
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              properties:
+                file:
+                  type: string
+                  format: binary
+                document_type_id:
+                  type: integer
+              required: [file]
+      responses:
+        '201':
+          description: Document créé
+        '400':
+          description: Fichier ou type invalide
+
+  /api/v1/documents:
+    get:
+      tags: [Documents]
+      summary: Liste de mes documents
+      operationId: documentsList
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Liste
+
+  /api/v1/documents/{id}:
+    get:
+      tags: [Documents]
+      summary: Détail d'un document
+      operationId: documentsGet
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Document
+    delete:
+      tags: [Documents]
+      summary: Supprimer un document
+      operationId: documentsDelete
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Supprimé
+
+  /api/v1/documents/{id}/download:
+    get:
+      tags: [Documents]
+      summary: Téléchargement locataire (URL signée ou flux)
+      operationId: documentsDownloadTenant
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Fichier ou JSON avec URL
+
+  /api/v1/documents/{id}/download-agency:
+    get:
+      tags: [Documents]
+      summary: Téléchargement côté agence
+      operationId: documentsDownloadAgency
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Fichier ou URL
+
+  /api/v1/documents/{id}/comment:
+    patch:
+      tags: [Documents]
+      summary: Commentaire sur un document
+      operationId: documentsComment
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: OK
+
+  /api/v1/sharing/links:
+    post:
+      tags: [Sharing]
+      summary: Créer un lien de partage
+      operationId: sharingLinksCreate
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '201':
+          description: Lien créé
+    get:
+      tags: [Sharing]
+      summary: Mes liens actifs
+      operationId: sharingLinksList
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Liste
+
+  /api/v1/sharing/links/{linkId}:
+    delete:
+      tags: [Sharing]
+      summary: Révoquer un lien
+      operationId: sharingLinksRevoke
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: linkId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Révoqué
+
+  /api/v1/sharing/links/{linkId}/extend:
+    patch:
+      tags: [Sharing]
+      summary: Prolonger la validité d'un lien
+      operationId: sharingLinksExtend
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: linkId
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: OK
+
+  /api/v1/sharing/history:
+    get:
+      tags: [Sharing]
+      summary: Historique des consultations
+      operationId: sharingHistory
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Historique
+
+  /api/v1/sharing/view/{linkId}:
+    get:
+      tags: [Sharing]
+      summary: Consulter un dossier via lien (auth agence optionnelle)
+      operationId: sharingView
+      parameters:
+        - name: linkId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Vue dossier partagé
+
+  /api/v1/sharing/track-download:
+    post:
+      tags: [Sharing]
+      summary: Enregistrer un téléchargement par l'agence
+      operationId: sharingTrackDownload
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: OK
+
+  /api/v1/guarantors/accept:
+    post:
+      tags: [Guarantors]
+      summary: Accepter une invitation garant
+      operationId: guarantorsAccept
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: OK
+
+  /api/v1/guarantors/invite:
+    post:
+      tags: [Guarantors]
+      summary: Inviter un garant
+      operationId: guarantorsInvite
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Invitation envoyée
+
+  /api/v1/guarantors/direct:
+    post:
+      tags: [Guarantors]
+      summary: Ajout direct / upload garant
+      operationId: guarantorsDirect
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: OK
+
+  /api/v1/guarantors:
+    get:
+      tags: [Guarantors]
+      summary: Liste de mes garants
+      operationId: guarantorsList
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Liste
+
+  /api/v1/guarantors/{guarantorId}:
+    delete:
+      tags: [Guarantors]
+      summary: Retirer un garant
+      operationId: guarantorsDelete
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: guarantorId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+
+  /api/v1/guarantors/{guarantorId}/folder:
+    get:
+      tags: [Guarantors]
+      summary: Dossier associé au garant
+      operationId: guarantorsFolder
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: guarantorId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Dossier
+
+  /api/v1/notifications:
+    get:
+      tags: [Notifications]
+      summary: Liste des notifications
+      operationId: notificationsList
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Liste
+
+  /api/v1/notifications/unread-count:
+    get:
+      tags: [Notifications]
+      summary: Nombre de non lues
+      operationId: notificationsUnreadCount
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Compteur
+
+  /api/v1/notifications/read-all:
+    patch:
+      tags: [Notifications]
+      summary: Tout marquer comme lu
+      operationId: notificationsReadAll
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: OK
+
+  /api/v1/notifications/preferences:
+    get:
+      tags: [Notifications]
+      summary: Préférences de notification
+      operationId: notificationsPreferencesGet
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Préférences
+    patch:
+      tags: [Notifications]
+      summary: Mettre à jour les préférences
+      operationId: notificationsPreferencesPatch
+      security:
+        - bearerAuth: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: OK
+
+  /api/v1/notifications/{id}/read:
+    patch:
+      tags: [Notifications]
+      summary: Marquer une notification comme lue
+      operationId: notificationsReadOne
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+
+  /api/v1/notifications/{id}:
+    delete:
+      tags: [Notifications]
+      summary: Supprimer une notification
+      operationId: notificationsDelete
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+
+  /api/v1/admin/dashboard/metrics:
+    get:
+      tags: [Admin]
+      summary: Métriques tableau de bord
+      operationId: adminDashboardMetrics
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Métriques
+        '403':
+          description: Rôle admin requis
+
+  /api/v1/admin/dashboard/timeseries:
+    get:
+      tags: [Admin]
+      summary: Séries temporelles
+      operationId: adminDashboardTimeseries
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Données
+
+  /api/v1/admin/dashboard/export:
+    get:
+      tags: [Admin]
+      summary: Export CSV tableau de bord
+      operationId: adminDashboardExport
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Fichier CSV
+
+  /api/v1/admin/users:
+    get:
+      tags: [Admin]
+      summary: Liste utilisateurs
+      operationId: adminUsersList
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Liste
+
+  /api/v1/admin/users/{userId}:
+    get:
+      tags: [Admin]
+      summary: Détail utilisateur
+      operationId: adminUsersGet
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Utilisateur
+    delete:
+      tags: [Admin]
+      summary: Supprimer un utilisateur (admin)
+      operationId: adminUsersDelete
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+
+  /api/v1/admin/users/{userId}/suspend:
+    post:
+      tags: [Admin]
+      summary: Suspendre un compte
+      operationId: adminUsersSuspend
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+
+  /api/v1/admin/users/{userId}/reactivate:
+    post:
+      tags: [Admin]
+      summary: Réactiver un compte
+      operationId: adminUsersReactivate
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+
+  /api/v1/admin/users/{userId}/export:
+    get:
+      tags: [Admin]
+      summary: Export données utilisateur
+      operationId: adminUsersExport
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Export
+
+  /api/v1/admin/users/{userId}/role:
+    patch:
+      tags: [Admin]
+      summary: Changer le rôle
+      operationId: adminUsersRole
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: userId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: OK
+
+  /api/v1/admin/audit-logs:
+    get:
+      tags: [Admin]
+      summary: Journaux d'audit
+      operationId: adminAuditLogs
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Logs
+
+  /api/v1/admin/moderation:
+    get:
+      tags: [Moderation]
+      summary: File de modération
+      operationId: moderationQueue
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: File
+
+  /api/v1/admin/moderation/{queueId}/assign:
+    post:
+      tags: [Moderation]
+      summary: Assigner un item
+      operationId: moderationAssign
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: queueId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+
+  /api/v1/admin/moderation/{queueId}/resolve:
+    post:
+      tags: [Moderation]
+      summary: Résoudre un item
+      operationId: moderationResolve
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: queueId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+
+  /api/v1/admin/moderation/{queueId}/request-info:
+    post:
+      tags: [Moderation]
+      summary: Demander des informations au locataire
+      operationId: moderationRequestInfo
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: queueId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+
+  /api/v1/admin/moderation/trigger/{folderId}:
+    post:
+      tags: [Moderation]
+      summary: Déclencher une analyse IA sur un dossier
+      operationId: moderationTrigger
+      security:
+        - bearerAuth: []
+      parameters:
+        - name: folderId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+
+  /api/v1/billing/checkout:
+    post:
+      tags: [Billing]
+      summary: Session Stripe Checkout (owner agence)
+      operationId: billingCheckout
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: URL ou session
+
+  /api/v1/billing/portal:
+    post:
+      tags: [Billing]
+      summary: Portail client Stripe
+      operationId: billingPortal
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: URL portail
+
+  /api/v1/billing/status:
+    get:
+      tags: [Billing]
+      summary: Statut d'abonnement / facturation agence
+      operationId: billingStatus
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Statut
+
+  /api/v1/billing/logs:
+    get:
+      tags: [Billing]
+      summary: Logs de paiement (admin)
+      operationId: billingLogs
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: Liste
+
+  /api/v1/billing/logs/export.csv:
+    get:
+      tags: [Billing]
+      summary: Export CSV des paiements (admin)
+      operationId: billingLogsExport
+      security:
+        - bearerAuth: []
+      responses:
+        '200':
+          description: CSV
+
+  /api/v1/webhooks/stripe:
+    post:
+      tags: [Webhooks]
+      summary: Webhook Stripe (corps brut JSON, signature Stripe)
+      operationId: webhookStripe
+      description: |
+        En-tête `Stripe-Signature` requis. Corps = payload brut (pas re-parsé en JSON middleware sur ce chemin).
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        '200':
+          description: Reçu
+        '400':
+          description: Signature invalide

@@ -75,13 +75,14 @@ ModerationQueue.init(
     adjusted_score: { type: DataTypes.INTEGER, allowNull: true },
     sla_deadline: { type: DataTypes.DATE, allowNull: false },
     sla_breached: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false },
-    created_at: { type: DataTypes.DATE, allowNull: false },
-    updated_at: { type: DataTypes.DATE, allowNull: false },
+    created_at: { type: DataTypes.DATE, allowNull: true },
+    updated_at: { type: DataTypes.DATE, allowNull: true },
   },
   {
     sequelize,
     tableName: 'moderation_queue',
     underscored: true,
+    timestamps: true,
     indexes: [
       { fields: ['status'] },
       { fields: ['priority'] },

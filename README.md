@@ -1,4 +1,4 @@
-# POURACCORD
+# renters
 
 Plateforme B2B2C de gestion et validation de dossiers locataires.
 
@@ -14,6 +14,15 @@ Monorepo avec npm workspaces :
 # Installer toutes les dépendances (backend + frontend)
 npm install
 ```
+
+## Documentation API (OpenAPI)
+
+Avec le backend démarré :
+
+- **Swagger UI** : [http://localhost:3001/api/docs/](http://localhost:3001/api/docs/) (redirection depuis `/api/docs`)
+- **Spécification YAML** : [http://localhost:3001/api/openapi.yaml](http://localhost:3001/api/openapi.yaml)
+
+Fichier source : `backend/docs/openapi.yaml`.
 
 ## Développement
 
@@ -36,6 +45,14 @@ npm run dev:frontend
 ```bash
 cp backend/.env.example backend/.env
 ```
+
+Les tables sont créées avec Sequelize (migrations) :
+
+```bash
+cd backend && npm run migrate
+```
+
+Cette commande enchaîne d’abord les migrations **JavaScript** (`backend/migrations/`), puis les migrations **TypeScript** (`backend/src/migrations/`) — sans la 2ᵉ étape, seules les tables de base (`users`, `agencies`, tokens, etc.) existent.
 
 ### Frontend
 
@@ -77,8 +94,13 @@ cp backend/.env.docker.example backend/.env.docker
 docker compose up --build
 ```
 
-- **MySQL** : port 3306, base `pouraccord_dev`, user `root` / `root` (ou `pouraccord` / `pouraccord`)
+- **MySQL** : port 3306, base `renters`, user `root` / `root` (ou `renters` / `renters`)
 - **Backend** : http://localhost:3001
 - **Frontend** : http://localhost:3000 (Vite dev, rechargement à chaud)
 
-Arrêter : `docker compose down`. Données MySQL conservées dans le volume `pouraccord-mysql-data`.
+Arrêter : `docker compose down`. Données MySQL conservées dans le volume `renters-mysql-data`.
+
+
+
+## Récupération du code 6 chiffres
+node -e "const {createHash}=require('crypto'); const token='9f6561fb-0bce-4097-9fa5-bbbb3523bb22'; const h=createHash('sha256').update(token).digest('hex'); const code=((parseInt(h.slice(0,12),16)%900000)+100000).toString(); console.log(code);"

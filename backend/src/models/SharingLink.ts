@@ -37,13 +37,14 @@ SharingLink.init(
     revoked_at: { type: DataTypes.DATE, allowNull: true },
     views_count: { type: DataTypes.INTEGER.UNSIGNED, allowNull: false, defaultValue: 0 },
     last_viewed_at: { type: DataTypes.DATE, allowNull: true },
-    created_at: { type: DataTypes.DATE, allowNull: false },
-    updated_at: { type: DataTypes.DATE, allowNull: false },
+    created_at: { type: DataTypes.DATE, allowNull: true },
+    updated_at: { type: DataTypes.DATE, allowNull: true },
   },
   {
     sequelize,
     tableName: 'sharing_links',
     underscored: true,
+    timestamps: true,
     indexes: [{ fields: ['folder_id'] }, { fields: ['expires_at'] }, { fields: ['revoked_at'] }],
   }
 );

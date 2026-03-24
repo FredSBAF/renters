@@ -17,6 +17,8 @@ const envSchema = Joi.object({
     .required(),
   PORT: Joi.number().default(3001),
   FRONTEND_URL: Joi.string().uri().required(),
+  /** Optional comma-separated list of allowed browser origins (in addition to FRONTEND_URL in production). */
+  CORS_ORIGINS: Joi.string().optional().allow(''),
   API_BASE_URL: Joi.string().uri().required(),
 
   DB_HOST: Joi.string().required(),
@@ -43,6 +45,8 @@ const envSchema = Joi.object({
   SENDGRID_API_KEY: Joi.string().required(),
   EMAIL_FROM: Joi.string().email().required(),
   EMAIL_FROM_NAME: Joi.string().required(),
+  /** If true (development/staging only): do not call SendGrid; log only. Ignored in production. */
+  EMAIL_DISABLE_SEND: Joi.string().valid('true', 'false', '1', '0', '').optional(),
 
   TOTP_SECRET_ENCRYPTION_KEY: Joi.string()
     .length(32)
@@ -114,6 +118,26 @@ if (error) {
 
 const raw = value as Record<string, string | number>;
 
+const corsExtraOrigins = String(raw.CORS_ORIGINS ?? '')
+  .split(',')
+  .map((s) => s.trim())
+  .filter(Boolean);
+
+const emailDisableSendRaw = String(raw.EMAIL_DISABLE_SEND ?? '')
+  .toLowerCase()
+  .trim();
+const emailDisableSendFlag =
+  emailDisableSendRaw === 'true' || emailDisableSendRaw === '1';
+const nodeEnv = raw.NODE_ENV as
+  | 'development'
+  | 'staging'
+  | 'production'
+  | 'test';
+/** Never disable outbound email in production (misconfig safety). */
+const emailDisableSend =
+  emailDisableSendFlag &&
+  (nodeEnv === 'development' || nodeEnv === 'staging');
+
 export const config = {
   env: raw.NODE_ENV as
     | 'development'
@@ -123,6 +147,12 @@ export const config = {
   port: raw.PORT as number,
   frontendUrl: raw.FRONTEND_URL as string,
   apiBaseUrl: raw.API_BASE_URL as string,
+  cors: {
+    /** Explicit allowlist: FRONTEND_URL + CORS_ORIGINS */
+    allowedOrigins: Array.from(
+      new Set<string>([raw.FRONTEND_URL as string, ...corsExtraOrigins])
+    ),
+  },
   db: {
     host: raw.DB_HOST as string,
     port: raw.DB_PORT as number,
@@ -150,6 +180,7 @@ export const config = {
     sendgridKey: raw.SENDGRID_API_KEY as string,
     from: raw.EMAIL_FROM as string,
     fromName: raw.EMAIL_FROM_NAME as string,
+    disableSend: emailDisableSend,
   },
   totp: {
     encryptionKey: raw.TOTP_SECRET_ENCRYPTION_KEY as string,

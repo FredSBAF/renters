@@ -35,8 +35,8 @@ PasswordResetToken.init(
     },
     token: { type: DataTypes.STRING(255), allowNull: false, unique: true },
     expires_at: { type: DataTypes.DATE, allowNull: false },
-    created_at: { type: DataTypes.DATE, allowNull: false },
-    updated_at: { type: DataTypes.DATE, allowNull: false },
+    created_at: { type: DataTypes.DATE, allowNull: true },
+    updated_at: { type: DataTypes.DATE, allowNull: true },
   },
-  { sequelize, tableName: 'password_reset_tokens', underscored: true }
+  { sequelize, tableName: 'password_reset_tokens', underscored: true, timestamps: true }
 );

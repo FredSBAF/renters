@@ -63,13 +63,14 @@ Guarantor.init(
     invitation_token: { type: DataTypes.STRING(255), allowNull: true, unique: true },
     invitation_expires_at: { type: DataTypes.DATE, allowNull: true },
     invitation_accepted_at: { type: DataTypes.DATE, allowNull: true },
-    created_at: { type: DataTypes.DATE, allowNull: false },
-    updated_at: { type: DataTypes.DATE, allowNull: false },
+    created_at: { type: DataTypes.DATE, allowNull: true },
+    updated_at: { type: DataTypes.DATE, allowNull: true },
   },
   {
     sequelize,
     tableName: 'guarantors',
     underscored: true,
+    timestamps: true,
     indexes: [
       { fields: ['tenant_id'] },
       { fields: ['guarantor_user_id'] },

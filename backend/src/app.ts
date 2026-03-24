@@ -2,14 +2,21 @@ import express, { Express } from 'express';
 import { successResponse } from './utils/response';
 import { logger } from './utils/logger';
 import routes from './routes';
+import openApiRouter from './routes/openapi.routes';
 import webhookRouter from './routes/webhook.routes';
 import billingRouter from './routes/billing.routes';
+import { corsMiddleware } from './middlewares/cors.middleware';
 import { autoAuditLog } from './middlewares/auditLog.middleware';
 import { preventNoSQLInjection, preventXSS, validateContentType } from './middlewares/inputValidation.middleware';
 import { requestId, sanitizeInput, suspendedAccountCheck } from './middlewares/security.middleware';
 import './models'; // load associations
 
 const app: Express = express();
+
+app.use(corsMiddleware);
+
+/** OpenAPI spec + Swagger UI (/api/openapi.yaml, /api/docs/) */
+app.use('/api', openApiRouter);
 
 app.use(
   '/api/v1/webhooks',

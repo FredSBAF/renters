@@ -83,12 +83,12 @@ User.init(
     agency_id: { type: DataTypes.INTEGER.UNSIGNED, allowNull: true },
     email_verified_at: { type: DataTypes.DATE, allowNull: true },
     last_login_at: { type: DataTypes.DATE, allowNull: true },
-    created_at: { type: DataTypes.DATE, allowNull: false },
-    updated_at: { type: DataTypes.DATE, allowNull: false },
     deleted_at: { type: DataTypes.DATE, allowNull: true },
     deletion_requested_at: { type: DataTypes.DATE, allowNull: true },
     deletion_cancellation_token: { type: DataTypes.STRING(255), allowNull: true, unique: true },
     deletion_cancellation_token_expires_at: { type: DataTypes.DATE, allowNull: true },
+    created_at: { type: DataTypes.DATE, allowNull: true },
+    updated_at: { type: DataTypes.DATE, allowNull: true },
   },
-  { sequelize, tableName: 'users', underscored: true, paranoid: true }
+  { sequelize, tableName: 'users', underscored: true, paranoid: true, timestamps: true }
 );

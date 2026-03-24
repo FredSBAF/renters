@@ -9,6 +9,7 @@ COPY package.json package-lock.json ./
 # Workspace backend
 COPY backend/package.json ./backend/
 COPY backend/tsconfig.json ./backend/
+COPY backend/docs ./backend/docs
 COPY backend/src ./backend/src
 
 # Install reproductible à partir du lock file

@@ -42,13 +42,14 @@ AuditLog.init(
     entity_type: { type: DataTypes.STRING(50), allowNull: true },
     entity_id: { type: DataTypes.INTEGER.UNSIGNED, allowNull: true },
     details: { type: DataTypes.JSON, allowNull: true },
-    created_at: { type: DataTypes.DATE, allowNull: false },
-    updated_at: { type: DataTypes.DATE, allowNull: false },
+    created_at: { type: DataTypes.DATE, allowNull: true },
+    updated_at: { type: DataTypes.DATE, allowNull: true },
   },
   {
     sequelize,
     tableName: 'audit_logs',
     underscored: true,
+    timestamps: true,
     indexes: [
       { fields: ['user_id'] },
       { fields: ['agency_id'] },

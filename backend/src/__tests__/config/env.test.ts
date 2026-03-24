@@ -18,6 +18,7 @@ describe('Environment configuration', () => {
     expect(config.aws.s3Bucket).toBeDefined();
     expect(config.aws.region).toBeDefined();
     expect(config.email.from).toBeDefined();
+    expect(config.email.disableSend).toBe(false);
     expect(config.stripe.secretKey).toBeDefined();
     expect(config.ai.serviceUrl).toBeDefined();
     expect(config.rateLimit.windowMs).toBeDefined();

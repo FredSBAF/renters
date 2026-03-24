@@ -2,10 +2,14 @@ import nodemailer from 'nodemailer';
 import { config } from '../config/env';
 import { logger } from '../utils/logger';
 
-const transporter =
-  config.env === 'test'
-    ? { sendMail: async () => ({ messageId: 'test-id' }) }
-    : nodemailer.createTransport({
+/** Test mode or dev/staging when EMAIL_DISABLE_SEND=true — no SMTP. */
+function skipOutboundEmail(): boolean {
+  return config.env === 'test' || config.email.disableSend;
+}
+
+const transporter = skipOutboundEmail()
+  ? { sendMail: async () => ({ messageId: 'test-id' }) }
+  : nodemailer.createTransport({
         host: 'smtp.sendgrid.net',
         port: 587,
         secure: false,
@@ -17,17 +21,27 @@ const transporter =
 
 export async function sendVerificationEmail(
   to: string,
-  verificationToken: string
+  verificationToken: string,
+  verificationCode?: string
 ): Promise<void> {
   const verifyUrl = `${config.frontendUrl}/verify-email?token=${verificationToken}`;
+  const codeHtml = verificationCode
+    ? `
+    <p>Code de verification (6 chiffres) :</p>
+    <p style="font-size: 24px; font-weight: 700; letter-spacing: 4px;">${verificationCode}</p>
+  `
+    : '';
   const html = `
     <p>Bienvenue sur Pouraccord.</p>
+    ${codeHtml}
     <p>Cliquez sur le lien ci-dessous pour valider votre adresse email :</p>
     <p><a href="${verifyUrl}">${verifyUrl}</a></p>
     <p>Ce lien expire dans 24 heures.</p>
   `;
-  if (config.env === 'test') {
-    logger.debug(`[EmailService] Would send verification to ${to}`);
+  if (skipOutboundEmail()) {
+    logger.debug(
+      `[EmailService] Would send verification to ${to} — code: ${verificationCode ?? 'n/a'} — link: ${verifyUrl}`
+    );
     return;
   }
   await transporter.sendMail({
@@ -50,7 +64,7 @@ export async function sendAgencyInvitationEmail(
     <p><a href="${joinUrl}">${joinUrl}</a></p>
     <p>Ce lien expire dans 7 jours.</p>
   `;
-  if (config.env === 'test') {
+  if (skipOutboundEmail()) {
     logger.debug(`[EmailService] Would send agency invitation to ${to}`);
     return;
   }
@@ -70,7 +84,7 @@ export async function sendSubscriptionConfirmation(email: string): Promise<void>
     <p>Montant: 300 EUR HT / mois.</p>
     <p>Accédez a votre espace facturation: <a href="${billingUrl}">${billingUrl}</a></p>
   `;
-  if (config.env === 'test') {
+  if (skipOutboundEmail()) {
     logger.debug(`[EmailService] Would send subscription confirmation to ${email}`);
     return;
   }
@@ -99,7 +113,7 @@ export async function sendPaymentFailed(
     <p>Nombre de tentatives: ${attemptCount}</p>
     ${suspensionText}
   `;
-  if (config.env === 'test') {
+  if (skipOutboundEmail()) {
     logger.debug(`[EmailService] Would send payment failed email to ${email}`);
     return;
   }
@@ -117,7 +131,7 @@ export async function sendSubscriptionCancelled(email: string): Promise<void> {
     <p>Votre abonnement Renters a ete resilie.</p>
     <p>Votre acces reste actif jusqu a la fin de la periode en cours.</p>
   `;
-  if (config.env === 'test') {
+  if (skipOutboundEmail()) {
     logger.debug(`[EmailService] Would send subscription cancelled email to ${email}`);
     return;
   }
@@ -137,7 +151,7 @@ export async function sendTrialEnding(email: string, daysLeft: number): Promise<
     <p>Pour continuer a utiliser Renters, activez votre abonnement:</p>
     <p><a href="${billingUrl}">${billingUrl}</a></p>
   `;
-  if (config.env === 'test') {
+  if (skipOutboundEmail()) {
     logger.debug(`[EmailService] Would send trial ending reminder to ${email}`);
     return;
   }
@@ -161,7 +175,7 @@ export async function sendDocumentExpiringSoon(
     <p>Pensez a mettre a jour votre document sur votre espace.</p>
     <p><a href="${dashboardUrl}">${dashboardUrl}</a></p>
   `;
-  if (config.env === 'test') {
+  if (skipOutboundEmail()) {
     logger.debug(`[EmailService] Would send expiring soon email to ${email}`);
     return;
   }
@@ -181,7 +195,7 @@ export async function sendDocumentExpired(email: string, documentLabel: string):
     <p>Merci d uploader une nouvelle version.</p>
     <p><a href="${dashboardUrl}">${dashboardUrl}</a></p>
   `;
-  if (config.env === 'test') {
+  if (skipOutboundEmail()) {
     logger.debug(`[EmailService] Would send expired email to ${email}`);
     return;
   }
@@ -207,7 +221,7 @@ export async function sendModerationAlert(
     <p>Motifs: ${JSON.stringify(motifs)}</p>
     <p><a href="${config.frontendUrl}/admin/moderation">Ouvrir la modération</a></p>
   `;
-  if (config.env === 'test') return;
+  if (skipOutboundEmail()) return;
   await transporter.sendMail({
     from: `"${config.email.fromName}" <${config.email.from}>`,
     to: adminEmail,
@@ -225,7 +239,7 @@ export async function sendModerationInfoRequest(
     <p>${message}</p>
     <p><a href="${config.frontendUrl}/dashboard">Voir mon dossier</a></p>
   `;
-  if (config.env === 'test') return;
+  if (skipOutboundEmail()) return;
   await transporter.sendMail({
     from: `"${config.email.fromName}" <${config.email.from}>`,
     to: tenantEmail,
@@ -246,7 +260,7 @@ export async function sendModerationResolved(
     <p>${content}</p>
     <p><a href="${config.frontendUrl}/dashboard">Voir mon dossier</a></p>
   `;
-  if (config.env === 'test') return;
+  if (skipOutboundEmail()) return;
   await transporter.sendMail({
     from: `"${config.email.fromName}" <${config.email.from}>`,
     to: tenantEmail,
@@ -267,7 +281,7 @@ export async function sendGuarantorInvitation(
     <p><a href="${url}">${url}</a></p>
     <p>Ce lien expire dans 7 jours.</p>
   `;
-  if (config.env === 'test') return;
+  if (skipOutboundEmail()) return;
   await transporter.sendMail({
     from: `"${config.email.fromName}" <${config.email.from}>`,
     to: email,
@@ -282,7 +296,7 @@ export async function sendAccountSuspended(email: string, reason: string): Promi
     <p>Motif: ${reason}</p>
     <p>Pour plus d'informations, contactez support@renters.app.</p>
   `;
-  if (config.env === 'test') return;
+  if (skipOutboundEmail()) return;
   await transporter.sendMail({
     from: `"${config.email.fromName}" <${config.email.from}>`,
     to: email,
@@ -297,7 +311,7 @@ export async function sendAccountReactivated(email: string): Promise<void> {
     <p>Votre compte Renters a ete reactive.</p>
     <p>Vous pouvez vous reconnecter ici: <a href="${loginUrl}">${loginUrl}</a></p>
   `;
-  if (config.env === 'test') return;
+  if (skipOutboundEmail()) return;
   await transporter.sendMail({
     from: `"${config.email.fromName}" <${config.email.from}>`,
     to: email,
@@ -311,7 +325,7 @@ export async function sendAccountDeleted(email: string): Promise<void> {
     <p>Votre compte Renters a ete supprime conformement a votre demande RGPD.</p>
     <p>Vos donnees personnelles ont ete effacees selon la politique de retention.</p>
   `;
-  if (config.env === 'test') return;
+  if (skipOutboundEmail()) return;
   await transporter.sendMail({
     from: `"${config.email.fromName}" <${config.email.from}>`,
     to: email,
@@ -330,7 +344,7 @@ export async function sendFolderViewed(
     <p>${agencyName} a consulte votre dossier le ${viewDate.toISOString()}.</p>
     <p><a href="${url}">${url}</a></p>
   `;
-  if (config.env === 'test') return;
+  if (skipOutboundEmail()) return;
   await transporter.sendMail({
     from: `"${config.email.fromName}" <${config.email.from}>`,
     to: email,
@@ -350,7 +364,7 @@ export async function sendDocumentDownloaded(
     <p>Documents: ${documentLabels.join(', ')}</p>
     <p><a href="${url}">${url}</a></p>
   `;
-  if (config.env === 'test') return;
+  if (skipOutboundEmail()) return;
   await transporter.sendMail({
     from: `"${config.email.fromName}" <${config.email.from}>`,
     to: email,
@@ -370,7 +384,7 @@ export async function sendNewFolderShared(
     <p>Score: ${score ?? 'N/A'}</p>
     <p><a href="${folderUrl}">${folderUrl}</a></p>
   `;
-  if (config.env === 'test') return;
+  if (skipOutboundEmail()) return;
   await transporter.sendMail({
     from: `"${config.email.fromName}" <${config.email.from}>`,
     to: email,
@@ -385,7 +399,7 @@ export async function sendFolderExpiringSoon(email: string, daysLeft: number): P
     <p>Votre dossier expire dans ${daysLeft} jours.</p>
     <p><a href="${url}">${url}</a></p>
   `;
-  if (config.env === 'test') return;
+  if (skipOutboundEmail()) return;
   await transporter.sendMail({
     from: `"${config.email.fromName}" <${config.email.from}>`,
     to: email,
@@ -400,7 +414,7 @@ export async function sendWeeklyDigest(
   digestData: Record<string, unknown>
 ): Promise<void> {
   const html = `<p>Votre recap de la semaine (${role}).</p><pre>${JSON.stringify(digestData, null, 2)}</pre>`;
-  if (config.env === 'test') return;
+  if (skipOutboundEmail()) return;
   await transporter.sendMail({
     from: `"${config.email.fromName}" <${config.email.from}>`,
     to: email,

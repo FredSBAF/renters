@@ -45,6 +45,8 @@ describe('POST /auth/register', () => {
     const res = await request(app)
       .post('/auth/register')
       .send({
+        first_name: 'T',
+        last_name: 'User',
         email: 'invalid',
         password: 'short',
         password_confirmation: 'short',
@@ -58,6 +60,8 @@ describe('POST /auth/register', () => {
   test('returns 409 when email already exists', async () => {
     jest.mocked(User.findOne).mockResolvedValue({ id: 1, email: 'existing@example.com' } as never);
     const res = await request(app).post('/auth/register').send({
+      first_name: 'Jane',
+      last_name: 'Doe',
       email: 'existing@example.com',
       password: 'ValidPass123!',
       password_confirmation: 'ValidPass123!',
@@ -70,6 +74,8 @@ describe('POST /auth/register', () => {
 
   test('returns 201 and user when valid', async () => {
     const res = await request(app).post('/auth/register').send({
+      first_name: 'Jane',
+      last_name: 'Doe',
       email: 'new@example.com',
       password: 'ValidPass123!',
       password_confirmation: 'ValidPass123!',

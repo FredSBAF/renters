@@ -37,13 +37,14 @@ DocumentType.init(
     is_required: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false },
     required_for_profiles: { type: DataTypes.JSON, allowNull: false, defaultValue: ['all'] },
     sort_order: { type: DataTypes.INTEGER.UNSIGNED, allowNull: false, defaultValue: 0 },
-    created_at: { type: DataTypes.DATE, allowNull: false },
-    updated_at: { type: DataTypes.DATE, allowNull: false },
+    created_at: { type: DataTypes.DATE, allowNull: true },
+    updated_at: { type: DataTypes.DATE, allowNull: true },
   },
   {
     sequelize,
     tableName: 'document_types',
     underscored: true,
+    timestamps: true,
     indexes: [{ unique: true, fields: ['code'] }],
   }
 );

@@ -51,13 +51,14 @@ SharingView.init(
       allowNull: false,
       defaultValue: 'limited',
     },
-    created_at: { type: DataTypes.DATE, allowNull: false },
-    updated_at: { type: DataTypes.DATE, allowNull: false },
+    created_at: { type: DataTypes.DATE, allowNull: true },
+    updated_at: { type: DataTypes.DATE, allowNull: true },
   },
   {
     sequelize,
     tableName: 'sharing_views',
     underscored: true,
+    timestamps: true,
     indexes: [
       { fields: ['sharing_link_id'] },
       { fields: ['agency_id'] },

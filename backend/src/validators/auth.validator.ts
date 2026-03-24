@@ -1,6 +1,16 @@
 import Joi from 'joi';
 
 export const registerSchema = Joi.object({
+  first_name: Joi.string().trim().min(2).max(100).required().messages({
+    'string.min': 'Le prénom doit contenir au moins 2 caractères',
+    'string.max': 'Le prénom ne peut pas dépasser 100 caractères',
+    'any.required': 'Le prénom est requis',
+  }),
+  last_name: Joi.string().trim().min(2).max(100).required().messages({
+    'string.min': 'Le nom doit contenir au moins 2 caractères',
+    'string.max': 'Le nom ne peut pas dépasser 100 caractères',
+    'any.required': 'Le nom est requis',
+  }),
   email: Joi.string().email().required(),
   password: Joi.string().min(8).required().messages({
     'string.min': 'Le mot de passe doit contenir au moins 8 caractères',
@@ -17,8 +27,20 @@ export const registerSchema = Joi.object({
 });
 
 export const verifyEmailSchema = Joi.object({
-  token: Joi.string().required(),
-});
+  token: Joi.string(),
+  email: Joi.string().email(),
+  code: Joi.string().pattern(/^\d{6}$/).messages({
+    'string.pattern.base': 'Le code de vérification doit contenir 6 chiffres',
+  }),
+})
+  .or('token', 'code')
+  .oxor('token', 'code')
+  .with('code', 'email')
+  .messages({
+    'object.missing': 'Fournissez soit un token, soit un code de vérification',
+    'object.oxor': 'Fournissez soit un token, soit un code de vérification',
+    'object.with': 'Email requis avec le code de vérification',
+  });
 
 export const loginSchema = Joi.object({
   email: Joi.string().email().required(),

@@ -65,7 +65,13 @@ export type AuthResponse = {
     access_token?: string;
     refresh_token?: string;
     expires_in?: number;
-    user?: { id: number; email: string; role: string; is_2fa_enabled?: boolean };
+    user?: {
+      id: number;
+      email: string;
+      role: string;
+      tenant_profile?: 'employee_cdi' | 'employee_cdd' | 'student' | 'freelance' | 'retired' | 'other' | null;
+      is_2fa_enabled?: boolean;
+    };
     requires_2fa?: boolean;
   };
   message?: string;

@@ -52,13 +52,14 @@ NotificationPreference.init(
     email_subscription_alerts: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: true },
     weekly_digest_enabled: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: true },
     weekly_digest_day: { type: DataTypes.TINYINT.UNSIGNED, allowNull: false, defaultValue: 1 },
-    created_at: { type: DataTypes.DATE, allowNull: false },
-    updated_at: { type: DataTypes.DATE, allowNull: false },
+    created_at: { type: DataTypes.DATE, allowNull: true },
+    updated_at: { type: DataTypes.DATE, allowNull: true },
   },
   {
     sequelize,
     tableName: 'notification_preferences',
     underscored: true,
+    timestamps: true,
     indexes: [{ unique: true, fields: ['user_id'] }],
   }
 );

@@ -37,8 +37,8 @@ EmailVerificationToken.init(
     token: { type: DataTypes.STRING(255), allowNull: false, unique: true },
     expires_at: { type: DataTypes.DATE, allowNull: false },
     used_at: { type: DataTypes.DATE, allowNull: true },
-    created_at: { type: DataTypes.DATE, allowNull: false },
-    updated_at: { type: DataTypes.DATE, allowNull: false },
+    created_at: { type: DataTypes.DATE, allowNull: true },
+    updated_at: { type: DataTypes.DATE, allowNull: true },
   },
-  { sequelize, tableName: 'email_verification_tokens', underscored: true }
+  { sequelize, tableName: 'email_verification_tokens', underscored: true, timestamps: true }
 );

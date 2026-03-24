@@ -16,6 +16,7 @@ export type UserInfo = {
   id: number;
   email: string;
   role: string;
+  tenant_profile?: 'employee_cdi' | 'employee_cdd' | 'student' | 'freelance' | 'retired' | 'other' | null;
   is_2fa_enabled?: boolean;
 };
 

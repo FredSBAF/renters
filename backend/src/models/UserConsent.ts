@@ -48,13 +48,14 @@ UserConsent.init(
     },
     ip_address: { type: DataTypes.STRING(64), allowNull: true },
     user_agent: { type: DataTypes.STRING(512), allowNull: true },
-    created_at: { type: DataTypes.DATE, allowNull: false },
-    updated_at: { type: DataTypes.DATE, allowNull: false },
+    created_at: { type: DataTypes.DATE, allowNull: true },
+    updated_at: { type: DataTypes.DATE, allowNull: true },
   },
   {
     sequelize,
     tableName: 'user_consents',
     underscored: true,
+    timestamps: true,
     indexes: [{ fields: ['user_id'] }],
   }
 );

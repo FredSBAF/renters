@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import { v4 as uuidv4 } from 'uuid';
+import { createHash } from 'crypto';
 import { User, EmailVerificationToken, PasswordResetToken } from '../models';
 import { successResponse, errorResponse } from '../utils/response';
 import { sendVerificationEmail } from '../services/EmailService';
@@ -21,13 +22,19 @@ import { logger } from '../utils/logger';
 const SALT_ROUNDS = 12;
 const VERIFICATION_EXPIRY_HOURS = 24;
 
+function buildEmailVerificationCode(token: string): string {
+  const hashHex = createHash('sha256').update(token).digest('hex');
+  const numeric = (parseInt(hashHex.slice(0, 12), 16) % 900000) + 100000;
+  return numeric.toString();
+}
+
 export async function register(req: Request, res: Response): Promise<Response> {
   const { error, value } = registerSchema.validate(req.body, { abortEarly: false });
   if (error) {
     const messages = error.details.map((d) => d.message);
     return errorResponse(res, 'Validation échouée', messages, 400);
   }
-  const { email, password } = value;
+  const { email, password, first_name, last_name } = value;
 
   const existing = await User.findOne({ where: { email: email.toLowerCase() } });
   if (existing) {
@@ -38,11 +45,14 @@ export async function register(req: Request, res: Response): Promise<Response> {
   const user = await User.create({
     email: email.toLowerCase(),
     password_hash,
+    first_name: first_name.trim(),
+    last_name: last_name.trim(),
     role: 'tenant',
     status: 'pending_verification',
   });
 
   const token = uuidv4();
+  const verificationCode = buildEmailVerificationCode(token);
   const expires_at = new Date();
   expires_at.setHours(expires_at.getHours() + VERIFICATION_EXPIRY_HOURS);
   await EmailVerificationToken.create({
@@ -51,7 +61,7 @@ export async function register(req: Request, res: Response): Promise<Response> {
     expires_at,
   });
 
-  await sendVerificationEmail(user.email, token);
+  await sendVerificationEmail(user.email, token, verificationCode);
 
   return successResponse(
     res,
@@ -73,9 +83,25 @@ export async function verifyEmail(req: Request, res: Response): Promise<Response
     const messages = error.details.map((d) => d.message);
     return errorResponse(res, 'Validation échouée', messages, 400);
   }
-  const { token } = value;
+  const { token, email, code } = value;
+  let evt: InstanceType<typeof EmailVerificationToken> | null = null;
 
-  const evt = await EmailVerificationToken.findOne({ where: { token } });
+  if (token) {
+    evt = await EmailVerificationToken.findOne({ where: { token } });
+  } else {
+    const userByEmail = await User.findOne({ where: { email: email.toLowerCase() } });
+    if (!userByEmail) {
+      return errorResponse(res, 'Lien invalide ou expiré', [], 400);
+    }
+    evt = await EmailVerificationToken.findOne({
+      where: { user_id: userByEmail.id, used_at: null },
+      order: [['created_at', 'DESC']],
+    });
+    if (!evt || buildEmailVerificationCode(evt.token) !== code) {
+      return errorResponse(res, 'Code de vérification invalide', [], 400);
+    }
+  }
+
   if (!evt) {
     return errorResponse(res, 'Lien invalide ou expiré', [], 400);
   }
@@ -169,6 +195,7 @@ export async function login(req: Request, res: Response): Promise<Response> {
         id: user.id,
         email: user.email,
         role: user.role,
+        tenant_profile: user.tenant_profile,
         is_2fa_enabled: user.is_2fa_enabled,
       },
     },

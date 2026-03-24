@@ -49,13 +49,14 @@ PaymentLog.init(
       defaultValue: 'pending',
     },
     stripe_payload: { type: DataTypes.JSON, allowNull: true },
-    created_at: { type: DataTypes.DATE, allowNull: false },
-    updated_at: { type: DataTypes.DATE, allowNull: false },
+    created_at: { type: DataTypes.DATE, allowNull: true },
+    updated_at: { type: DataTypes.DATE, allowNull: true },
   },
   {
     sequelize,
     tableName: 'payment_logs',
     underscored: true,
+    timestamps: true,
     indexes: [
       { fields: ['agency_id'] },
       { fields: ['stripe_event_id'], unique: true },

@@ -8,7 +8,7 @@
     "test": "jest --forceExit",
     "test:coverage": "jest --coverage --forceExit",
     "lint": "eslint src --ext .ts",
-    "migrate": "sequelize-cli db:migrate",
+    "migrate": "sequelize-cli db:migrate && NODE_OPTIONS='--require=ts-node/register' sequelize-cli db:migrate --migrations-path ./src/migrations",
     "migrate:undo": "sequelize-cli db:migrate:undo:all",
     "seed": "sequelize-cli db:seed:all"
   },
@@ -39,8 +39,10 @@
     "sharp": "^0.34.5",
     "speakeasy": "^2.0.0",
     "stripe": "^20.4.1",
+    "swagger-ui-express": "^5.0.1",
     "uuid": "^9.0.0",
-    "winston": "^3.10.0"
+    "winston": "^3.10.0",
+    "yaml": "^2.8.3"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
@@ -52,6 +54,7 @@
     "@types/node": "^20.0.0",
     "@types/nodemailer": "^6.4.0",
     "@types/supertest": "^2.0.0",
+    "@types/swagger-ui-express": "^4.1.8",
     "@types/uuid": "^9.0.0",
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
@@ -59,6 +62,7 @@
     "jest": "^29.5.0",
     "supertest": "^6.3.0",
     "ts-jest": "^29.1.0",
+    "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.0.0"
   }

@@ -45,13 +45,14 @@ Notification.init(
     email_sent: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false },
     email_sent_at: { type: DataTypes.DATE, allowNull: true },
     metadata: { type: DataTypes.JSON, allowNull: true },
-    created_at: { type: DataTypes.DATE, allowNull: false },
-    updated_at: { type: DataTypes.DATE, allowNull: false },
+    created_at: { type: DataTypes.DATE, allowNull: true },
+    updated_at: { type: DataTypes.DATE, allowNull: true },
   },
   {
     sequelize,
     tableName: 'notifications',
     underscored: true,
+    timestamps: true,
     indexes: [
       { fields: ['user_id', 'is_read'] },
       { fields: ['user_id', 'created_at'] },

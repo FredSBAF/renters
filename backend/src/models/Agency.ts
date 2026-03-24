@@ -47,8 +47,8 @@ Agency.init(
     subscription_id: { type: DataTypes.STRING(255), allowNull: true },
     customer_id: { type: DataTypes.STRING(255), allowNull: true },
     next_billing_date: { type: DataTypes.DATEONLY, allowNull: true },
-    created_at: { type: DataTypes.DATE, allowNull: false },
-    updated_at: { type: DataTypes.DATE, allowNull: false },
+    created_at: { type: DataTypes.DATE, allowNull: true },
+    updated_at: { type: DataTypes.DATE, allowNull: true },
   },
-  { sequelize, tableName: 'agencies', underscored: true }
+  { sequelize, tableName: 'agencies', underscored: true, timestamps: true }
 );

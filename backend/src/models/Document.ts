@@ -59,15 +59,16 @@ Document.init(
     ai_metadata: { type: DataTypes.JSON, allowNull: true },
     comment: { type: DataTypes.TEXT, allowNull: true },
     expiry_notified_at: { type: DataTypes.DATE, allowNull: true },
-    created_at: { type: DataTypes.DATE, allowNull: false },
-    updated_at: { type: DataTypes.DATE, allowNull: false },
     deleted_at: { type: DataTypes.DATE, allowNull: true },
+    created_at: { type: DataTypes.DATE, allowNull: true },
+    updated_at: { type: DataTypes.DATE, allowNull: true },
   },
   {
     sequelize,
     tableName: 'documents',
     underscored: true,
     paranoid: true,
+    timestamps: true,
     indexes: [
       { fields: ['folder_id'] },
       { fields: ['document_type'] },

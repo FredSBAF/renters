@@ -37,8 +37,8 @@ RefreshToken.init(
     token: { type: DataTypes.STRING(512), allowNull: false },
     expires_at: { type: DataTypes.DATE, allowNull: false },
     revoked_at: { type: DataTypes.DATE, allowNull: true },
-    created_at: { type: DataTypes.DATE, allowNull: false },
-    updated_at: { type: DataTypes.DATE, allowNull: false },
+    created_at: { type: DataTypes.DATE, allowNull: true },
+    updated_at: { type: DataTypes.DATE, allowNull: true },
   },
-  { sequelize, tableName: 'refresh_tokens', underscored: true }
+  { sequelize, tableName: 'refresh_tokens', underscored: true, timestamps: true }
 );
