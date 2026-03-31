@@ -19,6 +19,21 @@ export type TenantProfile =
   | 'retired'
   | 'other';
 
+export interface UserAttributes {
+  id: number;
+  email: string;
+  role: UserRole;
+  status: UserStatus;
+  first_name: string | null;
+  last_name: string | null;
+  phone: string | null;
+  date_of_birth: string | null;
+  tenant_profile: TenantProfile | null;
+  is_2fa_enabled: boolean;
+  created_at: Date;
+  updated_at: Date;
+}
+
 export class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
   declare id: CreationOptional<number>;
   declare email: string;
@@ -43,6 +58,16 @@ export class User extends Model<InferAttributes<User>, InferCreationAttributes<U
   declare deletion_cancellation_token_expires_at: CreationOptional<Date | null>;
 
   declare agency?: NonAttribute<Agency>;
+
+  toPublicJSON(): Partial<UserAttributes> {
+    const json = this.toJSON() as Record<string, unknown>;
+    delete json.password_hash;
+    delete json.totp_secret;
+    delete json.createdAt;
+    delete json.updatedAt;
+    delete json.deletedAt;
+    return json as Partial<UserAttributes>;
+  }
 }
 
 User.init(
@@ -65,7 +90,7 @@ User.init(
     },
     first_name: { type: DataTypes.STRING(100), allowNull: true },
     last_name: { type: DataTypes.STRING(100), allowNull: true },
-    phone: { type: DataTypes.STRING(32), allowNull: true },
+    phone: { type: DataTypes.STRING(20), allowNull: true },
     date_of_birth: { type: DataTypes.DATEONLY, allowNull: true },
     tenant_profile: {
       type: DataTypes.ENUM(
@@ -90,5 +115,16 @@ User.init(
     created_at: { type: DataTypes.DATE, allowNull: true },
     updated_at: { type: DataTypes.DATE, allowNull: true },
   },
-  { sequelize, tableName: 'users', underscored: true, paranoid: true, timestamps: true }
+  {
+    sequelize,
+    tableName: 'users',
+    underscored: true,
+    paranoid: true,
+    timestamps: true,
+    hooks: {
+      beforeUpdate: (user) => {
+        user.updated_at = new Date();
+      },
+    },
+  }
 );

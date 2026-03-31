@@ -43,12 +43,28 @@ export class DocumentService {
       void Promise.resolve(S3Service.deleteFile(existing.file_path)).catch(() => undefined);
     }
 
-    const filePath = await S3Service.uploadFile({
-      buffer: params.fileBuffer,
-      mimeType: params.mimeType,
-      userId: params.userId,
-      originalName: params.originalName,
-    });
+    let filePath: string;
+    try {
+      filePath = await S3Service.uploadFile({
+        buffer: params.fileBuffer,
+        mimeType: params.mimeType,
+        userId: params.userId,
+        originalName: params.originalName,
+      });
+    } catch (error) {
+      const err = error as Error | undefined;
+      logger.error(
+        `[DocumentService.uploadDocument] S3 upload failed user_id=${params.userId} ` +
+          `folder_id=${params.folderId} document_type=${params.documentType} ` +
+          `mime=${params.mimeType} size=${params.fileSize} original_name="${params.originalName}" ` +
+          `error=${JSON.stringify({
+            name: err?.name,
+            message: err?.message,
+            stack: err?.stack,
+          })}`
+      );
+      throw error;
+    }
 
     const expiresAt =
       type.validity_months === null ? null : addMonths(new Date(), type.validity_months);

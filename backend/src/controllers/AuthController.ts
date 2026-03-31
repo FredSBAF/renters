@@ -9,7 +9,6 @@ import {
   registerSchema,
   verifyEmailSchema,
   loginSchema,
-  refreshSchema,
   forgotPasswordSchema,
   resetPasswordSchema,
   verify2faSchema,
@@ -21,6 +20,38 @@ import { logger } from '../utils/logger';
 
 const SALT_ROUNDS = 12;
 const VERIFICATION_EXPIRY_HOURS = 24;
+const ACCESS_COOKIE_NAME = 'access_token';
+const REFRESH_COOKIE_NAME = 'refresh_token';
+
+function parseCookieHeader(req: Request): Record<string, string> {
+  const raw = req.headers.cookie;
+  if (!raw) return {};
+  return raw.split(';').reduce<Record<string, string>>((acc, part) => {
+    const [k, ...rest] = part.trim().split('=');
+    if (!k) return acc;
+    acc[k] = decodeURIComponent(rest.join('=') || '');
+    return acc;
+  }, {});
+}
+
+function cookieOptions(maxAgeMs: number) {
+  return {
+    httpOnly: true,
+    secure: config.env === 'production',
+    sameSite: 'strict' as const,
+    path: '/',
+    maxAge: maxAgeMs,
+  };
+}
+
+function clearAuthCookies(res: Response): void {
+  res.cookie(ACCESS_COOKIE_NAME, '', { ...cookieOptions(0), maxAge: 0 });
+  res.cookie(REFRESH_COOKIE_NAME, '', { ...cookieOptions(0), maxAge: 0 });
+}
+
+function hashRefreshToken(token: string): string {
+  return createHash('sha256').update(`${config.jwt.refreshSecret}:${token}`).digest('hex');
+}
 
 function buildEmailVerificationCode(token: string): string {
   const hashHex = createHash('sha256').update(token).digest('hex');
@@ -172,7 +203,7 @@ export async function login(req: Request, res: Response): Promise<Response> {
   refreshExpires.setSeconds(refreshExpires.getSeconds() + config.jwt.refreshExpiresIn);
   await RefreshToken.create({
     user_id: user.id,
-    token: refreshTokenValue,
+    token: hashRefreshToken(refreshTokenValue),
     expires_at: refreshExpires,
   });
 
@@ -183,6 +214,9 @@ export async function login(req: Request, res: Response): Promise<Response> {
     config.jwt.secret,
     { expiresIn: config.jwt.expiresIn }
   );
+
+  res.cookie(ACCESS_COOKIE_NAME, access_token, cookieOptions(config.jwt.expiresIn * 1000));
+  res.cookie(REFRESH_COOKIE_NAME, refreshTokenValue, cookieOptions(config.jwt.refreshExpiresIn * 1000));
 
   return successResponse(
     res,
@@ -205,52 +239,64 @@ export async function login(req: Request, res: Response): Promise<Response> {
 }
 
 export async function refresh(req: Request, res: Response): Promise<Response> {
-  const { error, value } = refreshSchema.validate(req.body, { abortEarly: false });
-  if (error) {
-    const messages = error.details.map((d) => d.message);
-    return errorResponse(res, 'Validation échouée', messages, 400);
+  const cookies = parseCookieHeader(req);
+  const refreshTokenRaw = cookies[REFRESH_COOKIE_NAME] || req.body?.refresh_token;
+  if (!refreshTokenRaw) {
+    clearAuthCookies(res);
+    return errorResponse(res, 'Non authentifié', [], 401);
   }
-  const { refresh_token } = value;
-
-  const rt = await RefreshToken.findOne({ where: { token: refresh_token } });
+  const rt = await RefreshToken.findOne({ where: { token: hashRefreshToken(refreshTokenRaw) } });
   if (!rt || rt.revoked_at || new Date() > rt.expires_at) {
+    clearAuthCookies(res);
     return errorResponse(res, 'Refresh token invalide ou expiré', [], 401);
   }
   const user = await User.findByPk(rt.user_id);
   if (!user) {
+    clearAuthCookies(res);
     return errorResponse(res, 'Utilisateur introuvable', [], 401);
   }
+
+  const newRefreshTokenValue = uuidv4();
+  const refreshExpires = new Date();
+  refreshExpires.setSeconds(refreshExpires.getSeconds() + config.jwt.refreshExpiresIn);
+  await rt.update({ revoked_at: new Date() });
+  await RefreshToken.create({
+    user_id: user.id,
+    token: hashRefreshToken(newRefreshTokenValue),
+    expires_at: refreshExpires,
+  });
 
   const access_token = jwt.sign(
     { sub: user.id, email: user.email, role: user.role },
     config.jwt.secret,
     { expiresIn: config.jwt.expiresIn }
   );
+  res.cookie(ACCESS_COOKIE_NAME, access_token, cookieOptions(config.jwt.expiresIn * 1000));
+  res.cookie(
+    REFRESH_COOKIE_NAME,
+    newRefreshTokenValue,
+    cookieOptions(config.jwt.refreshExpiresIn * 1000)
+  );
 
   return successResponse(
     res,
-    { access_token, expires_in: config.jwt.expiresIn },
+    { access_token, refresh_token: newRefreshTokenValue, expires_in: config.jwt.expiresIn },
     'Token renouvelé',
     200
   );
 }
 
 export async function logout(req: Request, res: Response): Promise<Response> {
-  const authHeader = req.headers.authorization;
-  const token = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null;
-  if (!token) {
-    return res.status(204).send();
-  }
-  try {
-    const decoded = jwt.verify(token, config.jwt.secret) as unknown as { sub: number };
+  const cookies = parseCookieHeader(req);
+  const refreshTokenRaw = cookies[REFRESH_COOKIE_NAME] || req.body?.refresh_token;
+  if (refreshTokenRaw) {
     await RefreshToken.update(
       { revoked_at: new Date() },
-      { where: { user_id: decoded.sub } }
+      { where: { token: hashRefreshToken(refreshTokenRaw) } }
     );
-  } catch {
-    // Token invalid or expired — still return 204
   }
-  return res.status(204).send();
+  clearAuthCookies(res);
+  return successResponse(res, null, 'Déconnexion réussie', 200);
 }
 
 export async function forgotPassword(req: Request, res: Response): Promise<Response> {

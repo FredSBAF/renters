@@ -19,6 +19,10 @@ type RequiredDocumentType = {
 type FolderDocumentCoverage = {
   valid: Set<string>;
   expired: Set<string>;
+  pendingAnalysis: Set<string>;
+  analyzed: Set<string>;
+  validated: Set<string>;
+  invalid: Set<string>;
 };
 
 const CATEGORY_MAP: Record<string, string[]> = {
@@ -76,7 +80,23 @@ export class FolderService {
 
       const valid = new Set<string>();
       const expired = new Set<string>();
+      const pendingAnalysis = new Set<string>();
+      const analyzed = new Set<string>();
+      const validated = new Set<string>();
+      const invalid = new Set<string>();
       for (const row of rows) {
+        if (row.status === 'pending_analysis') {
+          pendingAnalysis.add(row.document_type);
+        }
+        if (row.status === 'invalid') {
+          invalid.add(row.document_type);
+        }
+        if (row.status === 'attention' || row.status === 'invalid' || row.status === 'valid') {
+          analyzed.add(row.document_type);
+        }
+        if (row.status === 'valid') {
+          validated.add(row.document_type);
+        }
         if (row.status === 'valid' || row.status === 'attention') {
           valid.add(row.document_type);
         }
@@ -84,10 +104,17 @@ export class FolderService {
           expired.add(row.document_type);
         }
       }
-      return { valid, expired };
+      return { valid, expired, pendingAnalysis, analyzed, validated, invalid };
     } catch {
       // Document model/table arrives in Part 5.
-      return { valid: new Set<string>(), expired: new Set<string>() };
+      return {
+        valid: new Set<string>(),
+        expired: new Set<string>(),
+        pendingAnalysis: new Set<string>(),
+        analyzed: new Set<string>(),
+        validated: new Set<string>(),
+        invalid: new Set<string>(),
+      };
     }
   }
 
@@ -280,15 +307,20 @@ export class FolderService {
   static async getDocumentPresenceDetails(
     folderId: number,
     tenantProfile: string
-  ): Promise<Array<RequiredDocumentType & { document_status: 'present' | 'missing' | 'expired' }>> {
+  ): Promise<Array<RequiredDocumentType & {
+    workflow_status: 'missing' | 'uploaded' | 'analyzed' | 'validated' | 'expired' | 'rejected';
+  }>> {
     const requiredTypes = await FolderService.getRequiredDocumentTypes(tenantProfile);
     const coverage = await FolderService.getFolderDocumentCoverage(folderId);
 
     return requiredTypes.map((doc) => {
-      let document_status: 'present' | 'missing' | 'expired' = 'missing';
-      if (coverage.valid.has(doc.code)) document_status = 'present';
-      else if (coverage.expired.has(doc.code)) document_status = 'expired';
-      return { ...doc, document_status };
+      let workflow_status: 'missing' | 'uploaded' | 'analyzed' | 'validated' | 'expired' | 'rejected' = 'missing';
+      if (coverage.validated.has(doc.code)) workflow_status = 'validated';
+      else if (coverage.analyzed.has(doc.code)) workflow_status = 'analyzed';
+      else if (coverage.pendingAnalysis.has(doc.code)) workflow_status = 'uploaded';
+      else if (coverage.expired.has(doc.code)) workflow_status = 'expired';
+      if (coverage.invalid.has(doc.code)) workflow_status = 'rejected';
+      return { ...doc, workflow_status };
     });
   }
 }

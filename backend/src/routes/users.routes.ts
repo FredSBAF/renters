@@ -1,20 +1,22 @@
 import { Router } from 'express';
-import * as UserController from '../controllers/UserController';
+import * as UsersController from '../controllers/users.controller';
 import * as AuthController from '../controllers/AuthController';
-import { authMiddleware } from '../middlewares/auth.middleware';
+import { requireAuth } from '../middlewares/auth.middleware';
 import { exportLimiter } from '../middlewares/rateLimiter.middleware';
 import { GDPRController } from '../controllers/GDPRController';
+import { csrfOriginCheck } from '../middlewares/csrf.middleware';
 
 const router = Router();
 
-router.get('/me', authMiddleware, UserController.getMe);
-router.patch('/me', authMiddleware, UserController.patchMe);
-router.post('/me/enable-2fa', authMiddleware, AuthController.enable2fa);
-router.post('/me/verify-2fa', authMiddleware, AuthController.verify2fa);
-router.post('/me/disable-2fa', authMiddleware, AuthController.disable2fa);
-router.get('/me/data-export', authMiddleware, exportLimiter, GDPRController.requestDataExport);
-router.post('/me/delete-account', authMiddleware, GDPRController.requestDeletion);
-router.get('/me/consents', authMiddleware, GDPRController.getConsents);
+router.use(requireAuth);
+router.get('/me', UsersController.getMe);
+router.patch('/me', csrfOriginCheck, UsersController.updateMe);
+router.post('/me/enable-2fa', AuthController.enable2fa);
+router.post('/me/verify-2fa', AuthController.verify2fa);
+router.post('/me/disable-2fa', AuthController.disable2fa);
+router.get('/me/data-export', exportLimiter, GDPRController.requestDataExport);
+router.post('/me/delete-account', GDPRController.requestDeletion);
+router.get('/me/consents', GDPRController.getConsents);
 router.post('/me/cancel-deletion', GDPRController.cancelDeletion);
 
 export default router;

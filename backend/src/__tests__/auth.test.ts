@@ -2,7 +2,7 @@
  * Sprint 1 — Auth endpoints (with mocked DB)
  */
 import request from 'supertest';
-import { User } from '../models';
+import { RefreshToken, User } from '../models';
 import app from '../app';
 
 jest.mock('../models', () => ({
@@ -106,5 +106,51 @@ describe('POST /auth/login', () => {
   test('returns 400 when body is invalid', async () => {
     const res = await request(app).post('/auth/login').send({ email: 'x' });
     expect(res.status).toBe(400);
+  });
+
+  test('returns cookies when login succeeds', async () => {
+    jest.mocked(User.findOne).mockResolvedValue({
+      id: 10,
+      email: 'tenant@example.com',
+      status: 'active',
+      role: 'tenant',
+      password_hash: await (await import('bcrypt')).hash('ValidPass123!', 12),
+      tenant_profile: 'employee_cdi',
+      is_2fa_enabled: false,
+      update: jest.fn().mockResolvedValue(undefined),
+    } as never);
+
+    const res = await request(app).post('/auth/login').send({
+      email: 'tenant@example.com',
+      password: 'ValidPass123!',
+    });
+
+    expect(res.status).toBe(200);
+    expect(Array.isArray(res.headers['set-cookie'])).toBe(true);
+    expect(String(res.headers['set-cookie'])).toContain('access_token=');
+    expect(String(res.headers['set-cookie'])).toContain('refresh_token=');
+  });
+});
+
+describe('POST /auth/refresh', () => {
+  test('returns 401 with invalid refresh cookie', async () => {
+    jest.mocked(RefreshToken.findOne).mockResolvedValue(null);
+    const res = await request(app)
+      .post('/auth/refresh')
+      .set('Cookie', 'refresh_token=dead-token');
+    expect(res.status).toBe(401);
+    expect(String(res.headers['set-cookie'])).toContain('Max-Age=0');
+  });
+});
+
+describe('POST /auth/logout', () => {
+  test('clears auth cookies', async () => {
+    const res = await request(app)
+      .post('/auth/logout')
+      .set('Cookie', 'refresh_token=dead-token');
+    expect(res.status).toBe(200);
+    expect(String(res.headers['set-cookie'])).toContain('access_token=');
+    expect(String(res.headers['set-cookie'])).toContain('refresh_token=');
+    expect(String(res.headers['set-cookie'])).toContain('Max-Age=0');
   });
 });

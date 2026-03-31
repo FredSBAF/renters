@@ -110,6 +110,90 @@ describe('GET /api/v1/folders/me', () => {
   });
 });
 
+describe('GET /api/v1/folders/me/kpis', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    (jwt.verify as jest.Mock).mockReturnValue({ sub: 10, email: 'tenant@x.fr', role: 'tenant' });
+    jest
+      .mocked(User.findByPk)
+      .mockResolvedValue({
+        id: 10,
+        role: 'tenant',
+        tenant_profile: 'employee_cdi',
+        email: 'tenant@x.fr',
+        first_name: 'Jean',
+        last_name: 'Dupont',
+        phone: '0612345678',
+        date_of_birth: '1990-01-01',
+        is_2fa_enabled: false,
+        toJSON: () => ({}),
+      } as never);
+    jest.mocked(Folder.findOne).mockResolvedValue({
+      id: 42,
+      folder_status: 'active',
+      deleted_at: null,
+      completion_percentage: 0,
+      status: 'incomplete',
+      update: jest.fn(),
+    } as never);
+    jest.mocked(DocumentType.findAll).mockResolvedValue([
+      {
+        toJSON: () => ({
+          id: 1,
+          code: 'identity_card',
+          label_fr: 'CNI',
+          label_en: 'ID',
+          validity_months: null,
+          is_required: true,
+          required_for_profiles: ['all'],
+          sort_order: 1,
+        }),
+      },
+      {
+        toJSON: () => ({
+          id: 2,
+          code: 'proof_of_residence',
+          label_fr: 'Domicile',
+          label_en: 'Residence',
+          validity_months: 3,
+          is_required: true,
+          required_for_profiles: ['all'],
+          sort_order: 2,
+        }),
+      },
+      {
+        toJSON: () => ({
+          id: 3,
+          code: 'tax_notice',
+          label_fr: 'Impot',
+          label_en: 'Tax',
+          validity_months: 12,
+          is_required: true,
+          required_for_profiles: ['all'],
+          sort_order: 3,
+        }),
+      },
+    ] as never);
+    (sequelize.query as jest.Mock).mockResolvedValue([
+      { document_type: 'identity_card', status: 'pending_analysis' },
+      { document_type: 'proof_of_residence', status: 'attention' },
+      { document_type: 'tax_notice', status: 'valid' },
+    ]);
+  });
+
+  test('should return weighted dossier and profile KPI values', async () => {
+    const res = await request(app).get('/api/v1/folders/me/kpis').set('Authorization', 'Bearer token');
+
+    expect(res.status).toBe(200);
+    // (0.33 + 0.66 + 1.0) / 3 = 66.33 -> 66
+    expect(res.body.data.dossier_completion.percentage).toBe(66);
+    // address missing in current user model => 6/7 completed
+    expect(res.body.data.profile_completion.percentage).toBe(86);
+    expect(res.body.data.search_criteria_indicator).toBeNull();
+    expect(res.body.data.shared_folders_count).toBeNull();
+  });
+});
+
 describe('GET /api/v1/folders/required-documents', () => {
   const docTypes = [
     {

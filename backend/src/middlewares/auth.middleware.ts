@@ -4,13 +4,25 @@ import { config } from '../config/env';
 import { errorResponse } from '../utils/response';
 import { User } from '../models';
 
+function parseCookieHeader(cookieHeader?: string): Record<string, string> {
+  if (!cookieHeader) return {};
+  return cookieHeader.split(';').reduce<Record<string, string>>((acc, part) => {
+    const [k, ...rest] = part.trim().split('=');
+    if (!k) return acc;
+    acc[k] = decodeURIComponent(rest.join('=') || '');
+    return acc;
+  }, {});
+}
+
 export async function authMiddleware(
   req: Request,
   res: Response,
   next: NextFunction
 ): Promise<void> {
   const authHeader = req.headers.authorization;
-  const token = authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null;
+  const cookies = parseCookieHeader(req.headers.cookie);
+  const token =
+    cookies.access_token || (authHeader?.startsWith('Bearer ') ? authHeader.slice(7) : null);
   if (!token) {
     errorResponse(res, 'Non authentifié', [], 401);
     return;
@@ -38,6 +50,23 @@ export async function authMiddleware(
   } catch {
     errorResponse(res, 'Token invalide ou expiré', [], 401);
   }
+}
+
+export async function requireAuth(
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> {
+  let authNextCalled = false;
+  await authMiddleware(req, res, () => {
+    authNextCalled = true;
+  });
+  if (!authNextCalled || !req.user) return;
+  if (req.user.status !== 'active') {
+    errorResponse(res, 'Compte non activé ou suspendu', [], 401);
+    return;
+  }
+  next();
 }
 
 export function requireRole(...roles: string[]) {

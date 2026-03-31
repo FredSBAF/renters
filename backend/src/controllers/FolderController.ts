@@ -5,6 +5,27 @@ import { errorResponse, successResponse } from '../utils/response';
 import { getRequiredDocsSchema, updateFolderStatusSchema } from '../validators/folder.validator';
 
 export class FolderController {
+  private static stripSequelizeCamelTimestamps<T extends Record<string, unknown>>(obj: T): T {
+    const clone = { ...obj };
+    delete clone.createdAt;
+    delete clone.updatedAt;
+    delete clone.deletedAt;
+    return clone as T;
+  }
+
+  private static workflowWeight(status: string): number {
+    switch (status) {
+      case 'uploaded':
+        return 0.33;
+      case 'analyzed':
+        return 0.66;
+      case 'validated':
+        return 1;
+      default:
+        return 0;
+    }
+  }
+
   static async getMyFolder(req: Request, res: Response): Promise<Response> {
     try {
       const user = await User.findByPk(req.user!.id);
@@ -19,12 +40,21 @@ export class FolderController {
         ? await FolderService.getDocumentPresenceDetails(folder.id, user.tenant_profile)
         : [];
 
+      const rawFolder =
+        typeof (folder as unknown as { toJSON?: () => unknown }).toJSON === 'function'
+          ? ((folder as unknown as { toJSON: () => unknown }).toJSON() as Record<string, unknown>)
+          : (folder as unknown as Record<string, unknown>);
+      const folderPayload = FolderController.stripSequelizeCamelTimestamps(rawFolder);
+      const requiredDocumentsPayload = requiredDocuments.map((doc) =>
+        FolderController.stripSequelizeCamelTimestamps(doc as Record<string, unknown>)
+      );
+
       return successResponse(
         res,
         {
-          folder,
+          folder: folderPayload,
           completion_percentage: completion,
-          required_documents: requiredDocuments,
+          required_documents: requiredDocumentsPayload,
         },
         'Dossier récupéré',
         200
@@ -97,5 +127,69 @@ export class FolderController {
       'Complétion du dossier recalculée',
       200
     );
+  }
+
+  static async getMyDashboardKpis(req: Request, res: Response): Promise<Response> {
+    try {
+      const user = await User.findByPk(req.user!.id);
+      if (!user) return errorResponse(res, 'Utilisateur introuvable', [], 404);
+      if (user.role !== 'tenant') return errorResponse(res, 'Action non autorisée', [], 403);
+
+      const folder = await FolderService.getOrCreateFolder(user.id);
+      const requiredDocuments = user.tenant_profile
+        ? await FolderService.getDocumentPresenceDetails(folder.id, user.tenant_profile)
+        : [];
+
+      const totalDocs = requiredDocuments.length;
+      const weightedPoints = requiredDocuments.reduce(
+        (sum, doc) => sum + FolderController.workflowWeight(doc.workflow_status),
+        0
+      );
+      const dossierCompletionPercentage =
+        totalDocs === 0 ? 0 : Math.round((weightedPoints / totalDocs) * 100);
+
+      const profileFields = {
+        first_name: !!user.first_name,
+        last_name: !!user.last_name,
+        email: !!user.email,
+        phone: !!user.phone,
+        address: !!(user.toJSON() as Record<string, unknown>).address,
+        date_of_birth: !!user.date_of_birth,
+        tenant_profile: !!user.tenant_profile,
+      };
+      const totalProfileFields = Object.keys(profileFields).length;
+      const completedProfileFields = Object.values(profileFields).filter(Boolean).length;
+      const profileCompletionPercentage = Math.round(
+        (completedProfileFields / totalProfileFields) * 100
+      );
+
+      return successResponse(
+        res,
+        {
+          dossier_completion: {
+            percentage: dossierCompletionPercentage,
+            total_expected_documents: totalDocs,
+            weighted_points: Number(weightedPoints.toFixed(2)),
+          },
+          profile_completion: {
+            percentage: profileCompletionPercentage,
+            completed_fields: completedProfileFields,
+            total_fields: totalProfileFields,
+            fields: profileFields,
+          },
+          search_criteria_indicator: null,
+          shared_folders_count: null,
+        },
+        'KPIs dashboard récupérés',
+        200
+      );
+    } catch (err) {
+      return errorResponse(
+        res,
+        `Erreur KPI dashboard: ${err instanceof Error ? err.message : 'unknown'}`,
+        [],
+        500
+      );
+    }
   }
 }

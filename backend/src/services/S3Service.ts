@@ -12,6 +12,9 @@ import { logger } from '../utils/logger';
 
 const s3Client = new S3Client({
   region: config.aws.region,
+  // Keep presigned URLs, but force path-style host format:
+  // https://s3.<region>.amazonaws.com/<bucket>/<key>
+  forcePathStyle: true,
   credentials: {
     accessKeyId: config.aws.accessKeyId,
     secretAccessKey: config.aws.secretAccessKey,
@@ -21,7 +24,7 @@ const s3Client = new S3Client({
 export class S3Service {
   private static buildS3Key(userId: number, mimeType: string): string {
     const ext = mimeType === 'application/pdf' ? 'pdf' : mimeType === 'image/png' ? 'png' : 'jpg';
-    return `users/${userId}/documents/${uuidv4()}.${ext}`;
+    return `renters/users/${userId}/documents/${uuidv4()}.${ext}`;
   }
 
   static async uploadFile(params: {

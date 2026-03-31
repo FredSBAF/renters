@@ -4,6 +4,7 @@ import { DocumentService } from '../services/DocumentService';
 import { FolderService } from '../services/FolderService';
 import { errorResponse, successResponse } from '../utils/response';
 import { uploadDocumentSchema, updateCommentSchema } from '../validators/document.validator';
+import { logger } from '../utils/logger';
 
 export class DocumentController {
   static async upload(req: Request, res: Response): Promise<Response> {
@@ -40,6 +41,17 @@ export class DocumentController {
       if (e instanceof Error && e.message === 'DOCUMENT_TYPE_NOT_FOUND') {
         return errorResponse(res, 'Type de document inconnu', [], 400);
       }
+      const err = e as Error | undefined;
+      logger.error(
+        `[DocumentController.upload] upload failed user_id=${req.user?.id ?? 'unknown'} ` +
+          `mime=${req.file?.mimetype ?? 'unknown'} size=${req.file?.size ?? 0} ` +
+          `document_type=${String(value.document_type)} ip=${req.ip} ` +
+          `error=${JSON.stringify({
+            name: err?.name,
+            message: err?.message,
+            stack: err?.stack,
+          })}`
+      );
       return errorResponse(res, 'Erreur upload document', [], 500);
     }
   }

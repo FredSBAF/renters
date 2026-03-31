@@ -2,6 +2,7 @@ import express, { Express } from 'express';
 import { successResponse } from './utils/response';
 import { logger } from './utils/logger';
 import routes from './routes';
+import usersRouter from './routes/users.routes';
 import openApiRouter from './routes/openapi.routes';
 import webhookRouter from './routes/webhook.routes';
 import billingRouter from './routes/billing.routes';
@@ -52,6 +53,7 @@ app.get('/health', (req, res) => {
 });
 
 app.use('/api/v1', routes);
+app.use('/v1/users', usersRouter);
 app.use('/api/v1', suspendedAccountCheck);
 app.use('/api/v1/billing', billingRouter);
 app.use('/', routes);
