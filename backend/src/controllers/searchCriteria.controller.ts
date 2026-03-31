@@ -6,6 +6,8 @@ import {
   updateSearchCriteriaSchema,
 } from '../validators/searchCriteria.validators';
 import * as searchCriteriaService from '../services/searchCriteria.service';
+import { SearchCriteriaAiError } from '../services/searchCriteria.service';
+import { logger } from '../utils/logger';
 
 export const getSearchCriteria = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -102,7 +104,15 @@ export const generatePresentation = async (req: Request, res: Response): Promise
     });
 
     successResponse(res, { text }, 'Texte généré avec succès');
-  } catch {
+  } catch (error) {
+    if (error instanceof SearchCriteriaAiError) {
+      errorResponse(res, error.userMessage, [error.code], error.statusCode);
+      return;
+    }
+    const err = error as { message?: string };
+    logger.error(
+      `[searchCriteria.generatePresentation] Unexpected error message="${err?.message ?? 'n/a'}"`
+    );
     errorResponse(res, 'Erreur génération de texte', ['INTERNAL_ERROR'], 500);
   }
 };

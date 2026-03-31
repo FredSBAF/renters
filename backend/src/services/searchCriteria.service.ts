@@ -3,6 +3,7 @@ import { Transaction } from 'sequelize';
 import { sequelize } from '../config/database';
 import { config } from '../config/env';
 import { SearchCriteria, SearchCriteriaCity, SearchCriteriaPropertyType } from '../models';
+import { logger } from '../utils/logger';
 
 type UpdatePayload = {
   cities: Array<{ name: string; place_id: string; lat: number; lng: number; radius_km: number }>;
@@ -24,6 +25,19 @@ type GeneratePayload = {
   tenant_profile: string;
   first_name: string;
 };
+
+export class SearchCriteriaAiError extends Error {
+  readonly code: string;
+  readonly statusCode: number;
+  readonly userMessage: string;
+
+  constructor(code: string, userMessage: string, statusCode = 500) {
+    super(userMessage);
+    this.code = code;
+    this.statusCode = statusCode;
+    this.userMessage = userMessage;
+  }
+}
 
 export async function getByUserId(userId: number): Promise<SearchCriteria | null> {
   return SearchCriteria.findOne({
@@ -110,6 +124,7 @@ export async function upsert(userId: number, payload: UpdatePayload): Promise<Se
 
 export async function generatePresentation(payload: GeneratePayload): Promise<string> {
   const client = new Anthropic({ apiKey: config.anthropic.apiKey });
+  const candidateModels = ['claude-sonnet-4-6', 'claude-3-5-sonnet-latest', 'claude-3-haiku-20240307'];
 
   const availabilityStr =
     payload.availability_type === 'immediate'
@@ -139,11 +154,53 @@ Consignes :
 - Pas de guillemets dans le texte généré
 - Texte brut uniquement, sans markdown`;
 
-  const message = await client.messages.create({
-    model: 'claude-sonnet-4-6',
-    max_tokens: 300,
-    messages: [{ role: 'user', content: prompt }],
-  });
+  let message: Awaited<ReturnType<typeof client.messages.create>> | null = null;
+  let lastError: unknown = null;
+  for (const model of candidateModels) {
+    try {
+      message = await client.messages.create({
+        model,
+        max_tokens: 300,
+        messages: [{ role: 'user', content: prompt }],
+      });
+      break;
+    } catch (error) {
+      lastError = error;
+      const err = error as { status?: number; message?: string; error?: { type?: string } };
+      logger.warn(
+        `[searchCriteria.generatePresentation] Anthropic model failed model=${model} ` +
+          `status=${err.status ?? 'n/a'} type=${err.error?.type ?? 'n/a'} message="${err.message ?? 'n/a'}"`
+      );
+    }
+  }
+  if (!message) {
+    const err = lastError as { status?: number; message?: string; error?: { type?: string } } | null;
+    const status = err?.status ?? 500;
+    const type = err?.error?.type ?? 'unknown_error';
+    logger.error(
+      `[searchCriteria.generatePresentation] All Anthropic models failed ` +
+        `status=${status} type=${type} message="${err?.message ?? 'n/a'}"`
+    );
+    if (status === 401 || status === 403) {
+      throw new SearchCriteriaAiError(
+        'AI_PROVIDER_UNAUTHORIZED',
+        "Le service IA n'est pas autorisé pour ce compte.",
+        502
+      );
+    }
+    if (status === 429) {
+      throw new SearchCriteriaAiError(
+        'AI_PROVIDER_RATE_LIMIT',
+        'Le service IA est temporairement indisponible (quota/rate limit). Réessayez plus tard.',
+        429
+      );
+    }
+    throw new SearchCriteriaAiError(
+      'AI_PROVIDER_ERROR',
+      'Le service IA est momentanément indisponible.',
+      502
+    );
+  }
 
   const text = message.content
     .filter((block) => block.type === 'text')
