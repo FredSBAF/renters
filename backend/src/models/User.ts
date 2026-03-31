@@ -29,6 +29,19 @@ export interface UserAttributes {
   phone: string | null;
   date_of_birth: string | null;
   tenant_profile: TenantProfile | null;
+  address: {
+    label: string;
+    house_number?: string;
+    street?: string;
+    postcode?: string;
+    city: string;
+    citycode?: string;
+    context?: string;
+    country: string;
+    latitude?: number;
+    longitude?: number;
+    source: 'api-adresse' | 'manual';
+  } | null;
   is_2fa_enabled: boolean;
   created_at: Date;
   updated_at: Date;
@@ -45,6 +58,7 @@ export class User extends Model<InferAttributes<User>, InferCreationAttributes<U
   declare phone: CreationOptional<string | null>;
   declare date_of_birth: CreationOptional<string | null>;
   declare tenant_profile: CreationOptional<TenantProfile | null>;
+  declare address: CreationOptional<object | null>;
   declare totp_secret: CreationOptional<string | null>;
   declare is_2fa_enabled: CreationOptional<boolean>;
   declare agency_id: CreationOptional<number | null>;
@@ -103,6 +117,7 @@ User.init(
       ),
       allowNull: true,
     },
+    address: { type: DataTypes.JSON, allowNull: true },
     totp_secret: { type: DataTypes.STRING(512), allowNull: true },
     is_2fa_enabled: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false },
     agency_id: { type: DataTypes.INTEGER.UNSIGNED, allowNull: true },

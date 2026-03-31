@@ -25,7 +25,9 @@ export async function updateMe(req: Request, res: Response): Promise<Response> {
   }
 
   const oldProfile = user.tenant_profile;
-  await user.update(value);
+  const updates: Record<string, unknown> = { ...value };
+  if (updates.phone === '') updates.phone = null;
+  await user.update(updates);
 
   if (value.tenant_profile !== undefined && value.tenant_profile !== oldProfile) {
     await AuditLog.create({

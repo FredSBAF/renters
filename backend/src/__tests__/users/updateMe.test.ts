@@ -99,6 +99,60 @@ describe('PATCH /v1/users/me', () => {
     expect(recalculateFolderCompletion).toHaveBeenCalledWith(123);
   });
 
+  test('returns 200 for complete api-adresse address payload', async () => {
+    const user = {
+      id: 123,
+      email: 'u@test.fr',
+      status: 'active',
+      deleted_at: null,
+      tenant_profile: 'employee_cdi',
+      update: jest.fn().mockResolvedValue(undefined),
+      toPublicJSON: jest.fn().mockReturnValue({
+        id: 123,
+        address: {
+          label: '10 rue de la Paix 75002 Paris',
+          house_number: '10',
+          street: 'rue de la Paix',
+          postcode: '75002',
+          city: 'Paris',
+          citycode: '75056',
+          context: 'Paris, Île-de-France',
+          country: 'France',
+          latitude: 48.8687,
+          longitude: 2.3312,
+          source: 'api-adresse',
+        },
+      }),
+    };
+    jest.mocked(User.findByPk).mockResolvedValueOnce(user as never);
+
+    const res = await request(app)
+      .patch('/v1/users/me')
+      .set('Authorization', 'Bearer token')
+      .send({
+        address: {
+          label: '10 rue de la Paix 75002 Paris',
+          house_number: '10',
+          street: 'rue de la Paix',
+          postcode: '75002',
+          city: 'Paris',
+          citycode: '75056',
+          context: 'Paris, Île-de-France',
+          country: 'France',
+          latitude: 48.8687,
+          longitude: 2.3312,
+          source: 'api-adresse',
+        },
+      });
+
+    expect(res.status).toBe(200);
+    expect(user.update).toHaveBeenCalledWith(
+      expect.objectContaining({
+        address: expect.objectContaining({ source: 'api-adresse' }),
+      })
+    );
+  });
+
   test('returns 400 for invalid future date_of_birth', async () => {
     const user = {
       id: 123,
@@ -111,7 +165,7 @@ describe('PATCH /v1/users/me', () => {
     const res = await request(app)
       .patch('/v1/users/me')
       .set('Authorization', 'Bearer token')
-      .send({ date_of_birth: '2999-01-01' });
+      .send({ date_of_birth: '2012-01-01' });
     expect(res.status).toBe(400);
   });
 
