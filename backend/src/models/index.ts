@@ -15,6 +15,9 @@ import { Guarantor } from './Guarantor';
 import { ModerationQueue } from './ModerationQueue';
 import { Notification } from './Notification';
 import { NotificationPreference } from './NotificationPreference';
+import { SearchCriteria } from './SearchCriteria';
+import { SearchCriteriaCity } from './SearchCriteriaCity';
+import { SearchCriteriaPropertyType } from './SearchCriteriaPropertyType';
 
 User.belongsTo(Agency, { foreignKey: 'agency_id' });
 Agency.hasMany(User, { foreignKey: 'agency_id' });
@@ -57,6 +60,23 @@ Notification.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
 User.hasMany(Notification, { foreignKey: 'user_id', as: 'notifications' });
 NotificationPreference.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
 User.hasOne(NotificationPreference, { foreignKey: 'user_id', as: 'notificationPreference' });
+SearchCriteria.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
+User.hasOne(SearchCriteria, { foreignKey: 'user_id', as: 'searchCriteria' });
+SearchCriteria.hasMany(SearchCriteriaCity, {
+  foreignKey: 'search_criteria_id',
+  as: 'cities',
+  onDelete: 'CASCADE',
+});
+SearchCriteriaCity.belongsTo(SearchCriteria, { foreignKey: 'search_criteria_id', as: 'criteria' });
+SearchCriteria.hasMany(SearchCriteriaPropertyType, {
+  foreignKey: 'search_criteria_id',
+  as: 'propertyTypes',
+  onDelete: 'CASCADE',
+});
+SearchCriteriaPropertyType.belongsTo(SearchCriteria, {
+  foreignKey: 'search_criteria_id',
+  as: 'criteria',
+});
 
 export {
   Agency,
@@ -76,4 +96,7 @@ export {
   ModerationQueue,
   Notification,
   NotificationPreference,
+  SearchCriteria,
+  SearchCriteriaCity,
+  SearchCriteriaPropertyType,
 };

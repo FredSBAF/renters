@@ -6,6 +6,7 @@ import usersRouter from './routes/users.routes';
 import openApiRouter from './routes/openapi.routes';
 import webhookRouter from './routes/webhook.routes';
 import billingRouter from './routes/billing.routes';
+import searchCriteriaRouter from './routes/searchCriteria.routes';
 import { corsMiddleware } from './middlewares/cors.middleware';
 import { autoAuditLog } from './middlewares/auditLog.middleware';
 import { preventNoSQLInjection, preventXSS, validateContentType } from './middlewares/inputValidation.middleware';
@@ -54,6 +55,7 @@ app.get('/health', (req, res) => {
 
 app.use('/api/v1', routes);
 app.use('/v1/users', usersRouter);
+app.use('/v1/search-criteria', searchCriteriaRouter);
 app.use('/api/v1', suspendedAccountCheck);
 app.use('/api/v1/billing', billingRouter);
 app.use('/', routes);

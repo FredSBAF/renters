@@ -67,6 +67,7 @@ const envSchema = Joi.object({
   AI_SERVICE_TIMEOUT_MS: Joi.number().default(30000),
   AI_SCORE_AUTO_VALIDATE: Joi.number().default(80),
   AI_SCORE_MANUAL_REVIEW: Joi.number().default(40),
+  ANTHROPIC_API_KEY: Joi.string().required(),
   SHARING_LINK_EXPIRY_DAYS: Joi.number().default(30),
   SHARING_LINK_BASE_URL: Joi.string().uri().required(),
 
@@ -198,6 +199,9 @@ export const config = {
     timeoutMs: raw.AI_SERVICE_TIMEOUT_MS as number,
     scoreAutoValidate: raw.AI_SCORE_AUTO_VALIDATE as number,
     scoreManualReview: raw.AI_SCORE_MANUAL_REVIEW as number,
+  },
+  anthropic: {
+    apiKey: raw.ANTHROPIC_API_KEY as string,
   },
   sharing: {
     expiryDays: raw.SHARING_LINK_EXPIRY_DAYS as number,

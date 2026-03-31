@@ -9,6 +9,7 @@ import moderationRouter from './moderation.routes';
 import guarantorRouter from './guarantor.routes';
 import adminRouter from './admin.routes';
 import notificationRouter from './notification.routes';
+import searchCriteriaRouter from './searchCriteria.routes';
 
 const router = Router();
 
@@ -22,5 +23,6 @@ router.use('/admin/moderation', moderationRouter);
 router.use('/admin', adminRouter);
 router.use('/guarantors', guarantorRouter);
 router.use('/notifications', notificationRouter);
+router.use('/search-criteria', searchCriteriaRouter);
 
 export default router;

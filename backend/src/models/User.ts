@@ -45,6 +45,8 @@ export interface UserAttributes {
   is_2fa_enabled: boolean;
   created_at: Date;
   updated_at: Date;
+  ai_generation_count: number;
+  ai_generation_reset_at: Date | null;
 }
 
 export class User extends Model<InferAttributes<User>, InferCreationAttributes<User>> {
@@ -70,6 +72,8 @@ export class User extends Model<InferAttributes<User>, InferCreationAttributes<U
   declare deletion_requested_at: CreationOptional<Date | null>;
   declare deletion_cancellation_token: CreationOptional<string | null>;
   declare deletion_cancellation_token_expires_at: CreationOptional<Date | null>;
+  declare ai_generation_count: CreationOptional<number>;
+  declare ai_generation_reset_at: CreationOptional<Date | null>;
 
   declare agency?: NonAttribute<Agency>;
 
@@ -127,6 +131,8 @@ User.init(
     deletion_requested_at: { type: DataTypes.DATE, allowNull: true },
     deletion_cancellation_token: { type: DataTypes.STRING(255), allowNull: true, unique: true },
     deletion_cancellation_token_expires_at: { type: DataTypes.DATE, allowNull: true },
+    ai_generation_count: { type: DataTypes.TINYINT.UNSIGNED, allowNull: false, defaultValue: 0 },
+    ai_generation_reset_at: { type: DataTypes.DATE, allowNull: true },
     created_at: { type: DataTypes.DATE, allowNull: true },
     updated_at: { type: DataTypes.DATE, allowNull: true },
   },
