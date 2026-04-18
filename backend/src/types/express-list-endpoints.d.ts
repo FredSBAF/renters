@@ -1,13 +1,13 @@
 declare module 'express-list-endpoints' {
-  import { Express } from 'express';
+    import { Express } from 'express';
 
-  interface Endpoint {
-    path: string;
-    methods: string[];
-    middleware: string[];
-  }
+    interface Endpoint {
+        path: string;
+        methods: string[];
+        middleware: string[];
+    }
 
-  function listEndpoints(app: Express): Endpoint[];
+    function listEndpoints(app: Express): Endpoint[];
 
-  export default listEndpoints;
+    export default listEndpoints;
 }
