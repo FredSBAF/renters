@@ -26,8 +26,9 @@ const publicApiRoutePatterns: Array<{ path: RegExp; methods?: string[] }> = [
 ];
 
 function isPublicApiRoute(req: Request): boolean {
+  const fullPath = `${req.baseUrl}${req.path}`;
   return publicApiRoutePatterns.some((route) => {
-    if (!route.path.test(req.path)) return false;
+    if (!route.path.test(fullPath)) return false;
     return !route.methods || route.methods.includes(req.method);
   });
 }
