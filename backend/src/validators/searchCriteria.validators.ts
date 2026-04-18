@@ -6,7 +6,9 @@ const citySchema = Joi.object({
   lat: Joi.number().min(-90).max(90).required(),
   lng: Joi.number().min(-180).max(180).required(),
   radius_km: Joi.number().integer().min(0).max(50).default(5),
-});
+})
+  .rename('placeId', 'place_id', { override: true, ignoreUndefined: true })
+  .rename('radiusKm', 'radius_km', { override: true, ignoreUndefined: true });
 
 const PROPERTY_TYPES = ['studio', 'T1', 'T2', 'T3', 'T4', 'T5+', 'house', 'colocation', 'loft'];
 

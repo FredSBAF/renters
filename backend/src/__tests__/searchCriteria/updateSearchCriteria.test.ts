@@ -77,6 +77,31 @@ describe('PATCH /v1/search-criteria', () => {
     expect(res.status).toBe(201);
   });
 
+  test('201 accepts camelCase city fields', async () => {
+    jest.mocked(searchCriteriaService.getByUserId).mockResolvedValueOnce(null);
+    jest.mocked(searchCriteriaService.upsert).mockResolvedValue({
+      id: 100,
+      toJSON: () => ({ id: 100 }),
+    } as never);
+
+    const res = await request(app)
+      .patch('/v1/search-criteria')
+      .set('Authorization', 'Bearer token')
+      .set('Origin', 'http://localhost:3000')
+      .send({
+        ...validPayload,
+        cities: [{
+          name: 'Paris',
+          placeId: 'p1',
+          lat: 48.85,
+          lng: 2.35,
+          radiusKm: 5,
+        }],
+      });
+
+    expect(res.status).toBe(201);
+  });
+
   test('200 updates existing criteria', async () => {
     jest.mocked(searchCriteriaService.getByUserId).mockResolvedValueOnce({ id: 12 } as never);
     jest.mocked(searchCriteriaService.upsert).mockResolvedValue({
