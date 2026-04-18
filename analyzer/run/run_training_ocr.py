@@ -52,20 +52,6 @@ def collect_files(root_dir):
                 yield os.path.join(dirpath, fn)
 
 
-def ocr_with_subprocess(path):
-    script = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "ocr_extract.py"))
-    result = subprocess.run(
-        [sys.executable, script, "--file", path],
-        capture_output=True,
-        text=True,
-        check=False,
-    )
-    try:
-        return json.loads(result.stdout)
-    except json.JSONDecodeError:
-        raise RuntimeError(f"OCR CLI failed for {path}: {result.stderr}")
-
-
 def main():
     parser = argparse.ArgumentParser(description="Run OCR on training documents.")
     parser.add_argument(
@@ -80,6 +66,18 @@ def main():
         "--use-cli", action="store_true",
         help="Always invoke the ocr_extract CLI instead of importing."
     )
+    parser.add_argument(
+        "--ocr-engine",
+        choices=["tesseract", "chandra", "both"],
+        default=None,
+        help="Passed to ocr_extract (overrides OCR_ENGINE).",
+    )
+    parser.add_argument(
+        "--ocr-primary",
+        choices=["tesseract", "chandra"],
+        default=None,
+        help="When engine is both, primary for raw_text (overrides OCR_PRIMARY).",
+    )
     args = parser.parse_args()
 
     files = list(collect_files(args.dir))
@@ -92,12 +90,36 @@ def main():
     for idx, path in enumerate(files, start=1):
         print(f"[{idx}/{len(files)}] {path}")
         if args.use_cli or not _DIRECT_IMPORT:
-            resobj = ocr_with_subprocess(path)
+            cmd = [
+                sys.executable,
+                os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "ocr_extract.py")),
+                "--file",
+                path,
+            ]
+            if args.ocr_engine:
+                cmd.extend(["--ocr-engine", args.ocr_engine])
+            if args.ocr_primary:
+                cmd.extend(["--ocr-primary", args.ocr_primary])
+            result = subprocess.run(
+                cmd,
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+            try:
+                resobj = json.loads(result.stdout)
+            except json.JSONDecodeError:
+                raise RuntimeError(f"OCR CLI failed for {path}: {result.stderr}")
             res = resobj.get("results", [])[0] if resobj else {"error": "no output"}
             overall.append({"file": path, **res})
         else:
             info = {"document_id": path, "file_path": path}
-            res = ocr_extract.process_document(info, folder_id=None)
+            kw = {}
+            if args.ocr_engine:
+                kw["ocr_engine"] = args.ocr_engine
+            if args.ocr_primary:
+                kw["ocr_primary"] = args.ocr_primary
+            res = ocr_extract.process_document(info, folder_id=None, **kw)
             overall.append({"file": path, **res})
 
     report = {"success": True, "count": len(overall), "results": overall}

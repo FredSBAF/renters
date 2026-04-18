@@ -209,6 +209,13 @@ Tous les scripts respectent ce contrat d'entrée/sortie.
 ---
 
 ### 4.2 OCR & Extraction de Texte — `ocr_extract.py`
+# Comparaison, texte principal = Tesseract pour parse_fields
+python3 ocr_extract.py --file "../training/documents locataires/Clémence_Neuquelman/C_Identité/Garant/IMG_4907.JPG" --ocr-engine both --ocr-primary tesseract
+
+# Chandra seul (serveur vLLM ou HF selon install)
+export CHANDRA_METHOD=vllm  # ou hf
+python3 ocr_extract.py --file  "../training/documents locataires/Clémence_Neuquelman/C_Identité/Garant/IMG_4907.JPG" --ocr-engine chandra
+
 
 **Responsabilité** : Extraire le texte brut de chaque document. Fournir le texte aux scripts suivants (parse_fields, cross_check).
 

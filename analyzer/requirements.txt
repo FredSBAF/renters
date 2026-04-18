@@ -5,3 +5,6 @@ requests
 python-dotenv
 numpy
 streamlit
+
+# Chandra OCR — base package (vLLM/OpenAI-compatible server). For local HF weights: pip install 'chandra-ocr[hf]'
+chandra-ocr>=0.2.0

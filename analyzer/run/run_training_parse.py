@@ -69,10 +69,15 @@ def collect_files(root_dir):
                 yield os.path.join(dirpath, fn)
 
 
-def run_ocr_cli(path):
+def run_ocr_cli(path, ocr_engine=None, ocr_primary=None):
     script = os.path.normpath(os.path.join(os.path.dirname(__file__), "..", "ocr_extract.py"))
+    cmd = [sys.executable, script, "--file", path]
+    if ocr_engine:
+        cmd.extend(["--ocr-engine", ocr_engine])
+    if ocr_primary:
+        cmd.extend(["--ocr-primary", ocr_primary])
     result = subprocess.run(
-        [sys.executable, script, "--file", path],
+        cmd,
         capture_output=True,
         text=True,
         check=False,
@@ -116,7 +121,24 @@ def main():
         "--use-cli", action="store_true",
         help="Avoid any direct imports and always call the CLI scripts."
     )
+    parser.add_argument(
+        "--ocr-engine",
+        choices=["tesseract", "chandra", "both"],
+        default=None,
+        help="Forwarded to ocr_extract when OCR runs (overrides OCR_ENGINE).",
+    )
+    parser.add_argument(
+        "--ocr-primary",
+        choices=["tesseract", "chandra"],
+        default=None,
+        help="Forwarded to ocr_extract when engine is both (overrides OCR_PRIMARY).",
+    )
     args = parser.parse_args()
+    ocr_kw = {}
+    if args.ocr_engine:
+        ocr_kw["ocr_engine"] = args.ocr_engine
+    if args.ocr_primary:
+        ocr_kw["ocr_primary"] = args.ocr_primary
 
     # if an OCR report is given, load it; otherwise we'll produce per-file OCR on demand
     ocr_data = {}
@@ -147,10 +169,18 @@ def main():
         else:
             # run OCR
             if args.use_cli or not _OCR_DIRECT:
-                ocr_out = run_ocr_cli(path)
+                ocr_out = run_ocr_cli(
+                    path,
+                    ocr_engine=args.ocr_engine,
+                    ocr_primary=args.ocr_primary,
+                )
                 raw = ocr_out.get('results', [{}])[0].get('data', {}).get('raw_text', '')
             else:
-                ocr_res = ocr_extract.process_document({"document_id": path, "file_path": path}, folder_id=None)
+                ocr_res = ocr_extract.process_document(
+                    {"document_id": path, "file_path": path},
+                    folder_id=None,
+                    **ocr_kw,
+                )
                 raw = ocr_res.get('data', {}).get('raw_text', '')
 
         # run parser

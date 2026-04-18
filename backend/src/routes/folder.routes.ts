@@ -4,7 +4,7 @@ import { authMiddleware, requireRole } from '../middlewares/auth.middleware';
 
 const router = Router();
 
-router.get('/document-types', FolderController.getDocumentTypes);
+router.get('/document-types', authMiddleware, requireRole('tenant'), FolderController.getDocumentTypes);
 
 router.use(authMiddleware);
 router.use(requireRole('tenant'));
